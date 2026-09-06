@@ -8,6 +8,10 @@ public class Main {
         //2. Realizar un metodo que sume todos los numeros del arreglo
         System.out.println(sumarArreglo(arreglo));
 
+        //2. Verificar si un numero se repite en un arreglo
+        int[] numeros= {1, 2, 6, 0, 7, 6, 1, 1, 2};
+        System.out.println("¿Cuantos numeros se repiten en el arreglo? " + identificarRepetidos(numeros));
+
     }
 
     //Metodo
@@ -31,4 +35,16 @@ public class Main {
         return verificacion;
     }
 
+    //Realizar un metodo que diga si un numero se repite en el arreglo
+    public static int identificarRepetidos(int[] numeros){
+        int repetidos= 0;
+        for(int i=0; i<numeros.length; i++){
+            for(int j=0; j<numeros.length; j++){
+                if (numeros[i]==numeros[j]) {
+                    repetidos++;
+                }
+            }
+        }
+        return repetidos;
+    }
 }
