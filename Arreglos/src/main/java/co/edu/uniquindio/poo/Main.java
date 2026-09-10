@@ -3,6 +3,9 @@ package co.edu.uniquindio.poo;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+
+        //ACTIVIDADES / EJERCICIOS EN CLASE
+
         //1. Crear un arreglo e inicializarlo
         int[] arreglo = {1, 2, 3, 4, 5, 6,};
         //2. Realizar un metodo que sume todos los numeros del arreglo
@@ -11,6 +14,10 @@ public class Main {
         //2. Verificar si un numero se repite en un arreglo
         int[] numeros= {1, 2, 6, 0, 7, 6, 1, 1, 2};
         System.out.println("¿Cuantos numeros se repiten en el arreglo? " + identificarRepetidos(numeros));
+
+        //la misma pero version booleana
+        System.out.println("¿El numero se repite en el arreglo? " + verificarRepetido(numeros, 6));
+
 
     }
 
@@ -35,16 +42,33 @@ public class Main {
         return verificacion;
     }
 
-    //Realizar un metodo que diga si un numero se repite en el arreglo
+    //Realizar un metodo que diga cuantos numeros se repiten en el arreglo
     public static int identificarRepetidos(int[] numeros){
         int repetidos= 0;
         for(int i=0; i<numeros.length; i++){
-            for(int j=0; j<numeros.length; j++){
-                if (numeros[i]==numeros[j]) {
-                    repetidos++;
+            for(int j=i+1; j<numeros.length; j++){
+                    if (numeros[i] == numeros[j]) {
+                        repetidos++;
+                    }
                 }
             }
-        }
         return repetidos;
+    }
+
+    //Realizar un metodo que diga si un numero se repite en el arreglo
+    public static boolean verificarRepetido(int [] numeros, int numero){
+        boolean repetido= false;
+        for(int i=0; i<numeros.length;i++){
+            for(int j=i+1; j<numeros.length; j++){
+                if (numeros[i] == numeros[j]) {
+                    repetido= true;
+                    break;
+                }
+            }
+            if(repetido){
+                break;
+            }
+        }
+        return repetido;
     }
 }
