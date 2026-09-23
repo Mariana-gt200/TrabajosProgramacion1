@@ -60,5 +60,19 @@ public class Hotel {
         this.telefono = telefono;
     }
 
+    //get de las listas/arreglos
+    public ArrayList<Huespedes> getListaHuespedes() {
+        return listaHuespedes;
+    }
+
+    public byte[] getHabitaciones() {
+        return habitaciones;
+    }
+
+    public int[][] getOcupacion() {
+        return ocupacion;
+    }
+
+
     //Administraciones / logica
 }
