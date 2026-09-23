@@ -80,7 +80,7 @@ public class Reserva {
     //toString
     @Override
     public String toString() {
-        return "Reservas{" +
+        return "Reserva{" +
                 "codigo=" + codigo +
                 ", fecha='" + fecha + '\'' +
                 ", numeroNoches=" + numeroNoches +

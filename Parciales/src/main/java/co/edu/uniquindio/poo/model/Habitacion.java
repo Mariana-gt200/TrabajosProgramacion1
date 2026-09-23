@@ -10,7 +10,8 @@ public class Habitacion {
     private Hotel ownedByHotel;
 
     //Constructor
-    public Habitacion(byte numero, String tipo, byte piso, byte capacidad, int precio, String estado){
+    public Habitacion(byte numero, String tipo, byte piso, byte capacidad, int precio,
+                      String estado, Hotel ownedByHotel) {
         this.numero= numero;
         this.tipo= tipo;
         this.piso= piso;

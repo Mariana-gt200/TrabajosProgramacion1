@@ -5,7 +5,7 @@ public class Huesped {
     private String nombre;
     private byte edad;
     private String telefono;
-    private String ciudadProsedencia;
+    private String ciudadProcedencia;
 
 
     //Constructor
@@ -14,7 +14,7 @@ public class Huesped {
         this.nombre = nombre;
         this.edad = edad;
         this.telefono = telefono;
-        this.ciudadProsedencia = ciudadProsedencia;
+        this.ciudadProcedencia = ciudadProsedencia;
     }
 
     //Get y Set
@@ -43,21 +43,21 @@ public class Huesped {
         this.telefono = telefono;
     }
     public String getCiudadProsedencia() {
-        return ciudadProsedencia;
+        return ciudadProcedencia;
     }
     public void setCiudadProsedencia(String ciudadProsedencia) {
-        this.ciudadProsedencia = ciudadProsedencia;
+        this.ciudadProcedencia = ciudadProsedencia;
     }
 
     //toString
     @Override
     public String toString() {
-        return "Huespedes{" +
+        return "Huesped{" +
                 "documento='" + documento + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", edad=" + edad +
                 ", telefono='" + telefono + '\'' +
-                ", ciudadProsedencia='" + ciudadProsedencia + '\'' +
+                ", ciudadProsedencia='" + ciudadProcedencia + '\'' +
                 '}';
     }
 
