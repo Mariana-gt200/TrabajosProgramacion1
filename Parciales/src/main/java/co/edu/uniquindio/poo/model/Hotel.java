@@ -20,7 +20,7 @@ public class Hotel {
         this.nit = nit;
         this.direccion = direccion;
         this.telefono = telefono;
-
+        listaHuespedes = new ArrayList<>();
         habitaciones = new byte[20];
         reservas= new int[140];
         ocupacion= new int[20][7];
@@ -51,11 +51,12 @@ public class Hotel {
     //get de las listas/arreglos
     public ArrayList<Huesped> getListaHuespedes() { return listaHuespedes;
     }
-
     public byte[] getHabitaciones() {
         return habitaciones;
     }
-
+    public int[] getReservas() {
+        return reservas;
+    }
     public int[][] getOcupacion() {
         return ocupacion;
     }
@@ -70,6 +71,7 @@ public class Hotel {
                 ", telefono='" + telefono + '\'' +
                 ", listaHuespedes=" + listaHuespedes +
                 ", habitaciones=" + java.util.Arrays.toString(habitaciones) +
+                ", reservas=" + java.util.Arrays.toString(reservas) +
                 ", ocupacion=" + java.util.Arrays.deepToString(ocupacion) +
                 '}';
     }
