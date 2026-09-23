@@ -10,7 +10,7 @@ public class Hotel {
     //Declarar Relaciones
     private ArrayList<Huespedes>listaHuespedes;
     private byte[] habitaciones;
-    //arreglo de reservas falta aqui
+    private int[] reservas;
     private int[][] ocupacion;
 
 
@@ -22,47 +22,34 @@ public class Hotel {
         this.telefono = telefono;
 
         habitaciones = new byte[20];
-        //arreglo de reservas falta aqui
+        reservas= new int[140];
         ocupacion= new int[20][7];
 
     }
 
     //Get y Set
-    public String getNombreComercial() {
-        return nombreComercial;
+    public String getNombreComercial() { return nombreComercial;
+    }
+    public void setNombreComercial(String nombreComercial) { this.nombreComercial = nombreComercial;
     }
 
-    public void setNombreComercial(String nombreComercial) {
-        this.nombreComercial = nombreComercial;
+    public int getNit() { return nit;
+    }
+    public void setNit(int nit) { this.nit = nit;
     }
 
-    public int getNit() {
-        return nit;
+    public String getDireccion() { return direccion;
+    }
+    public void setDireccion(String direccion) { this.direccion = direccion;
     }
 
-    public void setNit(int nit) {
-        this.nit = nit;
+    public String getTelefono() { return telefono;
     }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setTelefono(String telefono) { this.telefono = telefono;
     }
 
     //get de las listas/arreglos
-    public ArrayList<Huespedes> getListaHuespedes() {
-        return listaHuespedes;
+    public ArrayList<Huespedes> getListaHuespedes() { return listaHuespedes;
     }
 
     public byte[] getHabitaciones() {
