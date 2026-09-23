@@ -8,7 +8,6 @@ public class Huespedes {
     private String telefono;
     private String ciudadProsedencia;
 
-    private Hotel ownedByHotel;
 
     //Constructor
     public Huespedes(String documento, String nombre, byte edad, String telefono, String ciudadProsedencia) {
@@ -17,7 +16,6 @@ public class Huespedes {
         this.edad = edad;
         this.telefono = telefono;
         this.ciudadProsedencia = ciudadProsedencia;
-        this.ownedByHotel = ownedByHotel;
     }
 
     //Get y Set
@@ -46,11 +44,7 @@ public class Huespedes {
     }
     public void setCiudadProsedencia(String ciudadProsedencia) { this.ciudadProsedencia = ciudadProsedencia;
     }
-
-    public Hotel getOwnedByHotel() { return ownedByHotel;
-    }
-    public void setOwnedByHotel(Hotel ownedByHotel) { this.ownedByHotel = ownedByHotel;
-    }
+    
 
     //toString
     @Override
@@ -61,7 +55,6 @@ public class Huespedes {
                 ", edad=" + edad +
                 ", telefono='" + telefono + '\'' +
                 ", ciudadProsedencia='" + ciudadProsedencia + '\'' +
-                ", ownedByHotel=" + ownedByHotel +
                 '}';
     }
 
