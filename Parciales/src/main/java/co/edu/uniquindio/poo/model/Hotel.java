@@ -8,7 +8,7 @@ public class Hotel {
     private String telefono;
 
     //Declarar Relaciones
-    private ArrayList<Huespedes>listaHuespedes;
+    private ArrayList<Huesped>listaHuespedes;
     private byte[] habitaciones;
     private int[] reservas;
     private int[][] ocupacion;
@@ -49,7 +49,7 @@ public class Hotel {
     }
 
     //get de las listas/arreglos
-    public ArrayList<Huespedes> getListaHuespedes() { return listaHuespedes;
+    public ArrayList<Huesped> getListaHuespedes() { return listaHuespedes;
     }
 
     public byte[] getHabitaciones() {

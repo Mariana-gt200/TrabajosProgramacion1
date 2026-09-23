@@ -21,39 +21,47 @@ public class Habitacion {
     }
 
     //Get y Set
-    public byte getNumero() { return numero;
+    public byte getNumero() {
+        return numero;
     }
-    public void setNumero(byte numero) { this.numero = numero;
+    public void setNumero(byte numero) {
+        this.numero = numero;
     }
-
-    public String getTipo() { return tipo;
+    public String getTipo() {
+        return tipo;
     }
-    public void setTipo(String tipo) { this.tipo = tipo;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
-
-    public byte getPiso() { return piso;
+    public byte getPiso() {
+        return piso;
     }
-    public void setPiso(byte piso) { this.piso = piso;
+    public void setPiso(byte piso) {
+        this.piso = piso;
     }
-
-    public byte getCapacidad() { return capacidad;
+    public byte getCapacidad() {
+        return capacidad;
     }
-    public void setCapacidad(byte capacidad) { this.capacidad = capacidad;
+    public void setCapacidad(byte capacidad) {
+        this.capacidad = capacidad;
     }
-
-    public int getPrecio() { return precio;
+    public int getPrecio() {
+        return precio;
     }
-    public void setPrecio(int precio) { this.precio = precio;
+    public void setPrecio(int precio) {
+        this.precio = precio;
     }
-
-    public String getEstado() { return estado;
+    public String getEstado() {
+        return estado;
     }
-    public void setEstado(String estado) { this.estado = estado;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
-
-    public Hotel getOwnedByHotel() { return ownedByHotel;
+    public Hotel getOwnedByHotel() {
+        return ownedByHotel;
     }
-    public void setOwnedByHotel(Hotel ownedByHotel) { this.ownedByHotel = ownedByHotel;
+    public void setOwnedByHotel(Hotel ownedByHotel) {
+        this.ownedByHotel = ownedByHotel;
     }
 
     //toString
