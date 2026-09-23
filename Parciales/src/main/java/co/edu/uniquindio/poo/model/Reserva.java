@@ -10,7 +10,6 @@ public class Reserva {
     private short pagoTotal;
 
     private Hotel ownedByHotel;
-    private Huesped ownedByHuesped;
 
     //Constructor
 
@@ -24,7 +23,7 @@ public class Reserva {
         this.metodoPago = metodoPago;
         this.pagoTotal = pagoTotal;
         this.ownedByHotel = ownedByHotel;
-        this.ownedByHuesped = ownedByHuesped;
+
     }
 
     //Get y Set
@@ -76,12 +75,7 @@ public class Reserva {
     public void setOwnedByHotel(Hotel ownedByHotel) {
         this.ownedByHotel = ownedByHotel;
     }
-    public Huesped getOwnedByHuespedes() {
-        return ownedByHuesped;
-    }
-    public void setOwnedByHuespedes(Huesped ownedByHuesped) {
-        this.ownedByHuesped = ownedByHuesped;
-    }
+
 
     //toString
     @Override
@@ -95,7 +89,6 @@ public class Reserva {
                 ", metodoPago='" + metodoPago + '\'' +
                 ", pagoTotal=" + pagoTotal +
                 ", ownedByHotel=" + ownedByHotel +
-                ", ownedByHuespedes=" + ownedByHuesped +
                 '}';
     }
 }
