@@ -78,5 +78,12 @@ public class Hotel {
 
     //Administraciones / logica
 
+    //Calcular valor total de la reserva
+    public int calcularValorTotalReserva(int precioHabitacion, byte numeroNoches, byte numeroHuespedes){
+        int valorTotal = precioHabitacion + (numeroNoches * numeroHuespedes);
+        return valorTotal;
+    }
+
+
 
 }
