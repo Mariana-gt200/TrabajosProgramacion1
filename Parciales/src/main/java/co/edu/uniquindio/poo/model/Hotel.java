@@ -8,8 +8,9 @@ public class Hotel {
     private String telefono;
 
     //Declarar Relaciones
-    private ArrayList<Huespedes>listaHuespedes;
-   private ArrayList<Habitacion> listaHabitaciones;
+
+    private Arraylist<Huespedes>listaHuespedes;
+    private Arraylist<Habitacion> listaHabitaciones;
     private int[] reservas;
     private int[][] ocupacion;
 
@@ -20,6 +21,7 @@ public class Hotel {
         this.nit = nit;
         this.direccion = direccion;
         this.telefono = telefono;
+
         this.listaHuespedes = new ArrayList <>();
         this.listaHabitaciones= new Arraylist <>();
         reservas= new int[140];
@@ -69,13 +71,14 @@ public class Hotel {
     }
 
     //get de las listas/arreglos
-    public ArrayList<Huespedes> getListaHuespedes() { return listaHuespedes;
+    public ArrayList<Huesped> getListaHuespedes() { return listaHuespedes;
     }
-
     public byte[] getHabitaciones() {
         return habitaciones;
     }
-
+    public int[] getReservas() {
+        return reservas;
+    }
     public int[][] getOcupacion() {
         return ocupacion;
     }
@@ -90,6 +93,7 @@ public class Hotel {
                 ", telefono='" + telefono + '\'' +
                 ", listaHuespedes=" + listaHuespedes +
                 ", habitaciones=" + java.util.Arrays.toString(habitaciones) +
+                ", reservas=" + java.util.Arrays.toString(reservas) +
                 ", ocupacion=" + java.util.Arrays.deepToString(ocupacion) +
                 '}';
     }

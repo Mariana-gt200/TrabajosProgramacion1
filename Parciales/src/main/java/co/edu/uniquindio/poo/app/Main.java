@@ -8,7 +8,7 @@ public class Main {
 
     public static void main (){
         Hotel hotel = new Hotel(nombreComercial, nit, direccion, telefono);
-        Huespedes huespedes = new Huespedes(documento, nombre, edad, telefono, cidadProsedencia);
+        Huespedes huespedes = new Huespedes(documento, nombre, edad, telefono, ciudadProsedencia);
     }
     int opcion;
     do{
@@ -27,7 +27,7 @@ public class Main {
                 }
                 break;
             case 2:
-                
+
                 break;
             case 3:
                 break;
