@@ -1,0 +1,64 @@
+package co.edu.uniquindio.poo.model;
+import java.util.ArrayList;
+
+public class Hotel {
+    private String nombreComercial;
+    private int nit;
+    private String direccion;
+    private String telefono;
+
+    //Declarar Relaciones
+    private ArrayList<Huespedes>listaHuespedes;
+    private byte[] habitaciones;
+    //arreglo de reservas falta aqui
+    private int[][] ocupacion;
+
+
+    //Constructor
+    public Hotel(String nombreComercial, int nit, String direccion, String telefono) {
+        this.nombreComercial = nombreComercial;
+        this.nit = nit;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        listaHuespedes = new ArrayList<>();
+        habitaciones = new byte[20];
+        //arreglo de reservas falta aqui
+        ocupacion= new int[20][7];
+
+    }
+
+    //Get y Set
+    public String getNombreComercial() {
+        return nombreComercial;
+    }
+
+    public void setNombreComercial(String nombreComercial) {
+        this.nombreComercial = nombreComercial;
+    }
+
+    public int getNit() {
+        return nit;
+    }
+
+    public void setNit(int nit) {
+        this.nit = nit;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    //Administraciones / logica
+}

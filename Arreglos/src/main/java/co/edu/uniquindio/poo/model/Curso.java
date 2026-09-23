@@ -17,8 +17,8 @@ public class Curso { // singular, el nombre de la clase debe ser la primer letra
     // declarar las relaciones
     private ArrayList<Estudiante> listaEstudiantes;
 
-    /**
-     * Constructor: Es el emtood que permite darle valores o inicializar
+    /*
+     * Constructor: Es el metodo que permite darle valores o inicializar
      * los valores de los atributos de las clases
      */
     public Curso(String nombre,String codigo){//parametros informacion que entra
