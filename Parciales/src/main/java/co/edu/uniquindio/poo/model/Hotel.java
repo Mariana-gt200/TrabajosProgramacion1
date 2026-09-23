@@ -9,7 +9,7 @@ public class Hotel {
 
     //Declarar Relaciones
     private ArrayList<Huespedes>listaHuespedes;
-    private byte[] habitaciones;
+   private ArrayList<Habitacion> listaHabitaciones;
     private int[] reservas;
     private int[][] ocupacion;
 
@@ -20,11 +20,31 @@ public class Hotel {
         this.nit = nit;
         this.direccion = direccion;
         this.telefono = telefono;
-
-        habitaciones = new byte[20];
+        this.listaHuespedes = new ArrayList <>();
+        this.listaHabitaciones= new Arraylist <>();
         reservas= new int[140];
         ocupacion= new int[20][7];
 
+    }
+    public void agregarHuesped(Huespedes huesped) {
+        listaHuespedes.add(huesped);
+    }
+    public Huespedes buscarHuesped(String telefono) {
+        for (Huesped aux: listaHuespedes) {
+            if (aux.getIdentificacion().equals(telefono)){
+                return aux;
+            }
+        } return null;
+    }
+    public void agregarHabitacion(Habitacion habitaciones){
+        listaHabitacion.add(habitaciones);
+    }
+    public Arraylist <Habitacion> consultarDisponibilidad(){
+        List<Habitacion> disponibles = new ArrayList<>();
+        for (Habitacion h : listaHabitaciones) {
+            if (h.estaDisponible()) {
+                disponibles.add(h);
+            }
     }
 
     //Get y Set
@@ -75,6 +95,5 @@ public class Hotel {
     }
 
     //Administraciones / logica
-
 
 }

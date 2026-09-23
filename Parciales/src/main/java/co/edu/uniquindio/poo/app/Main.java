@@ -1,17 +1,39 @@
 package co.edu.uniquindio.poo.app;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import co.edu.uniquindio.poo.model.Hotel;
+import co.edu.uniquindio.poo.model.Huespedes;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
-        }
+public class Main {
+    String buscarHuesped = JOptionPane.showMessageDialog("Bienvenido al sistema de gestión del hotel StayPlus");
+
+    public static void main (){
+        Hotel hotel = new Hotel(nombreComercial, nit, direccion, telefono);
+        Huespedes huespedes = new Huespedes(documento, nombre, edad, telefono, cidadProsedencia);
     }
+    int opcion;
+    do{
+        opcion = integer.valueOf(JOptionPane.showInputDialog("Elija la opción a realizar+\n+===Menú==="+
+                "1. Consultar huésped+\n+2. Consultar disponibilidad de habitaciones+\n+3. Mostrar ocupación semanal+\n+4. Mostrar reservas especiales" +
+                "\n+Imprimir ingresos del hotel" +
+                ""));
+        Switch (opcion){
+            case 1:
+                String documentoBuscado = JOptionPane.showInputDialog("Ingrese el documento del huésped a buscar:");
+                Huespedes huespedEncontrado = hotel.buscarHuesped;
+                if (huespedEncontrado != null) {
+                    JOptionPane.showMessageDialog(null, huespedEncontrado.toString());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Huésped no encontrado");
+                }
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+
+    } while (opcion!=0);
 }
