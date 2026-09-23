@@ -12,9 +12,8 @@ public class Reserva {
     private Hotel ownedByHotel;
 
     //Constructor
-
     public Reserva(int codigo, String fecha, byte numeroNoches, byte numeroHuespedes,
-                   String estadoReserva, String metodoPago, short pagoTotal) {
+                   String estadoReserva, String metodoPago, short pagoTotal, Hotel ownedByHotel) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.numeroNoches = numeroNoches;
