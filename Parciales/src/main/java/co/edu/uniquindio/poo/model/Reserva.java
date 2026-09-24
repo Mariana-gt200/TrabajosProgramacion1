@@ -1,5 +1,7 @@
 package co.edu.uniquindio.poo.model;
 
+import java.util.ArrayList;
+
 public class Reserva {
     private int codigo;
     private String fecha;
@@ -7,15 +9,18 @@ public class Reserva {
     private byte numeroHuespedes;
     private String estadoReserva;
     private String metodoPago;
-    private short pagoTotal;
+    private int pagoTotal;
     private byte cantidadHabitaciones;
     private Huesped huesped;
+    private ArrayList<Habitacion> habitacionesReservadas;
 
     private Hotel ownedByHotel;
 
     //Constructor
-    public Reserva(int codigo, String fecha, byte numeroNoches, byte numeroHuespedes,
-                   byte cantidadHabitaciones, String estadoReserva, String metodoPago, Huesped huesped, short pagoTotal, Hotel ownedByHotel) {
+
+
+    public Reserva(int codigo, String fecha, byte numeroNoches, byte numeroHuespedes, String estadoReserva, String metodoPago,
+                   int pagoTotal, byte cantidadHabitaciones, Huesped huesped, ArrayList<Habitacion> habitacionesReservadas, Hotel ownedByHotel) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.numeroNoches = numeroNoches;
@@ -24,8 +29,9 @@ public class Reserva {
         this.metodoPago = metodoPago;
         this.pagoTotal = pagoTotal;
         this.cantidadHabitaciones = cantidadHabitaciones;
+        this.huesped = huesped;
+        this.habitacionesReservadas = habitacionesReservadas;
         this.ownedByHotel = ownedByHotel;
-
     }
 
     //Get y Set
@@ -65,10 +71,10 @@ public class Reserva {
     public void setMetodoPago(String metodoPago) {
         this.metodoPago = metodoPago;
     }
-    public short getPagoTotal() {
+    public int getPagoTotal() {
         return pagoTotal;
     }
-    public void setPagoTotal(short pagoTotal) {
+    public void setPagoTotal(int pagoTotal) {
         this.pagoTotal = pagoTotal;
     }
     public byte getCantidadHabitaciones() {
@@ -84,6 +90,12 @@ public class Reserva {
     }
     public void setOwnedByHotel(Hotel ownedByHotel) {
         this.ownedByHotel = ownedByHotel;
+    }
+    public ArrayList<Habitacion> getHabitacionesReservadas() {
+        return habitacionesReservadas;
+    }
+    public void agregarHabitacion(Habitacion habitacion) {
+        habitacionesReservadas.add(habitacion);
     }
 
 

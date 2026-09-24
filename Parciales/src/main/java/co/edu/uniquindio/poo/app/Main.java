@@ -27,18 +27,19 @@ public class Main {
                     "6. Mostrar ocupación semanal"+ "\n"+
                     "7. Mostrar reservas especiales" + "\n"+
                     "8. Imprimir ingresos del hotel"+ "\n"+
-                    "9. Salir"));
+                    "9. Gracias"+ "\n"+
+                    "0. Salir"));
 
             switch (opcion) {
                 case 1:
                     // Ingresar huésped
+                    String documento = JOptionPane.showInputDialog("Ingrese el Documento del huésped:");
                     String nombre = JOptionPane.showInputDialog("Ingrese el nombre del huésped:");
-                    String documento = JOptionPane.showInputDialog("Ingrese el documento del huésped:");
+                    byte edad = Byte.parseByte(JOptionPane.showInputDialog("Ingrese la edad del huésped:"));
                     String telefono = JOptionPane.showInputDialog("Ingrese el teléfono del huésped:");
-                    String edad = JOptionPane.showInputDialog("Ingrese la edad del huésped:");
                     String ciudad = JOptionPane.showInputDialog("Ingrese la ciudad de procedencia del huésped:");
                     int numeroReservas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de reservas del huesped:"));
-                    Huesped huesped = new Huesped(nombre, documento, telefono, edad, ciudad, numeroReservas);
+                    Huesped huesped = new Huesped(documento, nombre, edad, telefono, ciudad, numeroReservas);
                     hotel.agregarHuesped(huesped);
                     JOptionPane.showMessageDialog(null, "Huésped ingresado correctamente");
                     break;
@@ -66,7 +67,7 @@ public class Main {
                             // 2. Asignaciones automáticas del sistema
                             String estado = "Confirmada";
                             int precioBase = 50000;
-                            short pagoCalculado = (short) (precioBase * noches * habitaciones);
+                            int pagoCalculado = (int) (precioBase * noches * habitaciones);
 
                             // 3. Creación del objeto Reserva
                             Reserva nuevaReserva = new Reserva(codigo, fecha, noches, cantHuespedes, habitaciones, estado, metodoPago,
