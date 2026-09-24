@@ -36,14 +36,42 @@ public class Main {
                     String telefono = JOptionPane.showInputDialog("Ingrese el teléfono del huésped:");
                     String edad = JOptionPane.showInputDialog("Ingrese la edad del huésped:");
                     String ciudad = JOptionPane.showInputDialog("Ingrese la ciudad de procedencia del huésped:");
-                    Huesped huesped = new Huesped(nombre, documento, telefono, edad, ciudad, 0);
+                    int numeroReservas = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de reservas del huesped:"));
+                    Huesped huesped = new Huesped(nombre, documento, telefono, edad, ciudad, numeroReservas);
                     hotel.getListaHuespedes().add(huesped);
                     JOptionPane.showMessageDialog(null, "Huésped ingresado correctamente");
                     break;
 
                 case 2:
                     // Realizar reserva
+                    String telBuscado = JOptionPane.showInputDialog("Ingrese el teléfono del huésped: ");
+                    Huesped huespedExistente = hotel.obtenerHuesped(telBuscado);
 
+                    if (huespedExistente != null) {
+                        //Se piden los datos de la reserva
+                        int codigo = Integer.parseInt(JOptionPane.showInputDialog("Código de la reserva:"));
+                        String fecha = JOptionPane.showInputDialog("Fecha (AAAA-MM-DD):");
+                        byte noches = Byte.parseByte(JOptionPane.showInputDialog("Número de noches:"));
+                        byte cantHuespedes = Byte.parseByte(JOptionPane.showInputDialog("Número de huéspedes:"));
+                        byte habitaciones = Byte.parseByte(JOptionPane.showInputDialog("Cantidad de habitaciones:"));
+                        String estado = JOptionPane.showInputDialog("Estado de la reserva:");
+                        String metodoPago = JOptionPane.showInputDialog("Método de pago:");
+                        short pagoTotal = Short.parseShort(JOptionPane.showInputDialog("Pago total:"));
+
+                        // 3. Crear la reserva
+                        Reserva nuevaReserva = new Reserva(codigo, fecha, noches, cantHuespedes, habitaciones,
+                                estado, metodoPago, huespedExistente, pagoTotal, hotel);
+                        // 4. Agregar la reserva al hotel
+                        boolean exito = hotel.agregarReserva(nuevaReserva);
+                        if (exito) {
+                            JOptionPane.showMessageDialog(null, "¡Reserva registrada con éxito!");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "No se pudo registrar: El hotel está lleno.");
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se encontró el huésped. Debe registrarlo primero en la Opción 1.");
+                    }
                     break;
 
                 case 3:

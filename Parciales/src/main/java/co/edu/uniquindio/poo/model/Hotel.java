@@ -129,6 +129,27 @@ public class Hotel {
         listaHabitaciones.add(habitaciones);
     }
 
+    //Metodo para buscar huesped para el case 2
+    public Huesped obtenerHuesped(String telefono) {
+        for (Huesped h : listaHuespedes) {
+            if (h.getTelefono().equals(telefono)) {
+                return h;
+            }
+        }
+        return null;
+    }
+
+    //Metodo que agrega reservas a la lista de reservas
+    public boolean agregarReserva(Reserva reserva) {
+        for (int i = 0; i < listaReservas.length; i++) {
+            if (listaReservas[i] == null) {
+                listaReservas[i] = reserva;
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Arreglo que realiza el pago total de la reserva
     public int calcularPagoTotal(Habitacion tipoHabitacion, Reserva numeroNoches, Reserva cantidadHabitaciones) {
         int pagoTotal = tipoHabitacion.getPrecio() * numeroNoches.getNumeroNoches() * cantidadHabitaciones.getCantidadHabitaciones();
