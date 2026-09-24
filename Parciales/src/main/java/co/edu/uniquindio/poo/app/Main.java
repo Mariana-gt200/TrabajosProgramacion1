@@ -144,27 +144,42 @@ public class Main {
                     break;
 
                 case 7:
-                    // Mostrar reservas especiales
-                    JOptionPane.showMessageDialog(null, "==== Reservas especiales ===="+"\n");
-                    String codigo = JOptionPane.showInputDialog("Ingrese el código de 4 numeros de la reserva:");
-                    int codigoReserva = Integer.parseInt(codigo);
-                    if (hotel.esCapicua(codigoReserva)) {
-                        JOptionPane.showMessageDialog(null, "Su reserva es especial");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Su reserva no es especial");
-                    }
+                    // Pedir el código al usuario
+                    int codigoIngresado = Integer.parseInt(
+                            JOptionPane.showInputDialog("Ingrese el código de la reserva a verificar:")
+                    );
+                    encontrada = false;
+                    //Verificar si el codigo existe en la lista de reservas del hotel
+                    for (Reserva r : hotel.getListaReservas()) {
+                        if (r != null && r.getCodigo() == codigoIngresado) {
+                            encontrada = true;
 
+                            // Se evalua si es capicua
+                            if (hotel.esCapicua(codigoIngresado)) {
+                                JOptionPane.showMessageDialog(null, "¡La reserva " + codigoIngresado + " es ESPECIAL (capicúa)! 🎯");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "La reserva " + codigoIngresado + " existe pero no es especial ❌");
+                            }
+                            break;
+                        }
+                    }
+                    if (!encontrada) {
+                        JOptionPane.showMessageDialog(null, "No existe ninguna reserva registrada con el código " + codigoIngresado);
+                    }
                     break;
+
                 case 8:
                     //Mostrar ingresos por fecha
                     String fechaBuscada= JOptionPane.showInputDialog("Ingrese la fecha a buscar: ");
                     String ingresos = hotel.buscarIngresos(fechaBuscada);
                     JOptionPane.showMessageDialog(null, ingresos);
                     break;
-                case 0:}
+
+                case 0:
                     // Salir
                     JOptionPane.showMessageDialog(null, "Gracias por usar el sistema de gestión del hotel StayPlus");
-                    break;
+                }
+
             } while (opcion != 0);
 
     }
