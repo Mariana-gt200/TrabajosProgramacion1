@@ -27,7 +27,7 @@ public class Main {
                     "6. Mostrar ocupación semanal"+ "\n"+
                     "7. Mostrar reservas especiales" + "\n"+
                     "8. Imprimir ingresos del hotel"+ "\n"+
-                    "0. Salir"));
+                    "9. Salir"));
 
             switch (opcion) {
                 case 1:
@@ -173,6 +173,10 @@ public class Main {
                     String fechaBuscada= JOptionPane.showInputDialog("Ingrese la fecha a buscar: ");
                     String ingresos = hotel.buscarIngresos(fechaBuscada);
                     JOptionPane.showMessageDialog(null, ingresos);
+                    break;
+
+                case 9:
+                    JOptionPane.showMessageDialog(null, "Gracias por usar el sistema de gestión del hotel StayPlus");
                     break;
 
                 default:
