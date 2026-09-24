@@ -148,11 +148,11 @@ public class Main {
                     int codigoIngresado = Integer.parseInt(
                             JOptionPane.showInputDialog("Ingrese el código de la reserva a verificar:")
                     );
-                    boolean encontrada = false;
+                    boolean reservaEspecialEncontrada = false;
                     //Verificar si el codigo existe en la lista de reservas del hotel
                     for (Reserva r : hotel.getListaReservas()) {
                         if (r != null && r.getCodigo() == codigoIngresado) {
-                            encontrada = true;
+                            reservaEspecialEncontrada = true;
 
                             // Se evalua si es capicua
                             if (hotel.esCapicua(codigoIngresado)) {
@@ -163,7 +163,7 @@ public class Main {
                             break;
                         }
                     }
-                    if (!encontrada) {
+                    if (!reservaEspecialEncontrada) {
                         JOptionPane.showMessageDialog(null, "No existe ninguna reserva registrada con el código " + codigoIngresado);
                     }
                     break;
@@ -175,9 +175,9 @@ public class Main {
                     JOptionPane.showMessageDialog(null, ingresos);
                     break;
 
-                case 0:
-                    // Salir
-                    JOptionPane.showMessageDialog(null, "Gracias por usar el sistema de gestión del hotel StayPlus");
+                default:
+                    // Opción inválida
+                    JOptionPane.showMessageDialog(null, "Opción inválida. Por favor, seleccione una opción válida.");
                 }
 
             } while (opcion != 0);
