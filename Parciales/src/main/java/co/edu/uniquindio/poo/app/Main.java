@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class Main {
 
-    public static void main () {
+    public static void main (String [] args) {
         Hotel hotel = new Hotel("StayPlus", 123456789, "Calle 123 #45-67", "5679037188");
 
         //Estructura de control para el menú
@@ -148,7 +148,7 @@ public class Main {
                     int codigoIngresado = Integer.parseInt(
                             JOptionPane.showInputDialog("Ingrese el código de la reserva a verificar:")
                     );
-                    encontrada = false;
+                    boolean encontrada = false;
                     //Verificar si el codigo existe en la lista de reservas del hotel
                     for (Reserva r : hotel.getListaReservas()) {
                         if (r != null && r.getCodigo() == codigoIngresado) {
