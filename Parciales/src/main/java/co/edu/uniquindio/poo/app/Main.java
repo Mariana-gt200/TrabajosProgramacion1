@@ -3,6 +3,8 @@ package co.edu.uniquindio.poo.app;
 import co.edu.uniquindio.poo.model.Habitacion;
 import co.edu.uniquindio.poo.model.Hotel;
 import co.edu.uniquindio.poo.model.Huesped;
+import co.edu.uniquindio.poo.model.Reserva;
+
 import javax.swing.*;
 
 public class Main {
@@ -76,10 +78,18 @@ public class Main {
 
                 case 6:
                     // Mostrar reservas especiales
+                    JOptionPane.showMessageDialog(null, "==== Reservas especiales ===="+"\n"+
+                    if (hotel.esCapicua())) {
+                        System.out.println("Su reserva es especial");
+                    } else {
+                        System.out.println("Su reserva no es especial");
+                    }
                     break;
                 case 7:
                     //Mostrar ingresos por fecha
-                    JOptionPane.showInputDialog("Ingrese la fecha a buscar: ");
+                    String fechaBuscada= JOptionPane.showInputDialog("Ingrese la fecha a buscar: ");
+                    String ingresos = hotel.buscarIngresos(fechaBuscada);
+                    JOptionPane.showMessageDialog(null, ingresos);
                     break;
                 case 0:}
                     // Salir

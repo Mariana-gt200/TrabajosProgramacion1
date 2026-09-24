@@ -11,7 +11,7 @@ public class Hotel {
 
     private ArrayList<Huesped> listaHuespedes;
     private ArrayList<Habitacion> listaHabitaciones;
-    private ArrayList<Reserva> listaReservas;
+    private Reserva [] listaReservas;
     private char[][] ocupacion;
 
 
@@ -24,9 +24,8 @@ public class Hotel {
 
         this.listaHuespedes = new ArrayList<>();
         this.listaHabitaciones = new ArrayList<>();
-        this.listaReservas = new ArrayList <> ();
-        reservas = new int[140];
-        ocupacion = new char[20][7];
+        this.listaReservas = new Reserva[140];
+        this.ocupacion = new char[20][7];
 
         //Matriz de ocupacion semanal (en el constructor al crearse el hotel
         // de una todas las habitaciones estaran disponibles)
@@ -80,11 +79,9 @@ public class Hotel {
     public ArrayList<Habitacion> getListaHabitaciones() {
         return listaHabitaciones;
     }
-
-    public int[] getReservas() {
-        return reservas;
+    public Reserva[] getListaReservas() {
+        return listaReservas;
     }
-
     public char[][] getOcupacion() {
         return ocupacion;
     }
@@ -99,7 +96,7 @@ public class Hotel {
                 ", telefono='" + telefono + '\'' +
                 ", listaHuespedes=" + listaHuespedes +
                 ", listaHabitaciones=" + listaHabitaciones +
-                ", reservas=" + java.util.Arrays.toString(reservas) +
+                ", listaReservas=" + java.util.Arrays.toString(listaReservas) +
                 ", ocupacion=" + java.util.Arrays.deepToString(ocupacion) +
                 '}';
     }
@@ -290,8 +287,10 @@ public class Hotel {
             mensaje= "No hay habitaciones especiales";
         }
         return mensaje;
-    } //Metodo que identifica número capicúa
-    private boolean esCapicua(int numero) {
+    }
+
+    //Metodo que identifica número capicúa
+    public boolean esCapicua(int numero) {
         int original = numero;
         int inverso = 0;
         while (numero > 0) {
@@ -302,14 +301,15 @@ public class Hotel {
 
         return inverso == original;
     }
+
+
     //Metodo que enseñe los ingresos obtenidos
-    public String buscarReservas(){
-        String fechaBuscada = JOptionPane.showInputDialog("Ingrese la fecha a buscar: ");
+    public String buscarIngresos(String fechaBuscada){
         int ingresoTotal=0;
         int numeroReservas=0;
         String nombresHuespedes ="";
-        for (Reserva aux: getReservas()){
-            if (aux.getFecha().equals(fechaBuscada)){
+        for (Reserva aux: getListaReservas()){
+            if (aux != null && aux.getFecha().equals(fechaBuscada)){
                ingresoTotal += aux.getPagoTotal();
                numeroReservas++;
                nombresHuespedes+=aux.getHuesped().getNombre()+"\n";
@@ -318,6 +318,6 @@ public class Hotel {
         if (numeroReservas==0){
             return "Para la fecha buscada, no se realizaron reservas";
         }
-        return "El número de reservas para la fecha "+fechaBuscada+"son: \n"+numeroReservas+"\n Huespedes del día: "+nombresHuespedes+"\n Los ingresos de la fecha, fueron: "+ ingresoTotal;
+        return "El número de reservas para la fecha "+fechaBuscada+" son: \n"+numeroReservas+"\n Huespedes del día: "+nombresHuespedes+"\n Los ingresos de la fecha, fueron: "+ ingresoTotal;
     }
 }
