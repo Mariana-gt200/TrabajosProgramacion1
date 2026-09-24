@@ -11,7 +11,7 @@ public class Hotel {
 
     private ArrayList<Huesped> listaHuespedes;
     private ArrayList<Habitacion> listaHabitaciones;
-    private int[] reservas;
+    private ArrayList<Reserva> listaReservas;
     private char[][] ocupacion;
 
 
@@ -24,6 +24,7 @@ public class Hotel {
 
         this.listaHuespedes = new ArrayList<>();
         this.listaHabitaciones = new ArrayList<>();
+        this.listaReservas = new ArrayList <> ();
         reservas = new int[140];
         ocupacion = new char[20][7];
 
@@ -112,9 +113,9 @@ public class Hotel {
     }
 
     //Metodo que busca un huesped por su telefono
-    public String buscarHuesped(String telefono) {
+    public String buscarHuesped(String telefonoBuscado) {
         for (Huesped aux : getListaHuespedes()) {
-            if (aux.getTelefono().equals(telefono)) {
+            if (aux.getTelefono().equals(telefonoBuscado)) {
                 return "Huesped econtrado: " + "\n" + "Nombre: " + aux.getNombre() +
                         "\n" + "Documento: " + aux.getDocumento() +
                         "\n" + "Ciudad de procedencia: " + aux.getCiudadProsedencia() +
@@ -275,5 +276,48 @@ public class Hotel {
         }
         return cantidadOcupadas;
     }
+    //Metodo que identifica habitación especial
+    public String identificarHabitacionesEspeciales (){
+        String mensaje ="Las habitaciones especiales, son: ";
+        boolean hayEspeciales = false;
+        for (Habitacion h : listaHabitaciones) {
+            if (esCapicua(h.getNumero())) {
+                mensaje += h.getNumero() + ", ";
+                hayEspeciales = true;
+            }
+        }
+        if (hayEspeciales==false){
+            mensaje= "No hay habitaciones especiales";
+        }
+        return mensaje;
+    } //Metodo que identifica número capicúa
+    private boolean esCapicua(int numero) {
+        int original = numero;
+        int inverso = 0;
+        while (numero > 0) {
+            int digito = numero % 10;   // saca el último dígito
+            inverso = inverso * 10 + digito; // lo va pegando al inverso
+            numero = numero / 10;       // quita ese dígito del número
+        }
 
+        return inverso == original;
+    }
+    //Metodo que enseñe los ingresos obtenidos
+    public String buscarReservas(){
+        String fechaBuscada = JOptionPane.showInputDialog("Ingrese la fecha a buscar: ");
+        int ingresoTotal=0;
+        int numeroReservas=0;
+        String nombresHuespedes ="";
+        for (Reserva aux: getReservas()){
+            if (aux.getFecha().equals(fechaBuscada)){
+               ingresoTotal += aux.getPagoTotal();
+               numeroReservas++;
+               nombresHuespedes+=aux.getHuesped().getNombre()+"\n";
+            }
+        }
+        if (numeroReservas==0){
+            return "Para la fecha buscada, no se realizaron reservas";
+        }
+        return "El número de reservas para la fecha "+fechaBuscada+"son: \n"+numeroReservas+"\n Huespedes del día: "+nombresHuespedes+"\n Los ingresos de la fecha, fueron: "+ ingresoTotal;
+    }
 }

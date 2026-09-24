@@ -42,8 +42,12 @@ public class Main {
                 case 2:
                     // Realizar reserva
                     break;
+
                 case 3:
                     // Consultar huésped
+                    String telefonoBuscado = JOptionPane.showInputDialog("Ingrese el teléfono del huésped a buscar:");
+                    String resultadoHuesped = hotel.buscarHuesped(telefonoBuscado);
+                    JOptionPane.showMessageDialog(null, resultadoHuesped);
                     break;
 
                 case 4:
@@ -60,13 +64,22 @@ public class Main {
 
                 case 5:
                     // Mostrar ocupación semanal
+                    String diaMasOcupado = hotel.obtenerDiaMasOcupado();
+                    String diaMenosOcupado = hotel.obtenerDiaMenosOcupado();
+                    int totalOcupadasSemana = hotel.calcularHabitacionesOcupadasSemana();
+                    String mensaje5 = "Día más ocupado: " + diaMasOcupado +
+                            "\nDía menos ocupado: " + diaMenosOcupado +
+                            "\nHabitaciones ocupadas en la semana: " + totalOcupadasSemana;
+
+                    JOptionPane.showMessageDialog(null, mensaje5);
                     break;
 
                 case 6:
                     // Mostrar reservas especiales
                     break;
                 case 7:
-                    // Imprimir ingresos del hotel
+                    //Mostrar ingresos por fecha
+                    JOptionPane.showInputDialog("Ingrese la fecha a buscar: ");
                     break;
                 case 0:}
                     // Salir
