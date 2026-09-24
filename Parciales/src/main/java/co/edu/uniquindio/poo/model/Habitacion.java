@@ -1,7 +1,7 @@
 package co.edu.uniquindio.poo.model;
 
 public class Habitacion {
-    private byte numero;
+    private int numero;
     private String tipo; //Individual, doble o suite
     private byte piso;
     private byte capacidad;
@@ -10,7 +10,7 @@ public class Habitacion {
     private Hotel ownedByHotel;
 
     //Constructor
-    public Habitacion(byte numero, String tipo, byte piso, byte capacidad, int precio,
+    public Habitacion(int numero, String tipo, byte piso, byte capacidad, int precio,
                       String estado, Hotel ownedByHotel) {
         this.numero= numero;
         this.tipo= tipo;
@@ -22,10 +22,10 @@ public class Habitacion {
     }
 
     //Get y Set
-    public byte getNumero() {
+    public int getNumero() {
         return numero;
     }
-    public void setNumero(byte numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
     }
     public String getTipo() {

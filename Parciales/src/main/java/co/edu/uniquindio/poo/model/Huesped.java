@@ -6,15 +6,17 @@ public class Huesped {
     private byte edad;
     private String telefono;
     private String ciudadProcedencia;
+    private int cantidadReservas;
 
 
     //Constructor
-    public Huesped(String documento, String nombre, byte edad, String telefono, String ciudadProsedencia) {
+    public Huesped(String documento, String nombre, byte edad, String telefono, String ciudadProsedencia, int cantidadReservas) {
         this.documento = documento;
         this.nombre = nombre;
         this.edad = edad;
         this.telefono = telefono;
         this.ciudadProcedencia = ciudadProsedencia;
+        this.cantidadReservas = cantidadReservas;
     }
 
     //Get y Set
@@ -45,6 +47,12 @@ public class Huesped {
     public String getCiudadProsedencia() {
         return ciudadProcedencia;
     }
+    public int getCantidadReservas() {
+        return cantidadReservas;
+    }
+    public void setCantidadReservas(int cantidadReservas) {
+        this.cantidadReservas = cantidadReservas;
+    }
     public void setCiudadProsedencia(String ciudadProsedencia) {
         this.ciudadProcedencia = ciudadProsedencia;
     }
@@ -57,7 +65,8 @@ public class Huesped {
                 ", nombre='" + nombre + '\'' +
                 ", edad=" + edad +
                 ", telefono='" + telefono + '\'' +
-                ", ciudadProsedencia='" + ciudadProcedencia + '\'' +
+                ", ciudadProcedencia='" + ciudadProcedencia + '\'' +
+                ", cantidadReservas=" + cantidadReservas +
                 '}';
     }
 
