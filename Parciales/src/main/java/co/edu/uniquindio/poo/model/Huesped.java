@@ -10,12 +10,12 @@ public class Huesped {
 
 
     //Constructor
-    public Huesped(String documento, String nombre, byte edad, String telefono, String ciudadProsedencia, int cantidadReservas) {
+    public Huesped(String documento, String nombre, String telefono) {
         this.documento = documento;
         this.nombre = nombre;
         this.edad = edad;
         this.telefono = telefono;
-        this.ciudadProcedencia = ciudadProsedencia;
+        this.ciudadProcedencia = ciudadProcedencia;
         this.cantidadReservas = cantidadReservas;
     }
 

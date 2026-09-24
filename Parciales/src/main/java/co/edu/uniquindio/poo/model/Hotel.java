@@ -1,6 +1,5 @@
 package co.edu.uniquindio.poo.model;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Hotel {
     private String nombreComercial;
@@ -13,7 +12,7 @@ public class Hotel {
     private ArrayList<Huesped> listaHuespedes;
     private ArrayList<Habitacion> listaHabitaciones;
     private int[] reservas;
-    private int[][] ocupacion;
+    private char[][] ocupacion;
 
 
     //Constructor
@@ -26,7 +25,15 @@ public class Hotel {
         this.listaHuespedes = new ArrayList<>();
         this.listaHabitaciones = new ArrayList<>();
         reservas = new int[140];
-        ocupacion = new int[20][7];
+        ocupacion = new char[20][7];
+
+        //Matriz de ocupacion semanal (en el constructor al crearse el hotel
+        // de una todas las habitaciones estaran disponibles)
+        for(int i= 0; i<ocupacion.length; i++){
+            for(int j=0; j<ocupacion[i].length; j++){
+                ocupacion[i][j] = 'D';
+            }
+        }
 
     }
 
@@ -77,7 +84,7 @@ public class Hotel {
         return reservas;
     }
 
-    public int[][] getOcupacion() {
+    public char[][] getOcupacion() {
         return ocupacion;
     }
 
@@ -106,48 +113,49 @@ public class Hotel {
 
     //Metodo que busca un huesped por su telefono
     public String buscarHuesped(String telefono) {
-        for (Huesped aux: getListaHuespedes()) {
-            if (aux.getTelefono().equals(telefono)){
-                return "Huesped econtrado: "+"\n"+"Nombre: "+ aux.getNombre()+
-                        "\n"+"Documento: "+ aux.getDocumento()+
-                        "\n"+"Ciudad de procedencia: "+ aux.getCiudadProsedencia()+
-                        "\n"+"Cantidad de reservas: "+ aux.getCantidadReservas();
+        for (Huesped aux : getListaHuespedes()) {
+            if (aux.getTelefono().equals(telefono)) {
+                return "Huesped econtrado: " + "\n" + "Nombre: " + aux.getNombre() +
+                        "\n" + "Documento: " + aux.getDocumento() +
+                        "\n" + "Ciudad de procedencia: " + aux.getCiudadProsedencia() +
+                        "\n" + "Cantidad de reservas: " + aux.getCantidadReservas();
 
 
             }
-        } return null;
+        }
+        return null;
     }
 
     //Metodo que agrega habitaciones a la lista de habitaciones
-    public void agregarHabitacion(Habitacion habitaciones){
+    public void agregarHabitacion(Habitacion habitaciones) {
         listaHabitaciones.add(habitaciones);
     }
 
     //Arreglo que realiza el pago total de la reserva
-    public int calcularPagoTotal(Habitacion tipoHabitacion, Reserva numeroNoches, Reserva cantidadHabitaciones){
-    int pagoTotal = tipoHabitacion.getPrecio() * numeroNoches.getNumeroNoches() * cantidadHabitaciones.getCantidadHabitaciones();
-    return pagoTotal;
+    public int calcularPagoTotal(Habitacion tipoHabitacion, Reserva numeroNoches, Reserva cantidadHabitaciones) {
+        int pagoTotal = tipoHabitacion.getPrecio() * numeroNoches.getNumeroNoches() * cantidadHabitaciones.getCantidadHabitaciones();
+        return pagoTotal;
     }
 
     //Arreglo que cambia el estado de la habitacion
-    public String confirmarReserva(int numeroHabitacion, Habitacion estado ){
-    for(Habitacion aux : getListaHabitaciones())
-     if(aux.getNumero() == numeroHabitacion){
-        if(aux.getEstado().equals("Disponible")){
-            aux.setEstado("Ocupado");
-            return "Reserva confirmada";
-        } else {
-            return "La habitación no está disponible";
-        }
-     }
-    return "Habitación no encontrada";
+    public String confirmarReserva(int numeroHabitacion, Habitacion estado) {
+        for (Habitacion aux : getListaHabitaciones())
+            if (aux.getNumero() == numeroHabitacion) {
+                if (aux.getEstado().equalsIgnoreCase("Disponible")) {
+                    aux.setEstado("Ocupado");
+                    return "Reserva confirmada";
+                } else {
+                    return "La habitación no está disponible";
+                }
+            }
+        return "Habitación no encontrada";
     }
 
     //Metodo que consulta la disponibilidad de una habitacion
     public String consultarDisponibilidad(Hotel listaHabitaciones, byte numeroHabitacion) {
         for (Habitacion aux : getListaHabitaciones()) {
             if (aux.getNumero() == numeroHabitacion) {
-                if (aux.getEstado().equals("Disponible")) {
+                if (aux.getEstado().equalsIgnoreCase("Disponible")) {
                     return "La habitación está disponible";
                 } else {
                     return "La habitación no está disponible";
@@ -156,4 +164,116 @@ public class Hotel {
         }
         return "Habitación no encontrada";
     }
+
+    //Metodos que retornan la cantidad de habitaciones disponibles, ocupadas y en mantenimiento
+    public int cantidadHabitacionesDisponibles() {
+        int cantidad = 0;
+        for (Habitacion aux : getListaHabitaciones()) {
+            if (aux.getEstado().equalsIgnoreCase("Disponible")) {
+                cantidad++;
+            }
+        }
+        return cantidad;
+    }
+    public int cantidadHabitacionesOcupadas() {
+        int cantidad = 0;
+        for (Habitacion aux : getListaHabitaciones()) {
+            if (aux.getEstado().equalsIgnoreCase("Ocupado")) {
+                cantidad++;
+            }
+        }
+        return cantidad;
+    }
+    public int cantidadHabitacionesMantenimiento() {
+        int cantidad = 0;
+        for (Habitacion aux : getListaHabitaciones()) {
+            if (aux.getEstado().equalsIgnoreCase("Mantenimiento")) {
+                cantidad++;
+            }
+        }
+        return cantidad;
+    }
+
+    //Metodo para obtener habitacion mas cara y mas barata
+    public Habitacion obtenerHabitacionMasCara() {
+        Habitacion habitacionMasCara = null;
+        int precioMaximo = 0;
+        for (Habitacion aux : getListaHabitaciones()) {
+            if (aux.getPrecio() > precioMaximo) {
+                precioMaximo = aux.getPrecio();
+                habitacionMasCara = aux;
+            }
+        }
+        return habitacionMasCara;
+    }
+    public Habitacion obtenerHabitacionMasBarata() {
+        Habitacion habitacionMasBarata = null;
+        int precioMinimo = Integer.MAX_VALUE;
+        for (Habitacion aux : getListaHabitaciones()) {
+            if (aux.getPrecio() < precioMinimo) {
+                precioMinimo = aux.getPrecio();
+                habitacionMasBarata = aux;
+            }
+        }
+        return habitacionMasBarata;
+    }
+
+    //Metodo que obtiene el dia mas ocupado y el menos ocupado de la semana
+    public String obtenerDiaMasOcupado() {
+        int maxOcupadas = -1;
+        int diaMasOcupado = 0;
+
+        // Se recorre cada día de la semana (columnas)
+        for (int j = 0; j < 7; j++) {
+            int ocupadasEnEsteDia = 0;
+            // Se recorre cada habitación de ese día (filas)
+            for (int i = 0; i < 20; i++) {
+                if (ocupacion[i][j] == 'O') {
+                    ocupadasEnEsteDia++;
+                }
+            }
+            if (ocupadasEnEsteDia > maxOcupadas) {
+                maxOcupadas = ocupadasEnEsteDia;
+                diaMasOcupado = j; // Guardamos el índice del día (0 a 6)
+            }
+        }
+        String[] diasSemana = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+        return diasSemana[diaMasOcupado]; // Retornamos el número del día más ocupado
+    }
+    public String obtenerDiaMenosOcupado() {
+        int minOcupadas = Integer.MAX_VALUE;
+        int diaMenosOcupado = 0;
+
+        // Se recorre cada día de la semana (columnas)
+        for (int j = 0; j < 7; j++) {
+            int ocupadasEnEsteDia = 0;
+            // Se recorre cada habitación de ese día (filas)
+            for (int i = 0; i < 20; i++) {
+                if (ocupacion[i][j] == 'O') {
+                    ocupadasEnEsteDia++;
+                }
+            }
+            if (ocupadasEnEsteDia < minOcupadas) {
+                minOcupadas = ocupadasEnEsteDia;
+                diaMenosOcupado = j; // Guardamos el índice del día (0 a 6)
+            }
+        }
+        String[] diasSemana = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+        return diasSemana[diaMenosOcupado]; // Retornamos el número del día menos ocupado
+    }
+
+    //Metodo para calcular cantidad de habitaciones ocupadas durante la semana
+    public int calcularHabitacionesOcupadasSemana() {
+        int cantidadOcupadas = 0;
+        for (int i = 0; i < ocupacion.length; i++) {
+            for (int j = 0; j < ocupacion[i].length; j++) {
+                if (ocupacion[i][j] == 'O') {
+                    cantidadOcupadas++;
+
+                }
+            }
+        }
+        return cantidadOcupadas;
+    }
+
 }
