@@ -339,6 +339,7 @@ public class Hotel {
         if (numeroReservas==0){
             return "Para la fecha buscada, no se realizaron reservas";
         }
-        return "El número de reservas para la fecha "+fechaBuscada+" son: \n"+numeroReservas+"\n Huespedes del día: "+nombresHuespedes+"\n Los ingresos de la fecha, fueron: "+ ingresoTotal;
+        return "El número de reservas para la fecha "+fechaBuscada+" son: \n"+numeroReservas+"\n Huespedes del día: "+
+                nombresHuespedes+"\n Los ingresos de la fecha, fueron: "+ ingresoTotal;
     }
 }
