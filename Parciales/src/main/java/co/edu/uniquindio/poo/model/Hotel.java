@@ -61,7 +61,7 @@ public class Hotel {
                 '}';
     }
 
-    // ================= HUÉSPEDES =================
+    // Huéspedes ========================================
 
     public void agregarHuesped(Huesped huesped) {
         listaHuespedes.add(huesped);
@@ -87,7 +87,7 @@ public class Hotel {
                 "\n" + "Cantidad de reservas: " + aux.getCantidadReservas();
     }
 
-    // ================= HABITACIONES =================
+    // Habitaciones =================================
 
     public void agregarHabitacion(Habitacion habitacion) {
         listaHabitaciones.add(habitacion);
@@ -267,16 +267,24 @@ public class Hotel {
 
         ArrayList<Habitacion> habitacionesSeleccionadas = new ArrayList<>();
         int pagoTotal = 0;
-        int diaIndex = LocalDate.parse(fecha).getDayOfWeek().getValue() - 1; // Lunes=0 - Domingo=6
+        int diaIndex = LocalDate.parse(fecha).getDayOfWeek().getValue() - 1;
 
         for (int numHab : numerosHabitaciones) {
             Habitacion habitacion = buscarHabitacionPorNumero(numHab);
-            if (habitacion != null && habitacion.getEstado().equalsIgnoreCase("Disponible")) {
-                habitacionesSeleccionadas.add(habitacion);
-                pagoTotal += habitacion.getPrecio() * numeroNoches;
-                habitacion.setEstado("Ocupada");
-                marcarOcupacion(habitacion, diaIndex);
+
+            if (habitacion == null) {
+                System.out.println("Aviso: la habitación " + numHab + " no existe.");
+                continue;
             }
+            if (!habitacion.getEstado().equalsIgnoreCase("Disponible")) {
+                System.out.println("Aviso: la habitación " + numHab + " existe pero no está disponible (" + habitacion.getEstado() + ").");
+                continue;
+            }
+
+            habitacionesSeleccionadas.add(habitacion);
+            pagoTotal += habitacion.getPrecio() * numeroNoches;
+            habitacion.setEstado("Ocupada");
+            marcarOcupacion(habitacion, diaIndex);
         }
 
         byte cantidadHabitaciones = (byte) habitacionesSeleccionadas.size();
@@ -284,7 +292,6 @@ public class Hotel {
         return new Reserva(codigo, fecha, numeroNoches, numeroHuespedes, "Confirmada", metodoPago,
                 pagoTotal, cantidadHabitaciones, huesped, habitacionesSeleccionadas, this);
     }
-
     public String consultarPagoReserva(int codigo) {
         Reserva reserva = buscarReservaPorCodigo(codigo);
         if (reserva == null) {
