@@ -126,6 +126,15 @@ public class Hotel {
         return cantidad;
     }
 
+    public String cambiarEstadoHabitacion(int numeroHabitacion, String nuevoEstado) {
+        Habitacion habitacion = buscarHabitacionPorNumero(numeroHabitacion);
+        if (habitacion == null) {
+            return "Habitación no encontrada";
+        }
+        habitacion.setEstado(nuevoEstado);
+        return "La habitación " + numeroHabitacion + " ahora está en estado: " + nuevoEstado;
+    }
+
     public Habitacion obtenerHabitacionMasCara() {
         Habitacion habitacionMasCara = null;
         int precioMaximo = -1;
@@ -170,7 +179,7 @@ public class Hotel {
         return reporte;
     }
 
-    // ================= OCUPACIÓN SEMANAL =================
+    // Ocupacion semanal ==============================================
 
     private void marcarOcupacion(Habitacion habitacion, int diaIndex) {
         int fila = listaHabitaciones.indexOf(habitacion);
@@ -230,7 +239,7 @@ public class Hotel {
                 "\nHabitaciones ocupadas en la semana: " + calcularHabitacionesOcupadasSemana();
     }
 
-    // ================= RESERVAS =================
+    // Reservas ================================================================0
 
     public boolean agregarReserva(Reserva reserva) {
         for (int i = 0; i < listaReservas.length; i++) {
@@ -251,14 +260,14 @@ public class Hotel {
         return null;
     }
 
-    //Crea la reserva completa: busca las habitaciones pedidas, calcula el pago real,
+    //Metodo para crear la reserva completa
     //cambia el estado de cada habitación y marca la matriz de ocupación.
     public Reserva crearReserva(int codigo, String fecha, byte numeroNoches, byte numeroHuespedes,
                                 String metodoPago, Huesped huesped, int[] numerosHabitaciones) {
 
         ArrayList<Habitacion> habitacionesSeleccionadas = new ArrayList<>();
         int pagoTotal = 0;
-        int diaIndex = LocalDate.parse(fecha).getDayOfWeek().getValue() - 1; // Lunes=0 ... Domingo=6
+        int diaIndex = LocalDate.parse(fecha).getDayOfWeek().getValue() - 1; // Lunes=0 - Domingo=6
 
         for (int numHab : numerosHabitaciones) {
             Habitacion habitacion = buscarHabitacionPorNumero(numHab);

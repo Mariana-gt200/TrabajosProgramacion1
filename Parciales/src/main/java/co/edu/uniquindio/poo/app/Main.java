@@ -12,10 +12,54 @@ public class Main {
     public static void main (String [] args) {
         Hotel hotel = new Hotel("StayPlus", 123456789, "Calle 123 #45-67", "5679037188");
 
-        // Datos de prueba: habitaciones precargadas
+        // Datos de prueba: habitaciones precargadas (distintos tipos, pisos y precios) ---
         hotel.agregarHabitacion(new Habitacion(101, "Individual", (byte) 1, (byte) 1, 80000, "Disponible", hotel));
         hotel.agregarHabitacion(new Habitacion(102, "Doble", (byte) 1, (byte) 2, 120000, "Disponible", hotel));
         hotel.agregarHabitacion(new Habitacion(201, "Suite", (byte) 2, (byte) 4, 250000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(101, "Individual", (byte) 1, (byte) 1, 80000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(102, "Doble", (byte) 1, (byte) 2, 120000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(103, "Individual", (byte) 1, (byte) 1, 75000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(201, "Suite", (byte) 2, (byte) 4, 250000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(202, "Doble", (byte) 2, (byte) 2, 130000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(203, "Doble", (byte) 2, (byte) 2, 115000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(301, "Suite", (byte) 3, (byte) 4, 280000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(302, "Individual", (byte) 3, (byte) 1, 70000, "Disponible", hotel));
+        hotel.agregarHabitacion(new Habitacion(303, "Doble", (byte) 3, (byte) 2, 125000, "Mantenimiento", hotel));
+        hotel.agregarHabitacion(new Habitacion(401, "Suite", (byte) 4, (byte) 5, 300000, "Disponible", hotel));
+
+        //4 Huéspedes
+        Huesped h1 = new Huesped("1001234567", "Laura Gómez", (byte) 28, "3001112233", "Armenia", 0);
+        Huesped h2 = new Huesped("1002345678", "Carlos Restrepo", (byte) 35, "3002223344", "Pereira", 0);
+        Huesped h3 = new Huesped("1003456789", "María Fernanda Ruiz", (byte) 41, "3003334455", "Manizales", 0);
+        Huesped h4 = new Huesped("1004567890", "Andrés Torres", (byte) 22, "3004445566", "Bogotá", 0);
+        hotel.agregarHuesped(h1);
+        hotel.agregarHuesped(h2);
+        hotel.agregarHuesped(h3);
+        hotel.agregarHuesped(h4);
+
+        //5 Reservas (fechas distintas, para ver la matriz y los ingresos variados)
+        Reserva r1 = hotel.crearReserva(1221, "2026-09-21", (byte) 2, (byte) 2, "Efectivo", h1, new int[]{101});          // código capicúa, Lunes
+        hotel.agregarReserva(r1);
+        h1.setCantidadReservas(h1.getCantidadReservas() + 1);
+
+        Reserva r2 = hotel.crearReserva(3456, "2026-09-22", (byte) 3, (byte) 4, "Tarjeta", h2, new int[]{201, 202});      // Martes, 2 habitaciones
+        hotel.agregarReserva(r2);
+        h2.setCantidadReservas(h2.getCantidadReservas() + 1);
+
+        Reserva r3 = hotel.crearReserva(7887, "2026-09-22", (byte) 1, (byte) 1, "Transferencia", h3, new int[]{103});     // código capicúa, también Martes
+        hotel.agregarReserva(r3);
+        h3.setCantidadReservas(h3.getCantidadReservas() + 1);
+
+        Reserva r4 = hotel.crearReserva(5590, "2026-09-24", (byte) 4, (byte) 5, "Efectivo", h4, new int[]{301});          // Jueves
+        hotel.agregarReserva(r4);
+        h4.setCantidadReservas(h4.getCantidadReservas() + 1);
+
+        Reserva r5 = hotel.crearReserva(2002, "2026-09-22", (byte) 2, (byte) 2, "Tarjeta", h1, new int[]{203});           // código capicúa, también Martes
+        hotel.agregarReserva(r5);
+        h1.setCantidadReservas(h1.getCantidadReservas() + 1);
+
+        //Fin de datos de prueba
+
 
         JOptionPane.showMessageDialog(null, "Bienvenido al sistema de gestión del hotel StayPlus");
 
@@ -32,6 +76,7 @@ public class Main {
                     "7. Mostrar reservas especiales" + "\n"+
                     "8. Imprimir ingresos del hotel"+ "\n"+
                     "9. Agregar habitación"+ "\n"+
+                    "10. Cambiar estado de habitación"+ "\n"+
                     "0. Salir"));
 
             switch (opcion) {
@@ -132,6 +177,13 @@ public class Main {
                     int precioHab = Integer.parseInt(JOptionPane.showInputDialog("Precio por noche:"));
                     hotel.agregarHabitacion(new Habitacion(numeroHab, tipoHab, pisoHab, capacidadHab, precioHab, "Disponible", hotel));
                     JOptionPane.showMessageDialog(null, "Habitación agregada correctamente");
+                    break;
+
+                case 10:
+                    // Cambiar estado de habitación
+                    int numHabCambiar = Integer.parseInt(JOptionPane.showInputDialog("Número de la habitación:"));
+                    String nuevoEstado = JOptionPane.showInputDialog("Nuevo estado (Disponible / Ocupada / Mantenimiento):");
+                    JOptionPane.showMessageDialog(null, hotel.cambiarEstadoHabitacion(numHabCambiar, nuevoEstado));
                     break;
 
                 case 0:
