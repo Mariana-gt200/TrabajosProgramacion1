@@ -151,8 +151,8 @@ public class Hotel {
     }
 
     //Arreglo que realiza el pago total de la reserva
-    public int calcularPagoTotal(Habitacion tipoHabitacion, Reserva numeroNoches, Reserva cantidadHabitaciones) {
-        int pagoTotal = tipoHabitacion.getPrecio() * numeroNoches.getNumeroNoches() * cantidadHabitaciones.getCantidadHabitaciones();
+    public int calcularPagoTotal(Habitacion habitacion, Reserva reserva) {
+        int pagoTotal = habitacion.getPrecio() * reserva.getNumeroNoches() * reserva.getCantidadHabitaciones();
         return pagoTotal;
     }
 
