@@ -43,6 +43,7 @@ public class Main {
 
                 case 2:
                     // Realizar reserva
+
                     break;
 
                 case 3:
@@ -78,12 +79,15 @@ public class Main {
 
                 case 6:
                     // Mostrar reservas especiales
-                    JOptionPane.showMessageDialog(null, "==== Reservas especiales ===="+"\n"+
-                    if (hotel.esCapicua())) {
-                        System.out.println("Su reserva es especial");
+                    JOptionPane.showMessageDialog(null, "==== Reservas especiales ===="+"\n");
+                    String codigo = JOptionPane.showInputDialog("Ingrese el código de 4 numeros de la reserva:");
+                    int codigoReserva = Integer.parseInt(codigo);
+                    if (hotel.esCapicua(codigoReserva)) {
+                        JOptionPane.showMessageDialog(null, "Su reserva es especial");
                     } else {
-                        System.out.println("Su reserva no es especial");
+                        JOptionPane.showMessageDialog(null, "Su reserva no es especial");
                     }
+
                     break;
                 case 7:
                     //Mostrar ingresos por fecha
