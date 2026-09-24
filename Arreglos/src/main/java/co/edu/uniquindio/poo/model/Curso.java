@@ -86,6 +86,15 @@ public class Curso { // singular, el nombre de la clase debe ser la primer letra
         return null;
     }
 
+    public Nota buscarNota(String nombre){
+        for(Nota aux : listaNotas){
+            if(aux != null && aux.getNombre().equals(nombre)){
+                return aux;
+            }
+        }
+        return null;
+    }
+
 
 
 }
