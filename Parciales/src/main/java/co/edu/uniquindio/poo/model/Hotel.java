@@ -325,7 +325,7 @@ public class Hotel {
         return inverso == original;
     }
 
-    // ================= INGRESOS =================
+    // Ingresos ==============================================
 
     public String buscarIngresos(String fechaBuscada){
         int ingresoTotal=0;

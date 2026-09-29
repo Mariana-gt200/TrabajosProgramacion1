@@ -1,6 +1,8 @@
 package co.edu.uniquindio.poo.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /*
  * Esta clase representa un curso de una universidad
@@ -76,7 +78,6 @@ public class Curso { // singular, el nombre de la clase debe ser la primer letra
         }
         return mensaje;
     }
-
     public Estudiante buscarEstudiante (String identificacion){
         for(Estudiante aux : listaEstudiantes){
             if(aux.getIdentificacion().equals(identificacion)){
@@ -85,16 +86,160 @@ public class Curso { // singular, el nombre de la clase debe ser la primer letra
         }
         return null;
     }
+    public boolean eliminarEstudiante(String identificacion) {
+        Estudiante estudianteEncontrado = buscarEstudiante(identificacion);
+        if(estudianteEncontrado != null){
+            listaEstudiantes.remove(estudianteEncontrado);
+            return true;
+        }else return false;
+    }
 
-    public Nota buscarNota(String nombre){
-        for(Nota aux : listaNotas){
+    public boolean actualizarEstudiante(String identificacionAntigua, String identificacionNueva,
+                                        String nombresNuevos, String apellidosNuevos,
+                                        byte edadEstudianteNueva, String correoNuevo, String telefonoNuevo) {
+        Estudiante estudianteEncontrado = buscarEstudiante(identificacionAntigua);
+        if(estudianteEncontrado != null){
+            estudianteEncontrado.setApellidos(apellidosNuevos);
+            estudianteEncontrado.setNombres(nombresNuevos);
+            estudianteEncontrado.setIdentificacion(identificacionNueva);
+            estudianteEncontrado.setEdad(edadEstudianteNueva);
+            estudianteEncontrado.setCorreo(correoNuevo);
+            estudianteEncontrado.setTelefono(telefonoNuevo);
+            return true;
+        }else return false;
+    }
+
+    public String registrarNotaEstudiante(String identificacion, String nombreNota, float valorNota) {
+
+        Estudiante estudianteEncontrado = buscarEstudiante(identificacion);
+        if(estudianteEncontrado != null){
+            return estudianteEncontrado.registrarNota(nombreNota,valorNota);
+        }else{
+            return "El estudiante no esta registrado";
+        }
+    }
+
+    public Nota buscarNota(String nombre, Estudiante estudiante ){
+        for(Nota aux : estudiante.getListaNotas()){
             if(aux != null && aux.getNombre().equals(nombre)){
                 return aux;
             }
         }
         return null;
     }
+    //========================= TAREA =========================
+    public double calcularPromedio(Estudiante estudiante){
+        double promedio= 0;
+        double sumaNotas = 0;
+        int contadorNotas = 0;
+        Nota[] notas = estudiante.getListaNotas();
+        for(int i= 0; i<notas.length; i++){
+            if(notas[i] != null){
+                sumaNotas += notas[i].getValor();
+                contadorNotas++;
+            }
+        }
+        if(contadorNotas == 0){
+            return 0;
+        }
+        promedio = sumaNotas / contadorNotas;
+        return promedio;
+    }
 
+    public boolean verificarDefinitiva(Estudiante estudiante){
+        double promedio = calcularPromedio(estudiante);
+        boolean verificado = false;
+        if(promedio == 5.0){
+            return true;
+        }
+        return verificado;
+    }
 
+    public boolean existenMasDeDosMariana(){
+        int contador = 0;
+        for(Estudiante aux : listaEstudiantes){
+            if(aux.getNombres().equalsIgnoreCase("mariana")){
+                contador++;
+            }
+        }
+        if(contador > 2){
+            return true;
+        }else{
+        return false;
+        }
+    }
+
+    public float calcularNotaMayor(){
+        float mayor = 0;
+        boolean primera = true;
+        for(Estudiante aux : listaEstudiantes){
+            for(Nota nota : aux.getListaNotas()){
+                if(nota != null){
+                    if(primera || nota.getValor() > mayor){
+                        mayor = nota.getValor();
+                        primera = false;
+                    }
+                }
+            }
+        }
+        return mayor;
+    }
+
+    public float calcularNotaMenor(){
+        float menor = 0;
+        boolean primera = true;
+        for(Estudiante aux : listaEstudiantes){
+            for(Nota nota : aux.getListaNotas()){
+                if(nota != null){
+                    if(primera || nota.getValor() < menor){
+                        menor = nota.getValor();
+                        primera = false;
+                    }
+                }
+            }
+        }
+        return menor;
+    }
+
+    public double calcularPromedioGeneralCurso(){
+        double promedio=0;
+        double sumaTotal = 0;
+        int contadorNotas = 0;
+        for(Estudiante aux : listaEstudiantes){
+            for(Nota nota : aux.getListaNotas()){
+                if(nota != null){
+                    sumaTotal += nota.getValor();
+                    contadorNotas++;
+                }
+            }
+        }
+        if(contadorNotas == 0){
+            return 0;
+        }
+        promedio = (sumaTotal / contadorNotas);
+        return promedio;
+    }
+
+    public void ordenarEstudiantesPorNombre(){
+        Collections.sort(listaEstudiantes, new Comparator<Estudiante>() {
+            @Override
+            public int compare(Estudiante e1, Estudiante e2) {
+                return e1.getNombres().compareToIgnoreCase(e2.getNombres());
+            }
+        });
+    }
+
+    public ArrayList<Estudiante> obtenerEstudiantesSConPromedioAlto(){
+        ArrayList<Estudiante> resultado = new ArrayList<>();
+        for(Estudiante aux : listaEstudiantes){
+            if(aux.getNombres().toUpperCase().startsWith("S")){
+                double promedio = calcularPromedio(aux);
+                if(promedio > 3.5){
+                    resultado.add(aux);
+                }
+            }
+        }
+        return resultado;
+    }
 
 }
