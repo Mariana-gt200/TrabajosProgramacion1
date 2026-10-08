@@ -5,7 +5,7 @@ public class Producto {
     private final String nombre;
     private final String codigo;
     private final String descripcion;
-    private final int cantidadDisponible;
+    private int cantidadDisponible;
     private final double valor;
     private final Categoria categoria;
     private final Tienda ownedByTienda;
@@ -50,4 +50,6 @@ public class Producto {
     public Tienda getOwnedByTienda() {
         return ownedByTienda;
     }
+
+
 }

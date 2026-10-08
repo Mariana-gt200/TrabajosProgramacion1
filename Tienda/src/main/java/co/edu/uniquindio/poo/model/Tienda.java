@@ -10,7 +10,7 @@ public class Tienda {
 
     private final ArrayList<Cliente> listaClientes = new ArrayList<>();
     private final List<Factura> listaFacturas = new LinkedList<>();
-    private final Map<String, Producto> listaProductos = new HashMap<>();
+    private final Map<String, Producto> hashMapListaProductos = new HashMap<>();
 
     public Tienda(String nombre, String nit, String telefono) {
         this.nombre = nombre;
@@ -90,18 +90,21 @@ public class Tienda {
         if (buscarProducto(producto.getCodigo()).isPresent()) {
             return "No se puede registrar, ya existe un producto con ese codigo.";
         }
-        listaProductos.put(producto.getCodigo(), producto);
+        hashMapListaProductos.put(producto.getCodigo(), producto);
         return "El producto fue registrado exitosamente";
     }
 
     // Buscar producto por codigo
     public Optional<Producto> buscarProducto(String codigo) {
-        return Optional.ofNullable(listaProductos.get(codigo));
+        if (hashMapListaProductos.containsKey(codigo)) {
+            return Optional.of(hashMapListaProductos.get(codigo));
+        }
+        return Optional.empty();
     }
 
     // Lista de los productos
     public Collection<Producto> obtenerProductos() {
-        return Collections.unmodifiableCollection(listaProductos.values());
+        return Collections.unmodifiableCollection( hashMapListaProductos.values());
     }
 
     // Actualizar producto
@@ -111,7 +114,7 @@ public class Tienda {
         }
         return buscarProducto(codigo)
                 .map(p -> {
-                    listaProductos.put(codigo, productoActualizado);
+                    hashMapListaProductos.put(codigo, productoActualizado);
                     return "El producto fue actualizado exitosamente";
                 })
                 .orElse("No se puede actualizar, no existe un producto con ese codigo.");
@@ -121,7 +124,7 @@ public class Tienda {
     public String eliminarProducto(String codigo) {
         return buscarProducto(codigo)
                 .map(p -> {
-                    listaProductos.remove(codigo);
+                    hashMapListaProductos.remove(codigo);
                     return "El producto fue eliminado exitosamente";
                 })
                 .orElse("No se puede eliminar, no existe un producto con ese codigo.");
@@ -216,7 +219,7 @@ public class Tienda {
     //1. Obtener los productos con una cantidad mayor o igual a 10
     public List<Producto> obtenerProductosCantidadMayorA10() {
         List<Producto> productosFiltrados = new ArrayList<>();
-        for (Producto producto : listaProductos.values()) {
+        for (Producto producto : hashMapListaProductos.values()) {
             if (producto.getCantidadDisponible() >= 10) {
                 productosFiltrados.add(producto);
             }
@@ -224,5 +227,16 @@ public class Tienda {
         return productosFiltrados;
     }
 
-    //2.
+    //2.Obtener la lista de codigos de los productos con una cantidad disponible mayor igual a 10 y menor que 50
+    public List<String> obtenerCodigosProductosEntre10y50() {
+        List<String> codigos = new ArrayList<>();
+        for (Producto producto : hashMapListaProductos.values()) {
+            if (producto.getCantidadDisponible() >= 10 && producto.getCantidadDisponible() < 50) {
+                codigos.add(producto.getCodigo());
+            }
+        }
+        return codigos;
+    }
+
+
 }
