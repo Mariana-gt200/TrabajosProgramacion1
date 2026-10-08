@@ -262,5 +262,21 @@ public class Tienda {
         return facturas;
     }
 
+    //5. Obtener las facturas donde se haya comprado un celular de marca iPhone 16 pro Max
+    public List<Factura> obtenerFacturasPorProducto(String nombreProducto) {
+        List<Factura> facturas = new ArrayList<>();
+        for (Factura factura : listaFacturas) {
+            for (DetalleFactura detalle : factura.listaDetallesFactura()) {
+                if (detalle.getProducto().getNombre().equals(nombreProducto)) {
+                    facturas.add(factura);
+                    break;
+                }
+            }
+        }
+        return facturas;
+    }
 
+    //6. Obtener las facturas que tengan un cliente donde su nombre sea "Juan" y haya comprado un celular de marca "iPhone 16 pro Max"
+    //7. Implementar un metodo que reciba una categoria y retorne los productos registrados que pertenezcan a esta categoria
+    //8. 
 }
