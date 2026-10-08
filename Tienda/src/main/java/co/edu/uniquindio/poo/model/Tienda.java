@@ -251,5 +251,16 @@ public class Tienda {
         return clientes;
     }
 
+    //4. Obtener facturas que tengan un cliente donde su nombre empiece por "R"
+    public List<Factura> obtenerFacturasPorInicialCliente(char inicial) {
+        List<Factura> facturas = new ArrayList<>();
+        for (Factura factura : listaFacturas) {
+            if (factura.cliente().getNombreCompleto().charAt(0) == inicial) {
+                facturas.add(factura);
+            }
+        }
+        return facturas;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package co.edu.uniquindio.poo.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,4 +54,5 @@ public class Cliente {
     public Tienda getOwnedByTienda() {
         return ownedByTienda;
     }
+
 }
