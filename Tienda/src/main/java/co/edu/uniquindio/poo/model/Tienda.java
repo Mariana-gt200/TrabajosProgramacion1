@@ -278,5 +278,5 @@ public class Tienda {
 
     //6. Obtener las facturas que tengan un cliente donde su nombre sea "Juan" y haya comprado un celular de marca "iPhone 16 pro Max"
     //7. Implementar un metodo que reciba una categoria y retorne los productos registrados que pertenezcan a esta categoria
-    //8. 
+    //8.
 }
