@@ -1,12 +1,12 @@
 package co.edu.uniquindio.poo.model;
 
-import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Transaccion {
     private String idTransaccion;
-    private Date fecha;
+    private LocalDate fecha;
     private double monto;
     private TipoTransaccion tipo;
     private EstadoTransaccion estado;
@@ -18,7 +18,17 @@ public class Transaccion {
     private final ArrayList<Retiro> listaRetiros = new ArrayList<>();
     private final ArrayList<Deposito> listaDepositos = new ArrayList<>();
 
+    //Constructor
+    public Transaccion(String idTransaccion, LocalDate fecha, double monto, TipoTransaccion tipo, EstadoTransaccion estado, boolean esAtipica) {
+        this.idTransaccion = idTransaccion;
+        this.fecha = fecha;
+        this.monto = monto;
+        this.tipo = tipo;
+        this.estado = estado;
+        this.esAtipica = esAtipica;
+    }
 
+    //Get y set
     public ArrayList<Deposito> getListaDepositos() {
         return listaDepositos;
     }
@@ -71,11 +81,11 @@ public class Transaccion {
         this.monto = monto;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

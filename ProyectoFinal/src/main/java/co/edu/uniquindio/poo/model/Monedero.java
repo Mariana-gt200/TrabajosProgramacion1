@@ -6,6 +6,7 @@ public class Monedero {
     private TipoMonedero tipo;
     private double saldo;
 
+    //Constructor
     public Monedero(String idMonedero, TipoMonedero tipo, double saldo) {
         this.idMonedero = idMonedero;
         this.tipo = tipo;

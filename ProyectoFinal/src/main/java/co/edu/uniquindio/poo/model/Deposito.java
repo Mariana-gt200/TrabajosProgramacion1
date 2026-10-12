@@ -4,6 +4,7 @@ public class Deposito {
 
     private Monedero monederoDestino;
 
+    //Constructor
     public Deposito(Monedero monederoDestino) {
         super();
         this.monederoDestino = monederoDestino;

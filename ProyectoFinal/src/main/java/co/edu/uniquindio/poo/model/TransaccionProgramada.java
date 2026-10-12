@@ -1,16 +1,17 @@
 package co.edu.uniquindio.poo.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TransaccionProgramada {
     private String idProgramacion;
-    private Date fechaInicio;
+    private LocalDate fechaInicio;
     private Date fechaProximaEjecucion;
     private FrecuenciaProgramada frecuencia;
     private double monto;
     private TipoTransaccion tipo;
 
-    public void TransaccionProgramada(String idProgramacion, Date fechaInicio, Date fechaProximaEjecucion, FrecuenciaProgramada frecuencia, double monto, TipoTransaccion tipo) {
+    public void TransaccionProgramada(String idProgramacion, LocalDate fechaInicio, Date fechaProximaEjecucion, FrecuenciaProgramada frecuencia, double monto, TipoTransaccion tipo) {
         this.idProgramacion = idProgramacion;
         this.fechaInicio = fechaInicio;
         this.fechaProximaEjecucion = fechaProximaEjecucion;
@@ -28,11 +29,11 @@ public class TransaccionProgramada {
         this.idProgramacion = idProgramacion;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
