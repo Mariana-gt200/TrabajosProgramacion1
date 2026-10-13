@@ -11,6 +11,7 @@ public class Transaccion {
     private TipoTransaccion tipo;
     private EstadoTransaccion estado;
     private boolean esAtipica;
+    private String idCliente;
 
     private final ArrayList<Monedero> listaMonederos = new ArrayList<>();
     private final ArrayList<TransaccionProgramada> ListaTransaccionesProgramadas = new ArrayList<>();
@@ -19,13 +20,14 @@ public class Transaccion {
     private final ArrayList<Deposito> listaDepositos = new ArrayList<>();
 
     //Constructor
-    public Transaccion(String idTransaccion, LocalDate fecha, double monto, TipoTransaccion tipo, EstadoTransaccion estado, boolean esAtipica) {
+    public Transaccion(String idTransaccion, LocalDate fecha, double monto, TipoTransaccion tipo, EstadoTransaccion estado, boolean esAtipica, String idCliente) {
         this.idTransaccion = idTransaccion;
         this.fecha = fecha;
         this.monto = monto;
         this.tipo = tipo;
         this.estado = estado;
         this.esAtipica = esAtipica;
+        this.idCliente = idCliente;
     }
 
     //Get y set
@@ -97,6 +99,13 @@ public class Transaccion {
         this.idTransaccion = idTransaccion;
     }
 
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
+    }
+
 
 }
-

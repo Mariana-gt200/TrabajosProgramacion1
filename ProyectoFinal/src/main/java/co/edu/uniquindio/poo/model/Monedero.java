@@ -5,12 +5,14 @@ public class Monedero {
     private String idMonedero;
     private TipoMonedero tipo;
     private double saldo;
+    private String identificacionCliente;
 
     //Constructor
-    public Monedero(String idMonedero, TipoMonedero tipo, double saldo) {
+    public Monedero(String idMonedero, TipoMonedero tipo, double saldo, String identificacionCliente) {
         this.idMonedero = idMonedero;
         this.tipo = tipo;
         this.saldo = saldo;
+        this.identificacionCliente = identificacionCliente;
     }
 
     // Getters y Setters
@@ -36,6 +38,14 @@ public class Monedero {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
+    }
+
+    public String getIdentificacionCliente() {
+        return identificacionCliente;
+    }
+
+    public void setIdentificacionCliente(String identificacionCliente) {
+        this.identificacionCliente = identificacionCliente;
     }
 
 }

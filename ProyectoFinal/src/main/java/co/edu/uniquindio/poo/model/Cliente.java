@@ -1,14 +1,14 @@
 package co.edu.uniquindio.poo.model;
 
 public class Cliente {
-    private String idCliente;
+    private String identificacion;
     private String nombre;
     private String email;
     private String telefono;
     private RangoCliente rango;
 
-    public Cliente (String idCliente, String nombre, String email, String telefono, RangoCliente rango){
-        this.idCliente = idCliente;
+    public Cliente (String identificacion, String nombre, String email, String telefono, RangoCliente rango){
+        this.identificacion = identificacion;
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
@@ -23,12 +23,12 @@ public class Cliente {
         this.rango = rango;
     }
 
-    public String getIdCliente() {
-        return idCliente;
+    public String getIdentificacion() {
+        return identificacion;
     }
 
-    public void setIdCliente(String idCliente) {
-        this.idCliente = idCliente;
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 
     public String getNombre() {
