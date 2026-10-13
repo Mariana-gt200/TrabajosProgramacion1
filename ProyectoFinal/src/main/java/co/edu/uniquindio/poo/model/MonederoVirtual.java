@@ -112,7 +112,8 @@ public class MonederoVirtual {
     //Buscar monedero
     public Optional<Monedero> buscarMonedero(String idCliente, String idMonedero) {
         return listaMonederos.stream()
-                .filter(m -> m.getIdMonedero().equals(idMonedero))
+                .filter(m -> m.getIdentificacionCliente().equals(idCliente)
+                && m.getIdMonedero().equals(idMonedero))
                 .findFirst();
     }
 
