@@ -277,6 +277,41 @@ public class Tienda {
     }
 
     //6. Obtener las facturas que tengan un cliente donde su nombre sea "Juan" y haya comprado un celular de marca "iPhone 16 pro Max"
+    public List<Factura> obtenerFacturasPorClienteYProducto(String nombreCliente, String nombreProducto) {
+        List<Factura> facturas = new ArrayList<>();
+        for (Factura factura : listaFacturas) {
+            if (factura.cliente().getNombreCompleto().equals(nombreCliente)) {
+                for (DetalleFactura detalle : factura.listaDetallesFactura()) {
+                    if (detalle.getProducto().getNombre().equals(nombreProducto)) {
+                        facturas.add(factura);
+                        break;
+                    }
+                }
+            }
+        }
+        return facturas;
+    }
+
     //7. Implementar un metodo que reciba una categoria y retorne los productos registrados que pertenezcan a esta categoria
-    //8.
+    public List<Producto> obtenerProductosPorCategoria(Categoria categoria) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : hashMapListaProductos.values()) {
+            if (producto.getCategoria().equals(categoria)) {
+                productosFiltrados.add(producto);
+            }
+        }
+        return productosFiltrados;
+    }
+    //punto 8 : Implementar un método que reciba un precio mínimo y un precio máximo, y retorne
+    // los productos cuyo precio se encuentre dentro de ese rango, incluyendo ambos límites.
+
+    //punto 9: Implementar un método que retorne todos los productos
+    // registrados en la tienda, ordenados de menor a mayor según su precio.
+
+    //punto 10: Implementar un método que identifique el producto con el precio más alto de la tienda.
+    // Si no existen productos registrados, el método debe retornar un Optional vacío.
+
+    //Punto 11: Implementar un método que reciba el nombre de una ciudad y retorne
+    // todos los clientes que residan en ella.
+    // La búsqueda debe realizarse sin diferenciar entre mayúsculas y minúsculas.
 }
