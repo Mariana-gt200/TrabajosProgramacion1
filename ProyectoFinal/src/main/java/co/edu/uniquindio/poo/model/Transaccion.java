@@ -106,6 +106,4 @@ public class Transaccion {
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
-
-
 }
