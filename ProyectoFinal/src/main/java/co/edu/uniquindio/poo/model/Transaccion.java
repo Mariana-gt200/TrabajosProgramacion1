@@ -4,83 +4,31 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Transaccion {
+public abstract class Transaccion {
     private String idTransaccion;
     private LocalDate fecha;
     private double monto;
-    private TipoTransaccion tipo;
     private EstadoTransaccion estado;
-    private boolean esAtipica;
     private String idCliente;
 
-    private final ArrayList<Monedero> listaMonederos = new ArrayList<>();
-    private final ArrayList<TransaccionProgramada> ListaTransaccionesProgramadas = new ArrayList<>();
-    private final ArrayList<Transferencia> listaTransferencias = new ArrayList<>();
-    private final ArrayList<Retiro> listaRetiros = new ArrayList<>();
-    private final ArrayList<Deposito> listaDepositos = new ArrayList<>();
-
     //Constructor
-    public Transaccion(String idTransaccion, LocalDate fecha, double monto, TipoTransaccion tipo, EstadoTransaccion estado, boolean esAtipica, String idCliente) {
+    public Transaccion(String idTransaccion, LocalDate fecha, double monto, EstadoTransaccion estado, String idCliente) {
         this.idTransaccion = idTransaccion;
         this.fecha = fecha;
         this.monto = monto;
-        this.tipo = tipo;
         this.estado = estado;
-        this.esAtipica = esAtipica;
         this.idCliente = idCliente;
     }
 
+    public abstract String nombreTipo();
+
     //Get y set
-    public ArrayList<Deposito> getListaDepositos() {
-        return listaDepositos;
+    public String getIdTransaccion() {
+        return idTransaccion;
     }
 
-    public ArrayList<Retiro> getListaRetiros() {
-        return listaRetiros;
-    }
-
-    public ArrayList<Transferencia> getListaTransferencias() {
-        return listaTransferencias;
-    }
-
-    public ArrayList<TransaccionProgramada> getListaTransaccionesProgramadas() {
-        return ListaTransaccionesProgramadas;
-    }
-
-    public ArrayList<Monedero> getListaMonederos() {
-        return listaMonederos;
-    }
-
-    public boolean isEsAtipica() {
-        return esAtipica;
-    }
-
-    public void setEsAtipica(boolean esAtipica) {
-        this.esAtipica = esAtipica;
-    }
-
-    public EstadoTransaccion getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoTransaccion estado) {
-        this.estado = estado;
-    }
-
-    public TipoTransaccion getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoTransaccion tipo) {
-        this.tipo = tipo;
-    }
-
-    public double getMonto() {
-        return monto;
-    }
-
-    public void setMonto(double monto) {
-        this.monto = monto;
+    public void setIdTransaccion(String idTransaccion) {
+        this.idTransaccion = idTransaccion;
     }
 
     public LocalDate getFecha() {
@@ -91,12 +39,20 @@ public class Transaccion {
         this.fecha = fecha;
     }
 
-    public String getIdTransaccion() {
-        return idTransaccion;
+    public double getMonto() {
+        return monto;
     }
 
-    public void setIdTransaccion(String idTransaccion) {
-        this.idTransaccion = idTransaccion;
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
+
+    public EstadoTransaccion getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoTransaccion estado) {
+        this.estado = estado;
     }
 
     public String getIdCliente() {
@@ -106,4 +62,6 @@ public class Transaccion {
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
+
+    public abstract int calcularPuntosGenerados();
 }
