@@ -9,7 +9,7 @@ public abstract class Cliente {
     private String numeroTelefono;
     private String correoElectronico;
     private String direccionResidencia;
-    private List<Dispositivo> equipos;   // 0..* equipos registrados
+    private List<Dispositivo> dispositivos;   // 0..* equipos registrados
 
     public Cliente(String numeroDocumento, String nombreCompleto, String numeroTelefono,
                    String correoElectronico, String direccionResidencia) {
@@ -18,14 +18,14 @@ public abstract class Cliente {
         this.numeroTelefono = numeroTelefono;
         this.correoElectronico = correoElectronico;
         this.direccionResidencia = direccionResidencia;
-        this.equipos = new ArrayList<>();
+        this.dispositivos = new ArrayList<>();
     }
 
     @Override
     public String toString() {
         return nombreCompleto + " (Doc: " + numeroDocumento + ") - Tel: " + numeroTelefono
                 + " - " + correoElectronico + " - " + direccionResidencia
-                + " - Equipos: " + equipos.size();
+                + " - Equipos: " + dispositivos.size();
     }
 
     public String getNumeroDocumento() { return numeroDocumento; }
@@ -33,7 +33,7 @@ public abstract class Cliente {
     public String getNumeroTelefono() { return numeroTelefono; }
     public String getCorreoElectronico() { return correoElectronico; }
     public String getDireccionResidencia() { return direccionResidencia; }
-    public List<Dispositivo> getEquipos() { return equipos; }
+    public List<Dispositivo> getEquipos() { return dispositivos; }
 
     public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
     public void setNumeroTelefono(String numeroTelefono) { this.numeroTelefono = numeroTelefono; }
