@@ -6,7 +6,7 @@ public class OrdenServicio {
     private Cliente cliente;
     private String observacionesGenerales; //Esto sale de cuando se pase todo a la interfaz
     private EstadoOrden estado;
-    private List<DetalleServicio> detalles;
+    private List<DetalleServicio> listaDetalles;
 
     public OrdenServicio(String codigoUnico, Cliente cliente, String observacionesGenerales) {
         this.codigoUnico = codigoUnico;
@@ -69,14 +69,15 @@ public class OrdenServicio {
         this.estado = estado;
     }
 
-    public List<DetalleServicio> getDetalles() {
-        return detalles;
+    public List<DetalleServicio> getListaDetalles() {
+        return listaDetalles;
     }
 
-    public void setDetalles(List<DetalleServicio> detalles) {
-        this.detalles = detalles;
+    public void setListaDetalles(List<DetalleServicio> listaDetalles) {
+        this.listaDetalles = ListaDetalles;
     }
 
     public String getCodigoUnico() { return codigoUnico; }
     public String getEstado() { return estado; }
+
 }
