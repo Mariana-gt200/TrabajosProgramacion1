@@ -2,8 +2,9 @@ package co.edu.uniquindio.poo.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public abstract class Cliente {
+public class Cliente {
     private String numeroDocumento;
     private String nombreCompleto;
     private String numeroTelefono;
@@ -40,4 +41,16 @@ public abstract class Cliente {
     public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
     public void setDireccionResidencia(String direccionResidencia) { this.direccionResidencia = direccionResidencia; }
 
+    public void agregarEquipo(Dispositivo dispositivo) {
+        dispositivos.add(dispositivo);
+    }
+
+    public Optional<Dispositivo> buscarEquipo(String codigoRegistro) {
+        for (Dispositivo dispositivo : dispositivos) {
+            if (dispositivo.getCodigoRegistro().equals(codigoRegistro)) {
+                return Optional.of(dispositivo);
+            }
+        }
+        return Optional.empty();
+    }
 }

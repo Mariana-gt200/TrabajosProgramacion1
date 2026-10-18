@@ -1,4 +1,6 @@
 package co.edu.uniquindio.poo.model;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ReparacionCorrectiva extends Servicio {
     private double costoManoObraPorHora = 45000.0;
@@ -25,7 +27,7 @@ public class ReparacionCorrectiva extends Servicio {
     }
 
     @Override
-    public double calcularCosto() {
+    public double calcularCosto(DetalleServicio detalle) {
         double costoManoObra = this.horasTrabajo * this.costoManoObraPorHora;
         return costoManoObra + calcularCostoRepuestos();
     }
