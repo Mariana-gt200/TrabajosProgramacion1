@@ -23,5 +23,5 @@ public class MantenimientoPreventivo extends Servicio {
 
     @Override
     public double calcularCosto(DetalleServicio detalle) {
-        return calcularTarifaParaEquipo(detalle.getEquipo());  }
+        return calcularTarifaParaEquipo(detalle.getDispositivo());  }
 }

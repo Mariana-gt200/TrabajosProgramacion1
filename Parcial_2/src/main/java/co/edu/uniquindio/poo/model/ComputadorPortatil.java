@@ -18,7 +18,7 @@ public class ComputadorPortatil extends Dispositivo{
     }
 
     @Override
-    public String getCategoria() { return CAT_PORTATIL; }
+    public String getCategoria() { return CATEGORIA_PORTATIL; }
 
     @Override
     public String getEspecialidadRequerida() { return Tecnico.COMPUTADORES; }
