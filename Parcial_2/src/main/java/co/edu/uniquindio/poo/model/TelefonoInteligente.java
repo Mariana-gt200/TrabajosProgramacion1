@@ -21,7 +21,7 @@ public class TelefonoInteligente extends Dispositivo {
     public String getCategoria() { return CATEGORIA_TELEFONO; }
 
     @Override
-    public String getEspecialidadRequerida() { return Tecnico.TELEFONOS_INTELGENTES; }
+    public String getEspecialidadRequerida() { return Tecnico.DISPOSITIVOS_MOVILES; }
 
     public String getSistemaOperativo() { return sistemaOperativo; }
     public int getCapacidadAlmacenamiento() { return capacidadAlmacenamiento; }

@@ -2,9 +2,9 @@ package co.edu.uniquindio.poo.model;
 
 public class Tecnico {
     public static final String COMPUTADORES = "Computadores";
-    public static final String TELEFONOS_INTELGENTES = "Teléfonos inteligentes";
     public static final String SOPORTE_GENERAL = "Soporte general";
-    public static final String[] ESPECIALIDADES = {COMPUTADORES, TELEFONOS_INTELGENTES, SOPORTE_GENERAL};
+    public static final String DISPOSITIVOS_MOVILES = "Dispositivos móviles";
+    public static final String[] ESPECIALIDADES = {COMPUTADORES, DISPOSITIVOS_MOVILES, SOPORTE_GENERAL};
 
     private String codigo;
     private String nombre;

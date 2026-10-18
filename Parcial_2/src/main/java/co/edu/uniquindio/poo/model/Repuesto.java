@@ -18,15 +18,28 @@ public class Repuesto {
     }
 
     public boolean verificarDisponibilidad(int cantidadSolicitada) {
-        return this.cantidadDisponible >= cantidadSolicitada;
+        return cantidadSolicitada > 0 && this.cantidadDisponible >= cantidadSolicitada;
     }
 
     public void descontarInventario(int cantidadADescontar) {
+        if (cantidadADescontar <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
+        }
         if (verificarDisponibilidad(cantidadADescontar)) {
             this.cantidadDisponible -= cantidadADescontar;
         } else {
             throw new IllegalArgumentException("Stock insuficiente para el repuesto: " + nombre);
         }
+    }
+
+    public boolean esCritico() {          // para la funcionalidad 18
+        return cantidadDisponible < 5;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + codigo + "] " + nombre + " - " + descripcion + " - Precio: " + precioUnitario
+                + " - Disponibles: " + cantidadDisponible + " - Compatibilidad: " + categoriaCompatibilidad;
     }
 
     public String getCodigo() {
