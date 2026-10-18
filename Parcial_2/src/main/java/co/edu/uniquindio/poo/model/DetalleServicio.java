@@ -14,7 +14,7 @@ public class DetalleServicio {
     private EstadoOrden estado;
     private List<RepuestoUtilizado> repuestosUtilizados;
 
-    public DetalleServicio(String codigoDetalle, Dispositivo dispositivo, Servicio servicio, String falla, Tecnico tecnicoResponsable, String observacionesTecnicas, String descripcionFalla) {
+    public DetalleServicio(String codigoDetalle, Dispositivo dispositivo, Servicio servicio, String descripcionFalla) {
         this.codigoDetalle = codigoDetalle;
         this.dispositivo = dispositivo;
         this.servicio = servicio;
@@ -26,15 +26,16 @@ public class DetalleServicio {
     }
 
     // Funcionalidad 7: técnico activo y autorizado para el tipo de equipo
-    public void asignarTecnico(Tecnico tecnico) {
+    public String asignarTecnico(Tecnico tecnico) {
         if (!tecnico.estaActivo()) {
-            throw new IllegalArgumentException("El técnico " + tecnico.getNombre() + " no se encuentra activo.");
+            return "El técnico " + tecnico.getNombre() + " no se encuentra activo.";
         }
         if (!tecnico.puedeAtender(dispositivo)) {
-            throw new IllegalArgumentException("El técnico " + tecnico.getNombre() + " (" + tecnico.getEspecialidad()
-                    + ") no está autorizado para intervenir un equipo de categoría " + dispositivo.getCategoria() + ".");
+            return "El técnico " + tecnico.getNombre() + " (" + tecnico.getEspecialidad()
+                    + ") no está autorizado para intervenir un equipo de categoría " + dispositivo.getCategoria() + ".";
         }
         this.tecnicoResponsable = tecnico;
+        return "Técnico asignado exitosamente.";
     }
 
     public void agregarObservacionTecnica(String observacion) {
@@ -42,22 +43,31 @@ public class DetalleServicio {
     }
 
     // Las horas de trabajo solo aplican a la reparación correctiva
-    public void registrarHorasTrabajo(double horas) {
+    public String registrarHorasTrabajo(double horas) {
         if (!(servicio instanceof ReparacionCorrectiva)) {
-            throw new IllegalArgumentException("Solo la reparación correctiva registra horas de trabajo.");
+            return "Solo la reparación correctiva registra horas de trabajo.";
         }
         if (horas < 0) {
-            throw new IllegalArgumentException("Las horas de trabajo no pueden ser negativas.");
+            return "Las horas de trabajo no pueden ser negativas.";
         }
         this.horasTrabajo = horas;
+        return "Horas de trabajo registradas.";
     }
 
-    // Funcionalidad 8: el constructor de RepuestoUtilizado valida y descuenta el inventario
-    public void agregarRepuesto(Repuesto repuesto, int cantidad) {
+    // Funcionalidad 8: solo reparación correctiva; valida inventario antes de descontar
+    public String agregarRepuesto(Repuesto repuesto, int cantidad) {
         if (!(servicio instanceof ReparacionCorrectiva)) {
-            throw new IllegalArgumentException("Solo la reparación correctiva utiliza repuestos.");
+            return "Solo la reparación correctiva utiliza repuestos.";
+        }
+        if (cantidad <= 0) {
+            return "La cantidad debe ser mayor que cero.";
+        }
+        if (!repuesto.verificarDisponibilidad(cantidad)) {
+            return "No hay suficientes unidades de '" + repuesto.getNombre() + "' (disponibles: "
+                    + repuesto.getCantidadDisponible() + ").";
         }
         repuestosUtilizados.add(new RepuestoUtilizado(repuesto, cantidad));
+        return "Repuesto registrado y descontado del inventario.";
     }
 
     public double calcularCostoRepuestos() {
@@ -73,7 +83,8 @@ public class DetalleServicio {
         return this.servicio.calcularCosto(this);
     }
 
-    public boolean estaPendiente() {   // pendiente = todavía sin finalizar
+    // Pendiente = todavía sin finalizar
+    public boolean estaPendiente() {
         return estado == EstadoOrden.ABIERTA || estado == EstadoOrden.EN_PROCESO;
     }
 
