@@ -2,6 +2,7 @@ package co.edu.uniquindio.poo.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class OrdenServicio {
     private String codigoUnico;
@@ -34,6 +35,33 @@ public class OrdenServicio {
             total += detalle.calcularCostoDetalle();
         }
         return total;
+    }
+
+    public Optional<DetalleServicio> buscarDetalle(String codigoDetalle) {
+        for (DetalleServicio detalle : listaDetalles) {
+            if (detalle.getCodigoDetalle().equals(codigoDetalle)) {
+                return Optional.of(detalle);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean todosLosDetallesFinalizados() {
+        if (listaDetalles.isEmpty()) {
+            return false;
+        }
+        for (DetalleServicio detalle : listaDetalles) {
+            if (detalle.getEstado() != EstadoOrden.FINALIZADA) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Orden " + codigoUnico + " | " + fechaCreacion + " | Cliente: " + cliente.getNombreCompleto()
+                + " | Estado: " + estado + " | Detalles: " + listaDetalles.size();
     }
 
     public void cambiarEstado(EstadoOrden nuevoEstado) {
@@ -81,6 +109,7 @@ public class OrdenServicio {
     }
 
     public String getCodigoUnico() { return codigoUnico; }
-    public String getEstado() { return estado.toString(); }
+
+    public EstadoOrden getEstado() { return estado; }
 
 }

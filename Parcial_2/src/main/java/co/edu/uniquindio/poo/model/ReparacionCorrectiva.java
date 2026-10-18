@@ -1,59 +1,17 @@
 package co.edu.uniquindio.poo.model;
-import java.util.List;
-import java.util.ArrayList;
 
 public class ReparacionCorrectiva extends Servicio {
-    private double costoManoObraPorHora = 45000.0;
-    private double horasTrabajo;
-    private List<RepuestoUtilizado> repuestosUtilizados;
+    public static final double COSTO_MANO_OBRA_HORA = 45000;
 
-    public ReparacionCorrectiva(double horasTrabajo) {
-        super("SRV-03", "Reparación Correctiva", "Solución de fallas específicas", 0.0);
-        this.horasTrabajo = horasTrabajo;
-        this.repuestosUtilizados = new ArrayList<>();
-    }
-
-    public void agregarRepuesto(Repuesto repuesto, int cantidad) {
-        RepuestoUtilizado ru = new RepuestoUtilizado(repuesto, cantidad);
-        this.repuestosUtilizados.add(ru);
-    }
-
-    public double calcularCostoRepuestos() {
-        double totalRepuestos = 0;
-        for (RepuestoUtilizado ru : repuestosUtilizados) {
-            totalRepuestos += ru.calcularSubtotal();
-        }
-        return totalRepuestos;
+    public ReparacionCorrectiva() {
+        // La tarifa base es el valor de la hora de mano de obra
+        super("SRV-03", "Reparación correctiva", "Solucionar fallas identificadas", COSTO_MANO_OBRA_HORA);
     }
 
     @Override
     public double calcularCosto(DetalleServicio detalle) {
-        double costoManoObra = this.horasTrabajo * this.costoManoObraPorHora;
-        return costoManoObra + calcularCostoRepuestos();
-    }
-
-    public double getCostoManoObraPorHora() {
-        return costoManoObraPorHora;
-    }
-
-    public void setCostoManoObraPorHora(double costoManoObraPorHora) {
-        this.costoManoObraPorHora = costoManoObraPorHora;
-    }
-
-    public double getHorasTrabajo() {
-        return horasTrabajo;
-    }
-
-    public void setHorasTrabajo(double horasTrabajo) {
-        this.horasTrabajo = horasTrabajo;
-    }
-
-    public List<RepuestoUtilizado> getRepuestosUtilizados() {
-        return repuestosUtilizados;
-    }
-
-    public void setRepuestosUtilizados(List<RepuestoUtilizado> repuestosUtilizados) {
-        this.repuestosUtilizados = repuestosUtilizados;
+        double manoDeObra = detalle.getHorasTrabajo() * tarifaBase;
+        return manoDeObra + detalle.calcularCostoRepuestos();
     }
 }
 
