@@ -29,6 +29,10 @@ public class Repuesto {
         }
     }
 
+    public String getCodigo() {
+        return codigo;
+    }
+
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
@@ -49,8 +53,16 @@ public class Repuesto {
         this.descripcion = descripcion;
     }
 
+    public double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
     public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
+    }
+
+    public int getCantidadDisponible() {
+        return cantidadDisponible;
     }
 
     public void setCantidadDisponible(int cantidadDisponible) {

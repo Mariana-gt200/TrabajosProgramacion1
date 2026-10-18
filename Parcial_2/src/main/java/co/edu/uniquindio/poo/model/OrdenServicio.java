@@ -1,39 +1,42 @@
 package co.edu.uniquindio.poo.model;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrdenServicio {
     private String codigoUnico;
-    private Date fechaCreacion;
+    private LocalDate fechaCreacion;
     private Cliente cliente;
-    private String observacionesGenerales; //Esto sale de cuando se pase todo a la interfaz
+    private String observacionesGenerales;
     private EstadoOrden estado;
     private List<DetalleServicio> listaDetalles;
 
     public OrdenServicio(String codigoUnico, Cliente cliente, String observacionesGenerales) {
         this.codigoUnico = codigoUnico;
-        this.fechaCreacion = new Date();
+        this.fechaCreacion = LocalDate.now();
         this.cliente = cliente;
         this.observacionesGenerales = observacionesGenerales;
         this.estado = EstadoOrden.ABIERTA;
-        this.detalles = new ArrayList<>();
+        this.listaDetalles = new ArrayList<>();
     }
 
     public void agregarDetalle(DetalleServicio detalle) {
-        this.detalles.add(detalle);
+        this.listaDetalles.add(detalle);
     }
 
     public void eliminarDetalle(String codigoDetalle) {
-        detalles.removeIf(d -> d.getCodigoDetalle().equals(codigoDetalle));
+        listaDetalles.removeIf(d -> d.getCodigoDetalle().equals(codigoDetalle));
     }
 
     public double calcularCostoTotal() {
         double total = 0;
-        for (DetalleServicio detalle : detalles) {
+        for (DetalleServicio detalle : listaDetalles) {
             total += detalle.calcularCostoDetalle();
         }
         return total;
     }
 
-    public void cambiarEstado(String nuevoEstado) {
+    public void cambiarEstado(EstadoOrden nuevoEstado) {
         this.estado = nuevoEstado;
     }
 
@@ -41,11 +44,11 @@ public class OrdenServicio {
         this.codigoUnico = codigoUnico;
     }
 
-    public Date getFechaCreacion() {
+    public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(Date fechaCreacion) {
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -74,10 +77,10 @@ public class OrdenServicio {
     }
 
     public void setListaDetalles(List<DetalleServicio> listaDetalles) {
-        this.listaDetalles = ListaDetalles;
+        this.listaDetalles = listaDetalles;
     }
 
     public String getCodigoUnico() { return codigoUnico; }
-    public String getEstado() { return estado; }
+    public String getEstado() { return estado.toString(); }
 
 }

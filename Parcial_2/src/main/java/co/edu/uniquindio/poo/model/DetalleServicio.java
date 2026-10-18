@@ -2,19 +2,21 @@ package co.edu.uniquindio.poo.model;
 
 public class DetalleServicio {
     private String codigoDetalle;
-    private EquipoTecnologico equipo;
+    private Dispositivo dispositivo;
     private Servicio servicio;
     private String descripcionFalla;
     private Tecnico tecnicoResponsable;
     private String observacionesTecnicas;
     private String estado;
 
-    public DetalleServicio(String codigoDetalle, EquipoTecnologico equipo, Servicio servicio, String descripcionFalla) {
+    public DetalleServicio(String codigoDetalle, Dispositivo dispositivo, Servicio servicio, String descripcionFalla, Tecnico tecnicoResponsable, String observacionesTecnicas, String estado) {
         this.codigoDetalle = codigoDetalle;
-        this.equipo = equipo;
+        this.dispositivo = dispositivo;
         this.servicio = servicio;
         this.descripcionFalla = descripcionFalla;
-        this.estado = "Abierta";
+        this.tecnicoResponsable = tecnicoResponsable;
+        this.observacionesTecnicas = observacionesTecnicas;
+        this.estado = estado;
     }
 
     public void asignarTecnico(Tecnico tecnico) {
@@ -25,20 +27,36 @@ public class DetalleServicio {
         }
     }
 
+    public void agregarObservacionTecnica(String observacion) {
+        this.observacionesTecnicas += observacion + "\n";
+    }
+
     public double calcularCostoDetalle() {
-        return this.servicio.calcularCosto();
+        return this.servicio.calcularCosto(this);
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCodigoDetalle() {
+        return codigoDetalle;
     }
 
     public void setCodigoDetalle(String codigoDetalle) {
         this.codigoDetalle = codigoDetalle;
     }
 
-    public EquipoTecnologico getEquipo() {
-        return equipo;
+    public Dispositivo getDispositivo() {
+        return dispositivo;
     }
 
-    public void setEquipo(EquipoTecnologico equipo) {
-        this.equipo = equipo;
+    public void setDispositivo(Dispositivo dispositivo) {
+        this.dispositivo = dispositivo;
     }
 
     public Servicio getServicio() {

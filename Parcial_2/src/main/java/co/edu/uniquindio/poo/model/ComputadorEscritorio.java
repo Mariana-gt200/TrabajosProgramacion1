@@ -18,7 +18,7 @@ public class ComputadorEscritorio extends Dispositivo {
     }
 
     @Override
-    public String getCategoria() { return CAT_ESCRITORIO; }
+    public String getCategoria() { return CATEGORIA_ESCRITORIO; }
 
     @Override
     public String getEspecialidadRequerida() { return Tecnico.COMPUTADORES; }

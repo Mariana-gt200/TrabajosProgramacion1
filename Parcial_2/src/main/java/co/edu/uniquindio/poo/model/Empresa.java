@@ -1,17 +1,21 @@
 package co.edu.uniquindio.poo.model;
 import co.edu.uniquindio.poo.model.Dispositivo;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Empresa {
     private final String nombre;
-    private Arraylist<Cliente> listaClientes;
-    private Arraylist<Tecnico> listaTecnicos;
-    private Arraylist<Repuesto> listaRepuestos;
-    private Arraylist<OrdenServicio> listaOrdenesServicio;
+    private ArrayList<Cliente> listaClientes;
+    private ArrayList<Tecnico> listaTecnicos;
+    private ArrayList<Repuesto> listaRepuestos;
+    private ArrayList<OrdenServicio> listaOrdenesServicio;
+    private ArrayList<Dispositivo> listaDispositivos;
 
-    public Empresa(String nombre, Arraylist<Tecnico> listaTecnicos, Arraylist<Cliente> listaClientes, Arraylist<Repuesto> listaRepuestos, Arraylist<OrdenServicio> listaOrdenesServicio) {
+    public Empresa(String nombre, ArrayList<Cliente> listaClientes, ArrayList<Tecnico> listaTecnicos, ArrayList<Repuesto> listaRepuestos, ArrayList<OrdenServicio> listaOrdenesServicio) {
         this.nombre = nombre;
-        this.listaTecnicos = listaTecnicos;
         this.listaClientes = listaClientes;
+        this.listaTecnicos = listaTecnicos;
         this.listaRepuestos = listaRepuestos;
         this.listaOrdenesServicio = listaOrdenesServicio;
     }
@@ -20,38 +24,39 @@ public class Empresa {
         return nombre;
     }
 
-    public Arraylist<Cliente> getListaClientes() {
+    public ArrayList<Cliente> getListaClientes() {
         return listaClientes;
     }
 
-    public void setListaClientes(Arraylist<Cliente> listaClientes) {
+    public void setListaClientes(ArrayList<Cliente> listaClientes) {
         this.listaClientes = listaClientes;
     }
 
-    public Arraylist<Tecnico> getListaTecnicos() {
+    public ArrayList<Tecnico> getListaTecnicos() {
         return listaTecnicos;
     }
 
-    public void setListaTecnicos(Arraylist<Tecnico> listaTecnicos) {
+    public void setListaTecnicos(ArrayList<Tecnico> listaTecnicos) {
         this.listaTecnicos = listaTecnicos;
     }
 
-    public Arraylist<Repuesto> getListaRepuestos() {
+    public ArrayList<Repuesto> getListaRepuestos() {
         return listaRepuestos;
     }
 
-    public void setListaRepuestos(Arraylist<Repuesto> listaRepuestos) {
+    public void setListaRepuestos(ArrayList<Repuesto> listaRepuestos) {
         this.listaRepuestos = listaRepuestos;
     }
 
-    public Arraylist<OrdenServicio> getListaOrdenesServicio() {
+    public ArrayList<OrdenServicio> getListaOrdenesServicio() {
         return listaOrdenesServicio;
     }
 
-    public void setListaOrdenesServicio(Arraylist<OrdenServicio> listaOrdenesServicio) {
+    public void setListaOrdenesServicio(ArrayList<OrdenServicio> listaOrdenesServicio) {
         this.listaOrdenesServicio = listaOrdenesServicio;
     }
-// FUNCIONALIDAD 1 COMIENZO
+
+    // FUNCIONALIDAD 1 COMIENZO
     public Optional<Cliente> buscarCliente(String numeroDocumento) {
         for (Cliente cliente :listaClientes){
             if (numeroDocumento.equals(cliente.getNumeroDocumento())){
@@ -61,7 +66,7 @@ public class Empresa {
         return Optional.empty();
     }
     public String registrarCliente(Cliente cliente){
-        Optional<cliente> clienteEncontrado = buscarCliente(cliente.getNumeroDocumento());
+        Optional<Cliente> clienteEncontrado = buscarCliente(cliente.getNumeroDocumento());
         if(clienteEncontrado.isEmpty()){
             listaClientes.add(cliente);
             return "El cliente fue registrado exitosamente";
@@ -70,19 +75,19 @@ public class Empresa {
 //FUNCIONALIDAD 1 FINAL
 
     // FUNCIONALIDAD 2 COMIENZO
-    public Optional<Equipo> buscarEquipo(String codigoRegistro) {
-        for (Equipo equipo : listaEquipos) {
-            if (codigoRegistro.equals(equipo.getcodigoRegistro())) {
+    public Optional<Dispositivo> buscarEquipo(String codigoRegistro) {
+        for (Dispositivo equipo : listaDispositivos) {
+            if (codigoRegistro.equals(equipo.getCodigoRegistro())) {
                 return Optional.of(equipo);
             }
         }
         return Optional.empty();
     }
 
-    public String registrarEquipo(Equipo equipo) {
-        Optional<Equipo> equipoEncontrado = buscarEquipo(equipo.getCodigoRegistro());
+    public String registrarEquipo(Dispositivo equipo) {
+        Optional<Dispositivo> equipoEncontrado = buscarEquipo(equipo.getCodigoRegistro());
         if (equipoEncontrado.isEmpty()) {
-            listaEquipos.add(equipo);
+            listaDispositivos.add(equipo);
             return "El equipo fue registrado exitosamente";
         } else {
             return "No se puede registrar, ya existe un equipo con ese código";
@@ -154,13 +159,13 @@ public class Empresa {
 // FUNCIONALIDAD 5 FINAL
 
 // FUNCIONALIDAD 6 COMIENZO
-    public String agregarDetalleOrden(String codigoUnico, Dispositivo dispositivo, Servicio servicio, String descripcionFalla) {
-        Optional<OrdenServicio> ordenEncontrada = buscarOrdenServicio(codigoUnico);
+    public String agregarDetalleOrden(String codigoDetalle, Dispositivo dispositivo, Servicio servicio, String descripcionFalla, Tecnico tecnicoResponsable, String observacionesTecnicas, String estado) {
+        Optional<OrdenServicio> ordenEncontrada = buscarOrdenServicio(codigoDetalle);
 
         if (ordenEncontrada.isPresent()) {
             OrdenServicio orden = ordenEncontrada.get();
 
-            DetalleServicio nuevoDetalle = new DetalleServicio(equipo, servicio, descripcionFalla);
+            DetalleServicio nuevoDetalle = new DetalleServicio(codigoDetalle, dispositivo, servicio, descripcionFalla, tecnicoResponsable, observacionesTecnicas, estado);
 
             orden.getListaDetalles().add(nuevoDetalle);
             return "Detalle agregado exitosamente a la orden.";
