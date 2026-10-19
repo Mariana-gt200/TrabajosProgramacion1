@@ -1,4 +1,10 @@
 package co.edu.uniquindio.poo.model;
 
-public class ResumenPago {
+public record ResumenPago(
+        String documento,
+        String nombre,
+        String tipoEmpleado,
+        float salarioBruto,
+        float descuentos,
+        float salarioNeto) {
 }

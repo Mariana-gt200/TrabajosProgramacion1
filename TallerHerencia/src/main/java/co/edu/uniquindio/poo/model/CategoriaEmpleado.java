@@ -1,4 +1,7 @@
 package co.edu.uniquindio.poo.model;
 
-public class CategoriaEmpleado {
+public enum CategoriaEmpleado {
+    JUNIOR,
+    SEMI_SENIOR,
+    SENIOR
 }
