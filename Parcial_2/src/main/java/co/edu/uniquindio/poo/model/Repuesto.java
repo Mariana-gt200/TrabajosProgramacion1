@@ -3,7 +3,7 @@ package co.edu.uniquindio.poo.model;
 public class Repuesto {
     private String codigo;
     private String nombre;
-    private String descripcion; //Se usa en la interfaz pa preguntar qué es el repuesto y eso
+    private String descripcion;
     private double precioUnitario;
     private int cantidadDisponible;
     private String categoriaCompatibilidad;

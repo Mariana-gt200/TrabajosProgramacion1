@@ -25,7 +25,6 @@ public class DetalleServicio {
         this.repuestosUtilizados = new ArrayList<>();
     }
 
-    // Funcionalidad 7: técnico activo y autorizado para el tipo de equipo
     public String asignarTecnico(Tecnico tecnico) {
         if (!tecnico.estaActivo()) {
             return "El técnico " + tecnico.getNombre() + " no se encuentra activo.";
@@ -42,7 +41,6 @@ public class DetalleServicio {
         this.observacionesTecnicas += observacion + "\n";
     }
 
-    // Las horas de trabajo solo aplican a la reparación correctiva
     public String registrarHorasTrabajo(double horas) {
         if (!(servicio instanceof ReparacionCorrectiva)) {
             return "Solo la reparación correctiva registra horas de trabajo.";
@@ -54,7 +52,6 @@ public class DetalleServicio {
         return "Horas de trabajo registradas.";
     }
 
-    // Funcionalidad 8: solo reparación correctiva; valida inventario antes de descontar
     public String agregarRepuesto(Repuesto repuesto, int cantidad) {
         if (!(servicio instanceof ReparacionCorrectiva)) {
             return "Solo la reparación correctiva utiliza repuestos.";

@@ -13,7 +13,6 @@ public abstract class Servicio {
         this.tarifaBase = tarifaBase;
     }
 
-    // Metodo abstracto para calcular el costo del servicio según el detalle proporcionado
     public abstract double calcularCosto(DetalleServicio detalle);
 
     public String getCodigo() { return codigo; }

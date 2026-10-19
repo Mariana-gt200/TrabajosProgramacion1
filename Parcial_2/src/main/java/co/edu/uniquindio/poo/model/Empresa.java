@@ -108,7 +108,7 @@ public class Empresa {
         return Optional.empty();
     }
 
-    // Valida los atributos según la categoría del equipo. Devuelve el error, o null si todo está bien
+    // Valida los atributos según la categoría del equipo
     private String validarEquipo(Dispositivo equipo) {
         if (vacio(equipo.getCodigoRegistro()) || vacio(equipo.getNumeroSerie()) || vacio(equipo.getMarca())
                 || vacio(equipo.getModelo()) || vacio(equipo.getDescripcionEstadoFisico())) {
@@ -236,7 +236,7 @@ public class Empresa {
         return Optional.empty();
     }
 
-    // Crea una orden ABIERTA para un cliente que ya existe
+    // Crea una orden abierta para un cliente que ya existe
     public String crearOrdenServicio(String codigoUnico, String documentoCliente, String observacionesGenerales) {
         if (vacio(codigoUnico)) {
             return "El código de la orden es obligatorio.";
