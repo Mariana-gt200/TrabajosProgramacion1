@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        Empresa empresa = new Empresa("TecnoFix", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Empresa empresa = new Empresa("TechRepair", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         // Datos de prueba: clientes, equipos, técnicos y repuestos precargados ---
         empresa.registrarCliente(new Cliente("1001", "Laura Gómez", "3001112233", "laura@correo.com", "Calle 10 #5-20"));
@@ -73,12 +73,16 @@ public class Main {
                             "1. Computador portátil" + "\n" +
                             "2. Computador de escritorio" + "\n" +
                             "3. Teléfono inteligente"));
+                    if (categoriaEquipo < 1 || categoriaEquipo > 3) {
+                        JOptionPane.showMessageDialog(null, "Categoría de equipo inválida.");
+                    }
                     String codigoEquipo = JOptionPane.showInputDialog("Código de registro del equipo:");
                     String serieEquipo = JOptionPane.showInputDialog("Número de serie:");
                     String marcaEquipo = JOptionPane.showInputDialog("Marca:");
                     String modeloEquipo = JOptionPane.showInputDialog("Modelo:");
                     int anioEquipo = Integer.parseInt(JOptionPane.showInputDialog("Año de fabricación:"));
                     String estadoFisicoEquipo = JOptionPane.showInputDialog("Descripción del estado físico:");
+
 
                     switch (categoriaEquipo) {
                         case 1:

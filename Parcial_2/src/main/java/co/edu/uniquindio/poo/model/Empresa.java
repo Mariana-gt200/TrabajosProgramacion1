@@ -97,7 +97,7 @@ public class Empresa {
     // FUNCIONALIDAD 1 FINAL
 
     // FUNCIONALIDAD 2 COMIENZO
-    // El código de registro es único en todo el sistema: se busca en los equipos de todos los clientes
+    // El codigo de registro es único
     public Optional<Dispositivo> buscarEquipo(String codigoRegistro) {
         for (Cliente cliente : listaClientes) {
             Optional<Dispositivo> equipo = cliente.buscarEquipo(codigoRegistro);
