@@ -18,7 +18,7 @@ public class MantenimientoPreventivo extends Servicio {
         } else if (dispositivo instanceof TelefonoInteligente) {
             return TARIFA_TELEFONO;
         }
-        throw new IllegalStateException("Categoría de equipo no reconocida.");
+        return 0;
     }
 
     @Override

@@ -21,14 +21,10 @@ public class Repuesto {
         return cantidadSolicitada > 0 && this.cantidadDisponible >= cantidadSolicitada;
     }
 
+    // Repuesto.java
     public void descontarInventario(int cantidadADescontar) {
-        if (cantidadADescontar <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
-        }
         if (verificarDisponibilidad(cantidadADescontar)) {
             this.cantidadDisponible -= cantidadADescontar;
-        } else {
-            throw new IllegalArgumentException("Stock insuficiente para el repuesto: " + nombre);
         }
     }
 

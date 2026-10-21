@@ -6,9 +6,6 @@ public class RepuestoUtilizado {
     private double precioUnitarioAplicado;
 
     public RepuestoUtilizado(Repuesto repuesto, int cantidadRequerida) {
-        if (!repuesto.verificarDisponibilidad(cantidadRequerida)) {
-            throw new IllegalArgumentException("No hay suficientes unidades del repuesto en inventario.");
-        }
         repuesto.descontarInventario(cantidadRequerida); // Descuenta automáticamente al instanciar
         this.repuesto = repuesto;
         this.cantidadRequerida = cantidadRequerida;
