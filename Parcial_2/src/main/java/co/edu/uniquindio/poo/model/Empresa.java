@@ -3,6 +3,7 @@ package co.edu.uniquindio.poo.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.List;
 
 public class Empresa {
     private final String nombre;
@@ -548,4 +549,29 @@ public class Empresa {
         return "INVENTARIO CRÍTICO (menos de 5 unidades)\n\n" + resultado;
     }
     // FUNCIONALIDAD 18 FINAL
-}
+    //Metodo para obtener la lista de tecnicos que hayan realizado un diagnostico
+    public ArrayList<Tecnico> obtenerTecnicosConDiagnostico(){
+        ArrayList<Tecnico> tecnicos = new ArrayList<> ();
+        for(OrdenServicio orden : listaOrdenesServicio){
+
+            for (DetalleServicio detalle: orden.getListaDetalles()){
+                if (detalle.getServicio() instanceof Diagnostico) {
+                    Tecnico tecnico = detalle.getTecnicoResponsable();
+                    if (tecnico != null){
+                        tecnicos.add(tecnico);
+                    }
+
+
+            }
+
+
+
+
+
+
+
+
+        }
+        return tecnicos;
+    }
+    }
