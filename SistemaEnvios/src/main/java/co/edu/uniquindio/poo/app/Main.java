@@ -15,6 +15,9 @@ public class Main {
                     "\n1. EnvioNacional\n" +
                     "2. Envio Internacional" +
                     "\n3. Envio Express\n"+
+                    "4. Eliminar un envio\n"+
+                    "5. Actualizar un envio\n"+
+                    "6. Buscar un envio\n"+
                     "0. Salir"));
             switch (opcion) {
                 case 1:
@@ -114,6 +117,30 @@ public class Main {
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "El código de envío no existe. No se puede actualizar el envío.");
+                    }
+                    break;
+                case 6:
+                    // Buscar un envío
+                    byte codigoBuscar = Byte.parseByte(JOptionPane.showInputDialog("Ingrese el código del envío que desea buscar: "));
+                    Optional<Envio> envioBuscar = sistemaEnvio.buscarEnvio(codigoBuscar);
+                    if (envioBuscar.isPresent()) {
+                        Envio envioEncontrado = envioBuscar.get();
+                        String tipoEnvio;
+                        if (envioEncontrado instanceof EnvioNacional) {
+                            tipoEnvio = "Envío Nacional";
+                        } else if (envioEncontrado instanceof EnvioInternacional) {
+                            tipoEnvio = "Envío Internacional";
+                        } else if (envioEncontrado instanceof EnvioExpress) {
+                            tipoEnvio = "Envío Express";
+                        } else {
+                            tipoEnvio = "Tipo de envío desconocido";
+                        }
+                        JOptionPane.showMessageDialog(null, "Código: " + envioEncontrado.getCodigo() +
+                                "\nDestinatario: " + envioEncontrado.getDestinatario() +
+                                "\nPeso: " + envioEncontrado.getPeso() +
+                                "\nTipo de envío: " + tipoEnvio);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El código de envío no existe.");
                     }
                     break;
                 default:
