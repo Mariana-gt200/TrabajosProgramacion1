@@ -1,10 +1,9 @@
 package co.edu.uniquindio.poo.app;
-import co.edu.uniquindio.poo.model.EnvioExpress;
-import co.edu.uniquindio.poo.model.EnvioInternacional;
-import co.edu.uniquindio.poo.model.EnvioNacional;
-import co.edu.uniquindio.poo.model.SistemaEnvio;
+import co.edu.uniquindio.poo.model.*;
 
 import javax.swing.JOptionPane;
+import java.util.Optional;
+
 public class Main {
     public static void main(String[] args) {
         SistemaEnvio sistemaEnvio = new SistemaEnvio();
@@ -65,6 +64,57 @@ public class Main {
                     sistemaEnvio.agregarEnvioExpress(envioExpress);
                     JOptionPane.showMessageDialog(null, "Envío express agregado correctamente.");
                     JOptionPane.showMessageDialog(null, "El costo del envío express es: " + costoEnvioExp);
+                    break;
+
+                case 4:
+                    // Eliminar un envío
+                    byte codigoEliminar = Byte.parseByte(JOptionPane.showInputDialog("Ingrese el código del envío que desea eliminar: "));
+                    sistemaEnvio.eliminarEnvioGeneral(codigoEliminar);
+                    break;
+                case 5:
+                    // Actualizar un envío
+                    byte codigoActualizar = Byte.parseByte(JOptionPane.showInputDialog("Ingrese el código del envío que desea actualizar: "));
+                    Optional<Envio> envioActualizar = sistemaEnvio.buscarEnvio(codigoActualizar);
+                    if (envioActualizar.isPresent()) {
+                        if (envioActualizar.get() instanceof EnvioNacional) {
+                            EnvioNacional envioNacionalActualizar = (EnvioNacional) envioActualizar.get();
+                            String destinatarioNuevo = JOptionPane.showInputDialog("Ingrese el nuevo nombre del destinatario: ");
+                            double pesoNuevo = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo peso del envío (en kilogramos): "));
+                            String ciudadDestinoNueva = JOptionPane.showInputDialog("Ingrese la nueva ciudad de destino: ");
+                            boolean requiereDomicilioNuevo = JOptionPane.showConfirmDialog(null, "¿Requiere domicilio?") == JOptionPane.YES_OPTION;
+                            envioNacionalActualizar.setDestinatario(destinatarioNuevo);
+                            envioNacionalActualizar.setPeso(pesoNuevo);
+                            envioNacionalActualizar.setCiudadDestino(ciudadDestinoNueva);
+                            envioNacionalActualizar.setRequiereDomicilio(requiereDomicilioNuevo);
+                            sistemaEnvio.actualizarEnvioNacional(envioNacionalActualizar);
+                        } else if (envioActualizar.get() instanceof EnvioInternacional) {
+                            EnvioInternacional envioInternacionalActualizar = (EnvioInternacional) envioActualizar.get();
+                            String destinatarioNuevo = JOptionPane.showInputDialog("Ingrese el nuevo nombre del destinatario: ");
+                            double pesoNuevo = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo peso del envío (en kilogramos): "));
+                            String paisDestinoNuevo = JOptionPane.showInputDialog("Ingrese el nuevo país de destino: ");
+                            boolean requiereSeguroNuevo = JOptionPane.showConfirmDialog(null, "¿Requiere seguro?") == JOptionPane.YES_OPTION;
+                            envioInternacionalActualizar.setDestinatario(destinatarioNuevo);
+                            envioInternacionalActualizar.setPeso(pesoNuevo);
+                            envioInternacionalActualizar.setPaisDestino(paisDestinoNuevo);
+                            envioInternacionalActualizar.setRequiereSeguro(requiereSeguroNuevo);
+                            sistemaEnvio.actualizarEnvioInternacional(envioInternacionalActualizar);
+                        } else if (envioActualizar.get() instanceof EnvioExpress) {
+                            EnvioExpress envioExpressActualizar = (EnvioExpress) envioActualizar.get();
+                            String destinatarioNuevo = JOptionPane.showInputDialog("Ingrese el nuevo nombre del destinatario: ");
+                            double pesoNuevo = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo peso del envío (en kilogramos): "));
+                            String ciudadDestinoNueva = JOptionPane.showInputDialog("Ingrese la nueva ciudad de destino: ");
+                            boolean requiereDomicilioNuevo = JOptionPane.showConfirmDialog(null, "¿Requiere domicilio?") == JOptionPane.YES_OPTION;
+                            double plazoMaximoEntregaNuevo = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo plazo máximo de entrega (en horas): "));
+                            envioExpressActualizar.setDestinatario(destinatarioNuevo);
+                            envioExpressActualizar.setPeso(pesoNuevo);
+                            envioExpressActualizar.setCiudadDestino(ciudadDestinoNueva);
+                            envioExpressActualizar.setRequiereDomicilio(requiereDomicilioNuevo);
+                            envioExpressActualizar.setPlazoMaximoEntrega(plazoMaximoEntregaNuevo);
+                            sistemaEnvio.actualizarEnvioExpress(envioExpressActualizar);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El código de envío no existe. No se puede actualizar el envío.");
+                    }
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Gracias por usar nuestro sistema de envíos");
