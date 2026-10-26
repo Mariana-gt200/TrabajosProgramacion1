@@ -1,18 +1,29 @@
 package co.edu.uniquindio.poo.model;
 
-public class Transferencia {
+import java.time.LocalDate;
+
+public class Transferencia extends Transaccion {
 
     private Monedero monederoOrigen;
     private Monedero monederoDestino;
     private double comision;
 
-
-    public Transferencia(Monedero monederoOrigen, Monedero monederoDestino, double comision) {
-        super();
+    public Transferencia(String idTransaccion, LocalDate fecha, double monto, EstadoTransaccion estado, String idCliente, Monedero monederoOrigen, Monedero monederoDestino, double comision) {
+        super(idTransaccion, fecha, monto, estado, idCliente);
         this.monederoOrigen = monederoOrigen;
         this.monederoDestino = monederoDestino;
         this.comision = comision;
     }
+
+    @Override
+    public String nombreTipo() {
+        return "Transferencia";
+    }
+    @Override
+    public int calcularPuntosGenerados() {
+        return (int) (getMonto() / 100) * 3;
+    }
+
 
     //Getter y setter
 

@@ -41,7 +41,6 @@ public class AnalizadorPatronesGastos {
             if (transaccion == null || historial == null || historial.isEmpty()) {
                 return false;
             }
-
             double promedio = calcularPromedio(historial);
             double desviacion = calcularDesviacionEstandar(historial);
 
