@@ -1,7 +1,7 @@
 package co.edu.uniquindio.poo.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 public class AnalizadorPatronesGastos {
 
@@ -10,34 +10,30 @@ public class AnalizadorPatronesGastos {
         }
 
         //Calcula el promedio de los montos a partir de un historial de transacciones
-        public double calcularPromedio(ArrayList<Transaccion> historial) {
+        public double calcularPromedio(List<Transaccion> historial) {
             if (historial == null || historial.isEmpty()) {
                 return 0.0;
             }
-            double suma = 0;
-            for (Transaccion t : historial) {
-                suma += t.getMonto();
-            }
-            return suma / historial.size();
+            return historial.stream()
+                    .mapToDouble(t -> t.getMonto())
+                    .average()
+                    .orElse(0.0);
         }
 
         //Calcular la desviación estándar de los montos del historial de transacciones
-        public double calcularDesviacionEstandar(ArrayList<Transaccion> historial) {
+        public double calcularDesviacionEstandar(List<Transaccion> historial) {
             if (historial == null || historial.size() <= 1) {
                 return 0.0;
             }
             double promedio = calcularPromedio(historial);
-            double sumaDiferenciasCuadradas = 0;
-
-            for (Transaccion t : historial) {
-                sumaDiferenciasCuadradas += Math.pow(t.getMonto() - promedio, 2);
-            }
-
-            return Math.sqrt(sumaDiferenciasCuadradas / (historial.size() - 1));
+            double suma = historial.stream()
+                    .mapToDouble(t -> Math.pow(t.getMonto() - promedio, 2))
+                    .sum();
+            return Math.sqrt(suma / (historial.size() - 1));
         }
 
         //Detecta si una transacción es atípica basándose en la media y la desviación del historial
-        public boolean detectarTransaccionAtipica(Transaccion transaccion, ArrayList<Transaccion> historial) {
+        public boolean detectarTransaccionAtipica(Transaccion transaccion, List<Transaccion> historial) {
             if (transaccion == null || historial == null || historial.isEmpty()) {
                 return false;
             }
@@ -49,8 +45,8 @@ public class AnalizadorPatronesGastos {
             }
 
             // Atípica si supera 2 desviaciones estándar del promedio
-            double limite = 2 * desviacion;
-            double monto = transaccion.getMonto();
+            double umbral = promedio + 2 * desviacion;
+            return transaccion.getMonto() > umbral;
         }
 
         // Genera un reporte de gasto asociado a un cliente específico.
