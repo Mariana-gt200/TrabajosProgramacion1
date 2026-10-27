@@ -8,7 +8,6 @@ public class ServicioNotificacion {
 
      //Metodo para enviar una notificación a un cliente
 
-    //Metodo para enviar una notificación a un cliente
     public boolean enviarNotificacion(String mensaje, Cliente cliente) {
         if (cliente == null || mensaje == null || mensaje.isEmpty()) {
             return false;
