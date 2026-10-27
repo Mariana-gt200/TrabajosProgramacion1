@@ -98,6 +98,18 @@ public class MonederoVirtual {
                 })
                 .orElse("No se puede eliminar, no existe un cliente con esa identificacion.");
     }
+
+    //Calcular comisión según el rango del cliente
+    private double calcularComision(RangoCliente rango, double monto) {
+        double porcentaje;
+        switch (rango) {
+            case BRONCE:  porcentaje = 0.02;  break;
+            case PLATA:   porcentaje = 0.015; break;
+            case ORO:     porcentaje = 0.01;  break;
+            default:      porcentaje = 0.005; break;
+        }
+        return monto * porcentaje;
+    }
     //---------------------------------------------------------------------------------------
 
     //CRUD Monederos-------------------------------------------------------------------------
@@ -188,7 +200,8 @@ public class MonederoVirtual {
                 .orElse("No se puede eliminar, no existe una transacción con esa identificación.");
     }
     //--------------------------------------------------------------------------------------------
-    //MONTO---------------------------------------------------------------------------------------
+
+    //Validaciones---------------------------------------------------------------------------------------
     //Validar monto
     private void validarMonto(double monto) throws MontoInvalidoException {
         if (monto <= 0) {
@@ -200,5 +213,99 @@ public class MonederoVirtual {
     private String generarIdTransaccion() {
         return "TRX-" + UUID.randomUUID().toString().substring(0, 8);
     }
+
+    //ALERTAS--------------------------------------------------------------------------------------
+    //Revisar si una transacción es atípica
+    private void revisarTransaccionAtipica(Transaccion transaccion, Cliente cliente) {
+        List<Transaccion> historial = obtenerHistorialCliente(cliente.getIdentificacion()).stream()
+                .filter(t -> t.nombreTipo().equals(transaccion.nombreTipo()))
+                .filter(t -> t.getEstado() != EstadoTransaccion.REVERTIDA)
+                .toList();
+        if (analizadorPatronesGastos.detectarTransaccionAtipica(transaccion, historial)) {
+            transaccion.setEstado(EstadoTransaccion.SOSPECHOSA);
+            servicioNotificacion.enviarNotificacion(
+                    "Alerta: se detectó una transacción atípica por $" + transaccion.getMonto(), cliente);
+        }
+    }
+    //Revisar si el saldo quedó bajo
+    private void revisarSaldoBajo(Cliente cliente, Monedero monedero) {
+        if (monedero.getSaldo() < SALDO_MINIMO) {
+            servicioNotificacion.enviarNotificacion(
+                    "Alerta: saldo bajo en el monedero " + monedero.getIdMonedero(), cliente);
+        }
+    }
+    //--------------------------------------------------------------------------------------------
+
+    //Acciones de transacciones--------------------------------------------------------------------
+    //Deposito
+    public String depositar(String idCliente, String idMonedero, double monto)
+            throws MontoInvalidoException, ClienteNoEncontradoException, MonederoNoEncontradoException {
+        validarMonto(monto);
+        Cliente cliente = obtenerCliente(idCliente);
+        Monedero monedero = obtenerMonedero(idCliente, idMonedero);
+
+        Deposito deposito = new Deposito(generarIdTransaccion(), monto, EstadoTransaccion.COMPLETADA, idCliente, monedero);
+        revisarTransaccionAtipica(deposito, cliente);   // <-- ALERTA
+
+        monedero.setSaldo(monedero.getSaldo() + monto);
+        registrarTransaccion(deposito);
+        actualizarRangoCliente(idCliente);
+        return "Depósito realizado exitosamente.";
+    }
+
+    //Retiro
+    public String retirar(String idCliente, String idMonedero, double monto)
+            throws MontoInvalidoException, ClienteNoEncontradoException,
+            MonederoNoEncontradoException, SaldoInsuficienteException {
+        validarMonto(monto);
+        Cliente cliente = obtenerCliente(idCliente);
+        Monedero monedero = obtenerMonedero(idCliente, idMonedero);
+
+        if (monedero.getSaldo() < monto) {
+            throw new SaldoInsuficienteException("Saldo insuficiente para retirar $" + monto);
+        }
+
+        Retiro retiro = new Retiro(generarIdTransaccion(), LocalDate.now(), monto,
+                EstadoTransaccion.COMPLETADA, idCliente, monedero);
+        revisarTransaccionAtipica(retiro, cliente);      // <-- ALERTA 1: antes de registrar
+
+        monedero.setSaldo(monedero.getSaldo() - monto);
+        registrarTransaccion(retiro);
+        revisarSaldoBajo(cliente, monedero);             // <-- ALERTA 2: después de restar el saldo
+        actualizarRangoCliente(idCliente);
+        return "Retiro realizado exitosamente.";
+    }
+
+    //Transferencia
+    public String transferir(String idClienteOrigen, String idMonederoOrigen,
+                             String idClienteDestino, String idMonederoDestino, double monto)
+            throws MontoInvalidoException, ClienteNoEncontradoException, MonederoNoEncontradoException,
+            SaldoInsuficienteException, TransferenciaInvalidaException {
+        validarMonto(monto);
+        if (idClienteOrigen.equals(idClienteDestino) && idMonederoOrigen.equals(idMonederoDestino)) {
+            throw new TransferenciaInvalidaException("No se puede transferir al mismo monedero.");
+        }
+        Cliente cliente = obtenerCliente(idClienteOrigen);
+        Monedero origen = obtenerMonedero(idClienteOrigen, idMonederoOrigen);
+        Monedero destino = obtenerMonedero(idClienteDestino, idMonederoDestino);
+
+        double comision = calcularComision(cliente.getRango(), monto);
+        if (origen.getSaldo() < monto + comision) {
+            throw new SaldoInsuficienteException("Saldo insuficiente (monto + comisión de $" + comision + ")");
+        }
+
+        Transferencia transferencia = new Transferencia(generarIdTransaccion(), LocalDate.now(), monto,
+                EstadoTransaccion.COMPLETADA, idClienteOrigen, origen, destino, comision);
+        revisarTransaccionAtipica(transferencia, cliente);   // <-- ALERTA 1: antes de registrar
+
+        origen.setSaldo(origen.getSaldo() - monto - comision);
+        destino.setSaldo(destino.getSaldo() + monto);
+        registrarTransaccion(transferencia);
+        revisarSaldoBajo(cliente, origen);                   // <-- ALERTA 2: monedero de origen
+        actualizarRangoCliente(idClienteOrigen);
+        return "Transferencia realizada exitosamente.";
+    }
+
+    
 
 }

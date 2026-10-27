@@ -20,6 +20,9 @@ public class Deposito extends Transaccion {
         return (int) (getMonto() / 100) * 1;
     }
 
+    private void revisarTransaccionAtipica(Deposito this, Cliente cliente) {
+    }
+
     //Get y set
     public Monedero getMonederoDestino() {
         return monederoDestino;
