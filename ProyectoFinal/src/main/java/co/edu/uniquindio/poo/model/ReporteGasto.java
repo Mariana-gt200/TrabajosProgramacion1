@@ -4,12 +4,12 @@ import java.util.Map;
 
 public class ReporteGasto {
     private LocalDate fecha;
-    private Map<String, Monedero> desglosePorCategoria;
+    private Map<String, Double> desglosePorCategoria;
     private double totalGasto;
 
     //Constructor
 
-    public ReporteGasto(LocalDate fecha, Map<String, Monedero> desglosePorCategoria, double totalGasto) {
+    public ReporteGasto(LocalDate fecha, Map<String, Double> desglosePorCategoria, double totalGasto) {
         this.fecha = fecha;
         this.desglosePorCategoria = desglosePorCategoria;
         this.totalGasto = totalGasto;
@@ -26,11 +26,11 @@ public class ReporteGasto {
         this.fecha = fecha;
     }
 
-    public Map<String, Monedero> getDesglosePorCategoria() {
+    public Map<String, Double> getDesglosePorCategoria() {
         return desglosePorCategoria;
     }
 
-    public void setDesglosePorCategoria(Map<String, Monedero> desglosePorCategoria) {
+    public void setDesglosePorCategoria(Map<String, Double> desglosePorCategoria) {
         this.desglosePorCategoria = desglosePorCategoria;
     }
 

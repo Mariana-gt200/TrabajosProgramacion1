@@ -2,6 +2,8 @@ package co.edu.uniquindio.poo.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AnalizadorPatronesGastos {
 
@@ -50,11 +52,22 @@ public class AnalizadorPatronesGastos {
         }
 
         // Genera un reporte de gasto asociado a un cliente específico.
-        public ReporteGasto generarReporte(Cliente cliente) {
-            ReporteGasto reporte = new ReporteGasto();
-            reporte.setFechaGeneracion(LocalDate.now());
+        public ReporteGasto generarReporte(Cliente cliente, List<Transaccion> transacciones) {
+            List<Transaccion> delCliente = transacciones.stream()
+                    .filter(t -> t.getIdCliente().equals(cliente.getIdentificacion()))
+                    .filter(t -> t.getEstado() != EstadoTransaccion.REVERTIDA)
+                    .toList();
+            Map<String, Double> desglose = delCliente.stream()
+                    .collect(Collectors.groupingBy(
+                            t -> t.nombreTipo(),
+                            Collectors.summingDouble(t -> t.getMonto())));
+            double totalGasto = delCliente.stream()
+                    .filter(t -> t instanceof Retiro || t instanceof Transferencia)
+                    .mapToDouble(t -> t.getMonto())
+                    .sum();
 
-            return reporte;
+            return new ReporteGasto(LocalDate.now(), desglose, totalGasto);
         }
+
 }
 

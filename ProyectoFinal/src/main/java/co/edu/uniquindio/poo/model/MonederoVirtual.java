@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.util.UUID;
 
 public class MonederoVirtual {
     private final List<Cliente> listaClientes;
@@ -15,6 +17,7 @@ public class MonederoVirtual {
     private final List<Transaccion> listaTransacciones;
     private final ServicioNotificacion servicioNotificacion;
     private final AnalizadorPatronesGastos analizadorPatronesGastos;
+    private static final double SALDO_MINIMO = 10000;
 
     //Constructor
     public MonederoVirtual(List<Cliente> listaClientes, List<Monedero> listaMonederos, List<Transaccion> listaTransacciones, ServicioNotificacion servicioNotificacion, AnalizadorPatronesGastos analizadorPatronesGastos) {
@@ -59,16 +62,17 @@ public class MonederoVirtual {
                 });
     }
 
+    //Obtener Cliente
+    private Cliente obtenerCliente(String idCliente) throws ClienteNoEncontradoException {
+        return buscarCliente(idCliente)
+                .orElseThrow(() -> new ClienteNoEncontradoException("No existe el cliente con id " + idCliente));
+    }
+
     //Buscar cliente
     public Optional<Cliente> buscarCliente(String identificacion) {
         return listaClientes.stream()
                 .filter(c -> c.getIdentificacion().equals(identificacion))
                 .findFirst();
-    }
-
-    //Obtener clientes
-    public List<Cliente> obtenerClientes() {
-        return Collections.unmodifiableList(listaClientes);
     }
 
     //Actualizar cliente
@@ -117,17 +121,12 @@ public class MonederoVirtual {
                 .findFirst();
     }
 
-    //Obtener monederos
-    public List<Monedero> obtenerMonederos(String idCliente) {
-        if (buscarCliente(idCliente).isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<Monedero> monederos = Collections.unmodifiableList(
-                listaMonederos.stream()
-                        .filter(m -> m.getIdentificacionCliente().equals(idCliente))
-                        .collect(Collectors.toList())
-        );
-        return monederos;
+    //Obtener monedero
+    private Monedero obtenerMonedero(String idCliente, String idMonedero)
+            throws ClienteNoEncontradoException, MonederoNoEncontradoException {
+        obtenerCliente(idCliente);
+        return buscarMonedero(idCliente, idMonedero)
+                .orElseThrow(() -> new MonederoNoEncontradoException("No existe el monedero " + idMonedero + " para ese cliente"));
     }
 
     //Actualizar monedero
@@ -189,6 +188,17 @@ public class MonederoVirtual {
                 .orElse("No se puede eliminar, no existe una transacción con esa identificación.");
     }
     //--------------------------------------------------------------------------------------------
+    //MONTO---------------------------------------------------------------------------------------
+    //Validar monto
+    private void validarMonto(double monto) throws MontoInvalidoException {
+        if (monto <= 0) {
+            throw new MontoInvalidoException("El monto debe ser mayor a cero.");
+        }
+    }
 
+    //Validar Transaccion
+    private String generarIdTransaccion() {
+        return "TRX-" + UUID.randomUUID().toString().substring(0, 8);
+    }
 
 }

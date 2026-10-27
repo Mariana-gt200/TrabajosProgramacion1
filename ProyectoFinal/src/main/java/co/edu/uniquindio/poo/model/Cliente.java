@@ -6,6 +6,7 @@ public class Cliente {
     private String email;
     private String telefono;
     private RangoCliente rango;
+    private CanalNotificacion canalPreferido = CanalNotificacion.SMS;
 
     public Cliente (String identificacion, String nombre, String email, String telefono, RangoCliente rango){
         this.identificacion = identificacion;
@@ -14,6 +15,11 @@ public class Cliente {
         this.telefono = telefono;
         this.rango = rango;
     }
+
+    // Getters y Setters
+    public CanalNotificacion getCanalPreferido() { return canalPreferido; }
+
+    public void setCanalPreferido(CanalNotificacion canalPreferido) { this.canalPreferido = canalPreferido; }
 
     public RangoCliente getRango() {
         return rango;

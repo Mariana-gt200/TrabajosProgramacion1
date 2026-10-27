@@ -6,18 +6,18 @@ public class ServicioNotificacion {
     public ServicioNotificacion() {
     }
 
-     //Método para enviar una notificación a un cliente
+     //Metodo para enviar una notificación a un cliente
 
-    public boolean enviarNotificacion(String mensaje, Cliente cliente) {
-        if (cliente == null || mensaje == null || mensaje.isEmpty()) {
-            return false;
-        }
-
-        // FALTA VALIDAR EL CANAL DE ENVÍO DE NOTIFICACIÓN SEGÚN EL CLIENTE ESCOJA
-
-        System.out.println("Enviando notificación a: " + cliente.getNombre());
-        System.out.println("Mensaje: " + mensaje);
-
-        return true;
+    switch (cliente.getCanalPreferido()) {
+        case WHATSAPP:
+            System.out.println("[WhatsApp] Para " + cliente.getTelefono() + ": " + mensaje);
+            break;
+        case GMAIL:
+            System.out.println("[Gmail] Para " + cliente.getEmail() + ": " + mensaje);
+            break;
+        case SMS:
+            System.out.println("[SMS] Para " + cliente.getTelefono() + ": " + mensaje);
+            break;
     }
+return true;
 }
