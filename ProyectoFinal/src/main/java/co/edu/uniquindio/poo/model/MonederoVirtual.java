@@ -68,6 +68,11 @@ public class MonederoVirtual {
                 .orElseThrow(() -> new ClienteNoEncontradoException("No existe el cliente con id " + idCliente));
     }
 
+    public List<Cliente> obtenerClientes() {
+        return Collections.unmodifiableList(listaClientes);
+    }
+
+
     //Buscar cliente
     public Optional<Cliente> buscarCliente(String identificacion) {
         return listaClientes.stream()
@@ -98,6 +103,18 @@ public class MonederoVirtual {
                 })
                 .orElse("No se puede eliminar, no existe un cliente con esa identificacion.");
     }
+
+    //Calcular comisión según el rango del cliente
+    private double calcularComision(RangoCliente rango, double monto) {
+        double porcentaje;
+        switch (rango) {
+            case BRONCE:  porcentaje = 0.02;  break;
+            case PLATA:   porcentaje = 0.015; break;
+            case ORO:     porcentaje = 0.01;  break;
+            default:      porcentaje = 0.005; break;
+        }
+        return monto * porcentaje;
+    }
     //---------------------------------------------------------------------------------------
 
     //CRUD Monederos-------------------------------------------------------------------------
@@ -127,6 +144,18 @@ public class MonederoVirtual {
         obtenerCliente(idCliente);
         return buscarMonedero(idCliente, idMonedero)
                 .orElseThrow(() -> new MonederoNoEncontradoException("No existe el monedero " + idMonedero + " para ese cliente"));
+    }
+
+    public List<Monedero> obtenerMonederos(String idCliente) {
+        if (buscarCliente(idCliente).isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Monedero> monederos = Collections.unmodifiableList(
+                listaMonederos.stream()
+                        .filter(m -> m.getIdentificacionCliente().equals(idCliente))
+                        .collect(Collectors.toList())
+        );
+        return monederos;
     }
 
     //Actualizar monedero
@@ -188,7 +217,8 @@ public class MonederoVirtual {
                 .orElse("No se puede eliminar, no existe una transacción con esa identificación.");
     }
     //--------------------------------------------------------------------------------------------
-    //MONTO---------------------------------------------------------------------------------------
+
+    //Validaciones---------------------------------------------------------------------------------------
     //Validar monto
     private void validarMonto(double monto) throws MontoInvalidoException {
         if (monto <= 0) {
@@ -200,5 +230,156 @@ public class MonederoVirtual {
     private String generarIdTransaccion() {
         return "TRX-" + UUID.randomUUID().toString().substring(0, 8);
     }
+
+    //ALERTAS--------------------------------------------------------------------------------------
+    //Revisar si una transacción es atípica
+    private void revisarTransaccionAtipica(Transaccion transaccion, Cliente cliente) {
+        List<Transaccion> historial = obtenerHistorialCliente(cliente.getIdentificacion()).stream()
+                .filter(t -> t.nombreTipo().equals(transaccion.nombreTipo()))
+                .filter(t -> t.getEstado() != EstadoTransaccion.REVERTIDA)
+                .toList();
+        if (analizadorPatronesGastos.detectarTransaccionAtipica(transaccion, historial)) {
+            transaccion.setEstado(EstadoTransaccion.SOSPECHOSA);
+            servicioNotificacion.enviarNotificacion(
+                    "Alerta: se detectó una transacción atípica por $" + transaccion.getMonto(), cliente);
+        }
+    }
+    //Revisar si el saldo quedó bajo
+    private void revisarSaldoBajo(Cliente cliente, Monedero monedero) {
+        if (monedero.getSaldo() < SALDO_MINIMO) {
+            servicioNotificacion.enviarNotificacion(
+                    "Alerta: saldo bajo en el monedero " + monedero.getIdMonedero(), cliente);
+        }
+    }
+    //--------------------------------------------------------------------------------------------
+
+    //Acciones de transacciones--------------------------------------------------------------------
+    //Deposito
+    public String depositar(String idCliente, String idMonedero, double monto)
+            throws MontoInvalidoException, ClienteNoEncontradoException, MonederoNoEncontradoException {
+        validarMonto(monto);
+        Cliente cliente = obtenerCliente(idCliente);
+        Monedero monedero = obtenerMonedero(idCliente, idMonedero);
+
+        Deposito deposito = new Deposito(generarIdTransaccion(), monto, EstadoTransaccion.COMPLETADA, idCliente, monedero);
+        revisarTransaccionAtipica(deposito, cliente);   // <-- ALERTA
+
+        monedero.setSaldo(monedero.getSaldo() + monto);
+        registrarTransaccion(deposito);
+        actualizarRangoCliente(idCliente);
+        return "Depósito realizado exitosamente.";
+    }
+
+    //Retiro
+    public String retirar(String idCliente, String idMonedero, double monto)
+            throws MontoInvalidoException, ClienteNoEncontradoException,
+            MonederoNoEncontradoException, SaldoInsuficienteException {
+        validarMonto(monto);
+        Cliente cliente = obtenerCliente(idCliente);
+        Monedero monedero = obtenerMonedero(idCliente, idMonedero);
+
+        if (monedero.getSaldo() < monto) {
+            throw new SaldoInsuficienteException("Saldo insuficiente para retirar $" + monto);
+        }
+
+        Retiro retiro = new Retiro(generarIdTransaccion(), LocalDate.now(), monto,
+                EstadoTransaccion.COMPLETADA, idCliente, monedero);
+        //ALERTA 1: antes de registrar
+        revisarTransaccionAtipica(retiro, cliente);
+
+        monedero.setSaldo(monedero.getSaldo() - monto);
+        registrarTransaccion(retiro);
+        //ALERTA 2: después de restar el saldo
+        revisarSaldoBajo(cliente, monedero);
+        actualizarRangoCliente(idCliente);
+        return "Retiro realizado exitosamente.";
+    }
+
+    //Transferencia
+    public String transferir(String idClienteOrigen, String idMonederoOrigen,
+                             String idClienteDestino, String idMonederoDestino, double monto)
+            throws MontoInvalidoException, ClienteNoEncontradoException, MonederoNoEncontradoException,
+            SaldoInsuficienteException, TransferenciaInvalidaException {
+        validarMonto(monto);
+        if (idClienteOrigen.equals(idClienteDestino) && idMonederoOrigen.equals(idMonederoDestino)) {
+            throw new TransferenciaInvalidaException("No se puede transferir al mismo monedero.");
+        }
+        Cliente cliente = obtenerCliente(idClienteOrigen);
+        Monedero origen = obtenerMonedero(idClienteOrigen, idMonederoOrigen);
+        Monedero destino = obtenerMonedero(idClienteDestino, idMonederoDestino);
+
+        double comision = calcularComision(cliente.getRango(), monto);
+        if (origen.getSaldo() < monto + comision) {
+            throw new SaldoInsuficienteException("Saldo insuficiente (monto + comisión de $" + comision + ")");
+        }
+
+        Transferencia transferencia = new Transferencia(generarIdTransaccion(), LocalDate.now(), monto,
+                EstadoTransaccion.COMPLETADA, idClienteOrigen, origen, destino, comision);
+        //ALERTA 1: antes de registrar
+        revisarTransaccionAtipica(transferencia, cliente);
+
+        origen.setSaldo(origen.getSaldo() - monto - comision);
+        destino.setSaldo(destino.getSaldo() + monto);
+        registrarTransaccion(transferencia);
+        //ALERTA 2: monedero de origen
+        revisarSaldoBajo(cliente, origen);
+        actualizarRangoCliente(idClienteOrigen);
+        return "Transferencia realizada exitosamente.";
+    }
+
+    //CONSULTAS------------------------------------------------------------------------------------
+    //Consultar el saldo de un monedero
+    public double consultarSaldo(String idCliente, String idMonedero)
+            throws ClienteNoEncontradoException, MonederoNoEncontradoException {
+        return obtenerMonedero(idCliente, idMonedero).getSaldo();
+    }
+
+    //Consultar el saldo sumado de todos los monederos del cliente
+    public double consultarSaldoTotal(String idCliente) {
+        return obtenerMonederos(idCliente).stream()
+                .mapToDouble(m -> m.getSaldo())
+                .sum();
+    }
+
+    //Consultar el historial (propias y transferencias recibidas), de la más reciente a la más antigua
+    public List<Transaccion> consultarHistorial(String idCliente) {
+        return listaTransacciones.stream()
+                .filter(t -> t.getIdCliente().equals(idCliente)
+                        || (t instanceof Transferencia
+                        && ((Transferencia) t).getMonederoDestino()
+                        .getIdentificacionCliente().equals(idCliente)))
+                .sorted((a, b) -> b.getFecha().compareTo(a.getFecha()))
+                .toList();
+    }
+    //--------------------------------------------------------------------------------------------
+
+    //PUNTOS Y RANGOS------------------------------------------------------------------------------
+    //Calcular los puntos acumulados (las transacciones revertidas no cuentan)
+    public int calcularPuntos(String idCliente) {
+        return listaTransacciones.stream()
+                .filter(t -> t.getIdCliente().equals(idCliente))
+                .filter(t -> t.getEstado() != EstadoTransaccion.REVERTIDA)
+                .mapToInt(t -> t.calcularPuntosGenerados())
+                .sum();
+    }
+
+    //Calcular el rango según los puntos
+    public RangoCliente calcularRango(int puntos) {
+        if (puntos <= 500) {
+            return RangoCliente.BRONCE;
+        } else if (puntos <= 1000) {
+            return RangoCliente.PLATA;
+        } else if (puntos <= 5000) {
+            return RangoCliente.ORO;
+        }
+        return RangoCliente.PLATINO;
+    }
+
+    //Actualizar el rango del cliente con sus puntos actuales
+    public void actualizarRangoCliente(String idCliente) throws ClienteNoEncontradoException {
+        Cliente cliente = obtenerCliente(idCliente);
+        cliente.setRango(calcularRango(calcularPuntos(idCliente)));
+    }
+//--------------------------------------------------------------------------------------------
 
 }

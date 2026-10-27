@@ -6,9 +6,11 @@ public class ServicioNotificacion {
     public ServicioNotificacion() {
     }
 
-    //Metodo para enviar una notificación a un cliente según su canal preferido
-    public boolean enviarNotificacion(Cliente cliente, String mensaje) {
-        if (cliente == null || mensaje == null) {
+     //Metodo para enviar una notificación a un cliente
+
+    //Metodo para enviar una notificación a un cliente
+    public boolean enviarNotificacion(String mensaje, Cliente cliente) {
+        if (cliente == null || mensaje == null || mensaje.isEmpty()) {
             return false;
         }
         switch (cliente.getCanalPreferido()) {
