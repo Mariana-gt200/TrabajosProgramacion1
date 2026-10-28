@@ -2,7 +2,7 @@ package co.edu.uniquindio.poo.model;
 
 import java.time.LocalDate;
 
-/**
+/*
  * Representa una transacción recurrente programada por un cliente
  * (depósito automático, retiro periódico o transferencia periódica).
  * Implementa Comparable para poder ordenarse por fecha de ejecución.
@@ -18,7 +18,7 @@ public class TransaccionProgramada implements Comparable<TransaccionProgramada> 
     private TipoTransaccion tipo;
     private Monedero monederoOrigen;   // Retiros y transferencias
     private Monedero monederoDestino;  // Depósitos y transferencias
-    private boolean activa;
+    private boolean activa = true; // Si la programación está activa o cancelada
 
     //Constructor
     public TransaccionProgramada(String idProgramacion, String idCliente, LocalDate fechaInicio,
@@ -48,6 +48,20 @@ public class TransaccionProgramada implements Comparable<TransaccionProgramada> 
     }
 
     //Metodos
+    //Avanza la próxima ejecución según la frecuencia
+    public void calcularSiguienteEjecucion() {
+        switch (frecuencia) {
+            case DIARIA:
+                fechaProximaEjecucion = fechaProximaEjecucion.plusDays(1);
+                break;
+            case SEMANAL:
+                fechaProximaEjecucion = fechaProximaEjecucion.plusWeeks(1);
+                break;
+            case MENSUAL:
+                fechaProximaEjecucion = fechaProximaEjecucion.plusMonths(1);
+                break;
+        }
+    }
 
     //Valida que los monederos exigidos por el tipo de transacción estén presentes
     private static void validarMonederosSegunTipo(TipoTransaccion tipo, Monedero origen, Monedero destino)

@@ -1,4 +1,5 @@
 package co.edu.uniquindio.poo.model;
+import java.time.LocalDate;
 
 public class Cliente {
     private String identificacion;
@@ -7,6 +8,10 @@ public class Cliente {
     private String telefono;
     private RangoCliente rango;
     private CanalNotificacion canalPreferido = CanalNotificacion.SMS;
+    private int puntosCanjeados = 0;
+    private boolean descuentoComision = false;
+    private LocalDate sinCargosRetirosHasta = null;
+
 
     public Cliente (String identificacion, String nombre, String email, String telefono, RangoCliente rango){
         this.identificacion = identificacion;
@@ -60,4 +65,13 @@ public class Cliente {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    public int getPuntosCanjeados() { return puntosCanjeados; }
+    public void setPuntosCanjeados(int puntosCanjeados) { this.puntosCanjeados = puntosCanjeados; }
+
+    public boolean isDescuentoComision() { return descuentoComision; }
+    public void setDescuentoComision(boolean descuentoComision) { this.descuentoComision = descuentoComision; }
+
+    public LocalDate getSinCargosRetirosHasta() { return sinCargosRetirosHasta; }
+    public void setSinCargosRetirosHasta(LocalDate sinCargosRetirosHasta) { this.sinCargosRetirosHasta = sinCargosRetirosHasta; }
 }

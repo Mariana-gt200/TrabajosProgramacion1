@@ -19,6 +19,12 @@ public class MonederoVirtual {
     private final AnalizadorPatronesGastos analizadorPatronesGastos;
     private static final double SALDO_MINIMO = 10000;
 
+    private final List<TransaccionProgramada> listaProgramadas = new ArrayList<>();
+    private static final int COSTO_DESCUENTO_COMISION = 100;
+    private static final int COSTO_MES_SIN_CARGOS = 500;
+    private static final int COSTO_BONO_SALDO = 1000;
+    private static final double VALOR_BONO = 50;
+
     //Constructor
     public MonederoVirtual(List<Cliente> listaClientes, List<Monedero> listaMonederos, List<Transaccion> listaTransacciones, ServicioNotificacion servicioNotificacion, AnalizadorPatronesGastos analizadorPatronesGastos) {
         this.listaClientes = listaClientes;
@@ -252,6 +258,12 @@ public class MonederoVirtual {
         }
     }
     //--------------------------------------------------------------------------------------------
+    //Obtiene el monedero actual de la lista a partir de uno de referencia
+    private Monedero monederoActual(Monedero referencia) throws MonederoNoEncontradoException {
+        return buscarMonedero(referencia.getIdentificacionCliente(), referencia.getIdMonedero())
+                .orElseThrow(() -> new MonederoNoEncontradoException(
+                        "El monedero " + referencia.getIdMonedero() + " ya no existe"));
+    }
 
     //Acciones de transacciones--------------------------------------------------------------------
     //Deposito
@@ -309,6 +321,9 @@ public class MonederoVirtual {
         Monedero destino = obtenerMonedero(idClienteDestino, idMonederoDestino);
 
         double comision = calcularComision(cliente.getRango(), monto);
+        if (cliente.isDescuentoComision()) {
+            comision = comision * 0.9;
+        }
         if (origen.getSaldo() < monto + comision) {
             throw new SaldoInsuficienteException("Saldo insuficiente (monto + comisión de $" + comision + ")");
         }
@@ -379,6 +394,226 @@ public class MonederoVirtual {
     public void actualizarRangoCliente(String idCliente) throws ClienteNoEncontradoException {
         Cliente cliente = obtenerCliente(idCliente);
         cliente.setRango(calcularRango(calcularPuntos(idCliente)));
+    }
+    //--------------------------------------------------------------------------------------------
+
+    //REVERSIÓN------------------------------------------------------------------------------------
+    public String revertirTransaccion(String idTransaccion)
+            throws TransaccionNoEncontradaException, TransaccionNoRevertibleException,
+            MonederoNoEncontradoException, SaldoInsuficienteException, ClienteNoEncontradoException {
+        Transaccion transaccion = buscarTransaccion(idTransaccion)
+                .orElseThrow(() -> new TransaccionNoEncontradaException(
+                        "No existe la transacción " + idTransaccion));
+
+        if (transaccion.getEstado() == EstadoTransaccion.REVERTIDA) {
+            throw new TransaccionNoRevertibleException("La transacción ya fue revertida.");
+        }
+
+        if (transaccion instanceof Deposito) {
+            Monedero destino = monederoActual(((Deposito) transaccion).getMonederoDestino());
+            if (destino.getSaldo() < transaccion.getMonto()) {
+                throw new SaldoInsuficienteException(
+                        "No se puede revertir el depósito: el monedero ya no tiene saldo suficiente.");
+            }
+            destino.setSaldo(destino.getSaldo() - transaccion.getMonto());
+
+        } else if (transaccion instanceof Retiro) {
+            Monedero origen = monederoActual(((Retiro) transaccion).getMonederoOrigen());
+            origen.setSaldo(origen.getSaldo() + transaccion.getMonto());
+
+        } else if (transaccion instanceof Transferencia) {
+            Transferencia transferencia = (Transferencia) transaccion;
+            Monedero origen = monederoActual(transferencia.getMonederoOrigen());
+            Monedero destino = monederoActual(transferencia.getMonederoDestino());
+            if (destino.getSaldo() < transferencia.getMonto()) {
+                throw new SaldoInsuficienteException(
+                        "No se puede revertir la transferencia: el monedero destino ya no tiene ese saldo.");
+            }
+            destino.setSaldo(destino.getSaldo() - transferencia.getMonto());
+            origen.setSaldo(origen.getSaldo() + transferencia.getMonto() + transferencia.getComision());
+        }
+
+        transaccion.setEstado(EstadoTransaccion.REVERTIDA);
+        actualizarRangoCliente(transaccion.getIdCliente());
+        return "La transacción " + idTransaccion + " fue revertida exitosamente.";
+    }
+    //--------------------------------------------------------------------------------------------
+
+    //CANJE DE PUNTOS------------------------------------------------------------------------------
+    //Puntos acumulados menos los ya canjeados
+    public int consultarPuntosDisponibles(String idCliente) throws ClienteNoEncontradoException {
+        Cliente cliente = obtenerCliente(idCliente);
+        int disponibles = calcularPuntos(idCliente) - cliente.getPuntosCanjeados();
+        if (disponibles < 0) {
+            return 0;
+        }
+        return disponibles;
+    }
+
+    //Descuenta los puntos de un canje, validando que alcancen
+    private void descontarPuntos(Cliente cliente, int costo)
+            throws ClienteNoEncontradoException, CanjeInvalidoException {
+        if (consultarPuntosDisponibles(cliente.getIdentificacion()) < costo) {
+            throw new CanjeInvalidoException("Puntos insuficientes: se necesitan " + costo + " puntos.");
+        }
+        cliente.setPuntosCanjeados(cliente.getPuntosCanjeados() + costo);
+    }
+
+    //100 puntos: 10% menos en la comisión de transferencias
+    public String canjearDescuentoComision(String idCliente)
+            throws ClienteNoEncontradoException, CanjeInvalidoException {
+        Cliente cliente = obtenerCliente(idCliente);
+        if (cliente.isDescuentoComision()) {
+            throw new CanjeInvalidoException("El cliente ya tiene activo el descuento en la comisión.");
+        }
+        descontarPuntos(cliente, COSTO_DESCUENTO_COMISION);
+        cliente.setDescuentoComision(true);
+        return "Beneficio activado: 10% de descuento en la comisión de transferencias.";
+    }
+
+    //500 puntos: un mes sin cargos por retiros
+    public String canjearMesSinCargos(String idCliente)
+            throws ClienteNoEncontradoException, CanjeInvalidoException {
+        Cliente cliente = obtenerCliente(idCliente);
+        if (cliente.getSinCargosRetirosHasta() != null
+                && cliente.getSinCargosRetirosHasta().isAfter(LocalDate.now())) {
+            throw new CanjeInvalidoException("El cliente ya tiene activo un mes sin cargos por retiros.");
+        }
+        descontarPuntos(cliente, COSTO_MES_SIN_CARGOS);
+        cliente.setSinCargosRetirosHasta(LocalDate.now().plusMonths(1));
+        return "Beneficio activado: sin cargos por retiros hasta " + cliente.getSinCargosRetirosHasta() + ".";
+    }
+
+    //1000 puntos: bono de 50 unidades en un monedero
+    public String canjearBonoSaldo(String idCliente, String idMonedero)
+            throws ClienteNoEncontradoException, MonederoNoEncontradoException, CanjeInvalidoException {
+        Cliente cliente = obtenerCliente(idCliente);
+        Monedero monedero = obtenerMonedero(idCliente, idMonedero);
+        descontarPuntos(cliente, COSTO_BONO_SALDO);
+
+        monedero.setSaldo(monedero.getSaldo() + VALOR_BONO);
+        Deposito bono = new Deposito(generarIdTransaccion(), VALOR_BONO,
+                EstadoTransaccion.COMPLETADA, idCliente, monedero);
+        registrarTransaccion(bono);
+        return "Bono de $" + VALOR_BONO + " acreditado en el monedero " + idMonedero + ".";
+    }
+
+    //Historial de las transacciones que generaron puntos
+    public List<Transaccion> consultarHistorialPuntos(String idCliente) {
+        return listaTransacciones.stream()
+                .filter(t -> t.getIdCliente().equals(idCliente))
+                .filter(t -> t.getEstado() != EstadoTransaccion.REVERTIDA)
+                .filter(t -> t.calcularPuntosGenerados() > 0)
+                .sorted((a, b) -> b.getFecha().compareTo(a.getFecha()))
+                .toList();
+    }
+    //--------------------------------------------------------------------------------------------
+
+    //TRANSACCIONES PROGRAMADAS--------------------------------------------------------------------
+    //Metodo auxiliar para generar un id único para cada programación
+    private String generarIdProgramacion() {
+        return "PRG-" + UUID.randomUUID().toString().substring(0, 8);
+    }
+
+    //Programar una transacción recurrente
+    public String programarTransaccion(String idCliente, String idMonedero, String idClienteDestino,
+                                       String idMonederoDestino, LocalDate fechaInicio, FrecuenciaProgramada frecuencia,
+                                       double monto, TipoTransaccion tipo)
+            throws MontoInvalidoException, ClienteNoEncontradoException,
+            MonederoNoEncontradoException, ProgramacionInvalidaException {
+        validarMonto(monto);
+        obtenerMonedero(idCliente, idMonedero);
+
+        if (fechaInicio.isBefore(LocalDate.now())) {
+            throw new ProgramacionInvalidaException("La fecha de inicio no puede estar en el pasado.");
+        }
+        if (tipo == TipoTransaccion.TRANSFERENCIA) {
+            if (idClienteDestino == null || idMonederoDestino == null) {
+                throw new ProgramacionInvalidaException("La transferencia programada necesita un monedero destino.");
+            }
+            obtenerMonedero(idClienteDestino, idMonederoDestino);
+        }
+
+        TransaccionProgramada programada = new TransaccionProgramada(generarIdProgramacion(), idCliente,
+                idMonedero, idClienteDestino, idMonederoDestino, fechaInicio, frecuencia, monto, tipo);
+        listaProgramadas.add(programada);
+        return "Transacción programada exitosamente. Id: " + programada.getIdProgramacion();
+    }
+
+    //Buscar una programada
+    public Optional<TransaccionProgramada> buscarProgramada(String idProgramacion) {
+        return listaProgramadas.stream()
+                .filter(p -> p.getIdProgramacion().equals(idProgramacion))
+                .findFirst();
+    }
+
+    //Cancelar una programada (queda inactiva, no se borra)
+    public String cancelarProgramada(String idProgramacion) throws TransaccionNoEncontradaException {
+        TransaccionProgramada programada = buscarProgramada(idProgramacion)
+                .orElseThrow(() -> new TransaccionNoEncontradaException(
+                        "No existe la programación " + idProgramacion));
+        programada.setActiva(false);
+        return "La transacción programada fue cancelada.";
+    }
+
+    //Consultar las programadas activas de un cliente, ordenadas por la fecha de ejecución
+    public List<TransaccionProgramada> consultarProgramadas(String idCliente) {
+        return listaProgramadas.stream()
+                .filter(p -> p.getIdCliente().equals(idCliente))
+                .filter(p -> p.isActiva())
+                .sorted((a, b) -> a.getFechaProximaEjecucion().compareTo(b.getFechaProximaEjecucion()))
+                .toList();
+    }
+
+    //Ejecutar las programadas que ya vencieron, de la más antigua a la más reciente
+    public List<String> ejecutarProgramadas(LocalDate fechaCorte) {
+        List<String> resultados = new ArrayList<>();
+
+        List<TransaccionProgramada> pendientes = listaProgramadas.stream()
+                .filter(p -> p.isActiva())
+                .filter(p -> !p.getFechaProximaEjecucion().isAfter(fechaCorte))
+                .sorted((a, b) -> a.getFechaProximaEjecucion().compareTo(b.getFechaProximaEjecucion()))
+                .toList();
+
+        for (TransaccionProgramada p : pendientes) {
+            try {
+                switch (p.getTipo()) {
+                    case DEPOSITO:
+                        depositar(p.getIdCliente(), p.getIdMonedero(), p.getMonto());
+                        break;
+                    case RETIRO:
+                        retirar(p.getIdCliente(), p.getIdMonedero(), p.getMonto());
+                        break;
+                    case TRANSFERENCIA:
+                        transferir(p.getIdCliente(), p.getIdMonedero(),
+                                p.getIdClienteDestino(), p.getIdMonederoDestino(), p.getMonto());
+                        break;
+                }
+                p.calcularSiguienteEjecucion();
+                resultados.add("Ejecutada " + p.getIdProgramacion());
+            } catch (Exception e) {
+                resultados.add("Falló " + p.getIdProgramacion() + ": " + e.getMessage());
+                buscarCliente(p.getIdCliente()).ifPresent(c -> servicioNotificacion.enviarNotificacion(
+                        "No se pudo ejecutar tu transacción programada " + p.getIdProgramacion()
+                                + ": " + e.getMessage(), c));
+            }
+        }
+        return resultados;
+    }
+
+    //Recordar con un día de anticipación las programadas que se ejecutan mañana
+    public int enviarRecordatoriosProgramadas(LocalDate hoy) {
+        List<TransaccionProgramada> proximas = listaProgramadas.stream()
+                .filter(p -> p.isActiva())
+                .filter(p -> p.getFechaProximaEjecucion().equals(hoy.plusDays(1)))
+                .toList();
+
+        for (TransaccionProgramada p : proximas) {
+            buscarCliente(p.getIdCliente()).ifPresent(c -> servicioNotificacion.enviarNotificacion(
+                    "Recordatorio: mañana se ejecuta tu transacción programada " + p.getIdProgramacion()
+                            + " por $" + p.getMonto(), c));
+        }
+        return proximas.size();
     }
 //--------------------------------------------------------------------------------------------
 
