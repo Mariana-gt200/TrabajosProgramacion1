@@ -24,7 +24,7 @@ public class TransaccionProgramada implements Comparable<TransaccionProgramada> 
     public TransaccionProgramada(String idProgramacion, String idCliente, LocalDate fechaInicio,
                                  FrecuenciaProgramada frecuencia, double monto, TipoTransaccion tipo,
                                  Monedero monederoOrigen, Monedero monederoDestino)
-            throws MontoInvalidoException, TransferenciaInvalidaException {
+            throws MontoInvalidoException, TransferenciaInvalidaException, ProgramacionInvalidaException {
 
         if (monto <= 0) {
             throw new MontoInvalidoException("El monto de la transacción programada debe ser mayor a cero.");
@@ -48,38 +48,24 @@ public class TransaccionProgramada implements Comparable<TransaccionProgramada> 
     }
 
     //Metodos
-    //Avanza la próxima ejecución según la frecuencia
-    public void calcularSiguienteEjecucion() {
-        switch (frecuencia) {
-            case DIARIA:
-                fechaProximaEjecucion = fechaProximaEjecucion.plusDays(1);
-                break;
-            case SEMANAL:
-                fechaProximaEjecucion = fechaProximaEjecucion.plusWeeks(1);
-                break;
-            case MENSUAL:
-                fechaProximaEjecucion = fechaProximaEjecucion.plusMonths(1);
-                break;
-        }
-    }
 
     //Valida que los monederos exigidos por el tipo de transacción estén presentes
     private static void validarMonederosSegunTipo(TipoTransaccion tipo, Monedero origen, Monedero destino)
-            throws TransferenciaInvalidaException {
+            throws ProgramacionInvalidaException, TransferenciaInvalidaException {
         switch (tipo) {
             case DEPOSITO:
                 if (destino == null) {
-                    throw new IllegalArgumentException("Un depósito programado requiere monedero destino.");
+                    throw new ProgramacionInvalidaException("Un depósito programado requiere monedero destino.");
                 }
                 break;
             case RETIRO:
                 if (origen == null) {
-                    throw new IllegalArgumentException("Un retiro programado requiere monedero origen.");
+                    throw new ProgramacionInvalidaException("Un retiro programado requiere monedero origen.");
                 }
                 break;
             case TRANSFERENCIA:
                 if (origen == null || destino == null) {
-                    throw new IllegalArgumentException("Una transferencia programada requiere monedero origen y destino.");
+                    throw new ProgramacionInvalidaException("Una transferencia programada requiere monedero origen y destino.");
                 }
                 if (origen.getIdMonedero().equals(destino.getIdMonedero())
                         && origen.getIdentificacionCliente().equals(destino.getIdentificacionCliente())) {
@@ -106,18 +92,6 @@ public class TransaccionProgramada implements Comparable<TransaccionProgramada> 
     //Avanza la programación a su siguiente ejecución (se llama después de ejecutarla)
     public void avanzarProximaEjecucion() {
         this.fechaProximaEjecucion = calcularSiguienteFecha();
-    }
-
-    //Genera la transacción concreta que corresponde a esta programación (polimorfismo: devuelve una Transaccion)
-    public Transaccion generarTransaccion(String idTransaccion, LocalDate fechaEjecucion, double comision) {
-        Transaccion transaccion = switch (tipo) {
-            case DEPOSITO -> new Deposito(idTransaccion, monto, EstadoTransaccion.PENDIENTE, idCliente, monederoDestino);
-            case RETIRO -> new Retiro(idTransaccion, fechaEjecucion, monto, EstadoTransaccion.PENDIENTE, idCliente, monederoOrigen);
-            case TRANSFERENCIA -> new Transferencia(idTransaccion, fechaEjecucion, monto, EstadoTransaccion.PENDIENTE,
-                    idCliente, monederoOrigen, monederoDestino, comision);
-        };
-        transaccion.setFecha(fechaEjecucion); // Deposito asigna LocalDate.now(); se corrige a la fecha programada
-        return transaccion;
     }
 
     //Ordena por fecha de próxima ejecución (y por id para desempatar de forma estable)

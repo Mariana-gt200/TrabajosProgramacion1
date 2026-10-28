@@ -519,27 +519,32 @@ public class MonederoVirtual {
     public String programarTransaccion(String idCliente, String idMonedero, String idClienteDestino,
                                        String idMonederoDestino, LocalDate fechaInicio, FrecuenciaProgramada frecuencia,
                                        double monto, TipoTransaccion tipo)
-            throws MontoInvalidoException, ClienteNoEncontradoException,
-            MonederoNoEncontradoException, ProgramacionInvalidaException {
+            throws MontoInvalidoException, ClienteNoEncontradoException, MonederoNoEncontradoException,
+            ProgramacionInvalidaException, TransferenciaInvalidaException {
         validarMonto(monto);
-        obtenerMonedero(idCliente, idMonedero);
-
-        if (fechaInicio.isBefore(LocalDate.now())) {
-            throw new ProgramacionInvalidaException("La fecha de inicio no puede estar en el pasado.");
+        if (fechaInicio == null || fechaInicio.isBefore(LocalDate.now())) {
+            throw new ProgramacionInvalidaException("La fecha de inicio es obligatoria y no puede estar en el pasado.");
         }
-        if (tipo == TipoTransaccion.TRANSFERENCIA) {
+
+        Monedero origen = null;
+        Monedero destino = null;
+        if (tipo == TipoTransaccion.DEPOSITO) {
+            destino = obtenerMonedero(idCliente, idMonedero);
+        } else if (tipo == TipoTransaccion.RETIRO) {
+            origen = obtenerMonedero(idCliente, idMonedero);
+        } else {
             if (idClienteDestino == null || idMonederoDestino == null) {
                 throw new ProgramacionInvalidaException("La transferencia programada necesita un monedero destino.");
             }
-            obtenerMonedero(idClienteDestino, idMonederoDestino);
+            origen = obtenerMonedero(idCliente, idMonedero);
+            destino = obtenerMonedero(idClienteDestino, idMonederoDestino);
         }
 
         TransaccionProgramada programada = new TransaccionProgramada(generarIdProgramacion(), idCliente,
-                idMonedero, idClienteDestino, idMonederoDestino, fechaInicio, frecuencia, monto, tipo);
+                fechaInicio, frecuencia, monto, tipo, origen, destino);
         listaProgramadas.add(programada);
         return "Transacción programada exitosamente. Id: " + programada.getIdProgramacion();
     }
-
     //Buscar una programada
     public Optional<TransaccionProgramada> buscarProgramada(String idProgramacion) {
         return listaProgramadas.stream()
@@ -561,7 +566,7 @@ public class MonederoVirtual {
         return listaProgramadas.stream()
                 .filter(p -> p.getIdCliente().equals(idCliente))
                 .filter(p -> p.isActiva())
-                .sorted((a, b) -> a.getFechaProximaEjecucion().compareTo(b.getFechaProximaEjecucion()))
+                .sorted()
                 .toList();
     }
 
@@ -570,26 +575,26 @@ public class MonederoVirtual {
         List<String> resultados = new ArrayList<>();
 
         List<TransaccionProgramada> pendientes = listaProgramadas.stream()
-                .filter(p -> p.isActiva())
-                .filter(p -> !p.getFechaProximaEjecucion().isAfter(fechaCorte))
-                .sorted((a, b) -> a.getFechaProximaEjecucion().compareTo(b.getFechaProximaEjecucion()))
+                .filter(p -> p.debeEjecutarse(fechaCorte))
+                .sorted()
                 .toList();
 
         for (TransaccionProgramada p : pendientes) {
             try {
                 switch (p.getTipo()) {
                     case DEPOSITO:
-                        depositar(p.getIdCliente(), p.getIdMonedero(), p.getMonto());
+                        depositar(p.getIdCliente(), p.getMonederoDestino().getIdMonedero(), p.getMonto());
                         break;
                     case RETIRO:
-                        retirar(p.getIdCliente(), p.getIdMonedero(), p.getMonto());
+                        retirar(p.getIdCliente(), p.getMonederoOrigen().getIdMonedero(), p.getMonto());
                         break;
                     case TRANSFERENCIA:
-                        transferir(p.getIdCliente(), p.getIdMonedero(),
-                                p.getIdClienteDestino(), p.getIdMonederoDestino(), p.getMonto());
+                        transferir(p.getIdCliente(), p.getMonederoOrigen().getIdMonedero(),
+                                p.getMonederoDestino().getIdentificacionCliente(),
+                                p.getMonederoDestino().getIdMonedero(), p.getMonto());
                         break;
                 }
-                p.calcularSiguienteEjecucion();
+                p.avanzarProximaEjecucion();
                 resultados.add("Ejecutada " + p.getIdProgramacion());
             } catch (Exception e) {
                 resultados.add("Falló " + p.getIdProgramacion() + ": " + e.getMessage());
