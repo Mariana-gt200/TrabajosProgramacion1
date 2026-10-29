@@ -22,6 +22,14 @@ public class PrimaryController {
         app.openCrudCliente();
     }
 
+    @FXML
+    private Button btnProductos;
+
+    @FXML
+    void onOpenCrudProducto() {
+        app.openCrudProducto();
+    }
+
     public void setApp(App app) {
         this.app = app;
     }
