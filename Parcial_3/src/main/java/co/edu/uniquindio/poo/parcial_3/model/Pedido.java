@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.model;
+package co.edu.uniquindio.poo.parcial_3.model;
 
 public class Pedido {
     private String codigo;

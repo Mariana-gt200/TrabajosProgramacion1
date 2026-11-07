@@ -1,8 +1,10 @@
-package co.edu.uniquindio.poo.model;
+package co.edu.uniquindio.poo.parcial_3.model;
 
 public abstract class Empleado extends Persona {
     private String codigo;
     private int minutosDisponibles;
+
+    public abstract String getTipo();
 
     public String getCodigo() {
         return codigo;
@@ -24,7 +26,9 @@ public abstract class Empleado extends Persona {
         super(nombre, documento);
         this.codigo = codigo;
         this.minutosDisponibles = minutosDisponibles;
-
-
+    }
+    @Override
+    public String toString() {
+        return getNombre() + " (" + getCodigo() + ") - " + getTipo() + " - " + minutosDisponibles + " min";
     }
 }

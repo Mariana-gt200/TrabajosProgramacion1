@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.model;
+package co.edu.uniquindio.poo.parcial_3.model;
 
 public interface IGestionPedidos {
     Pedido registrarPedido(String codigo, String nombreCliente, TipoPan tipoPan, int cantidad);

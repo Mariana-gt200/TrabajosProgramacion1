@@ -1,4 +1,4 @@
-package co.edu.uniquindio.poo.model;
+package co.edu.uniquindio.poo.parcial_3.model;
 
 public class Cajero extends Empleado {
     private String numeroCaja;
@@ -14,5 +14,10 @@ public class Cajero extends Empleado {
 
     public void setNumeroCaja(String numeroCaja) {
         this.numeroCaja = numeroCaja;
+    }
+
+    @Override
+    public String getTipo() {
+        return "Cajero";
     }
 }
