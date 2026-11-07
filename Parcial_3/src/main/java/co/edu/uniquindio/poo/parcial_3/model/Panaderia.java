@@ -159,7 +159,7 @@ public class Panaderia implements IGestionPedidos {
         pedido.setEstado(EstadoPedido.CANCELADO);
     }
 
-    // Consulta cuánto tardaría cada panadero (no cambia nada: no consume tiempo)
+    // Consulta cuánto tardaría cada panadero
     public List<String> estimarTiempos(String codigoPedido) {
         Pedido pedido = obtenerPedido(codigoPedido);
         List<String> estimaciones = new ArrayList<>();
