@@ -108,4 +108,58 @@ public class PanaderiaTest {
         assertEquals(44, carlos.getMinutosDisponibles());
         assertEquals(120, lucia.getMinutosDisponibles());
     }
+   //CANCELAR
+
+        @Test
+        void cancelarPedidoAsignadoDevuelveMinutosReservados() {
+            Panaderia panaderia = new Panaderia("El Trigal");
+            PanaderoIndustrial carlos = new PanaderoIndustrial("Carlos", "111", "E1", 120);
+            panaderia.registrarEmpleado(carlos);
+            Pedido p1 = panaderia.registrarPedido("P01", "Cafe Central", TipoPan.TRADICIONAL, 25);
+            Pedido p2 = panaderia.registrarPedido("P02", "Restaurante Sol", TipoPan.TRADICIONAL, 25);
+            panaderia.asignarPedido("P01");
+            panaderia.asignarPedido("P02");
+
+            // Cada pedido reserva 45 minutos
+            assertEquals(45, p1.getMinutosReservados());
+            assertEquals(45, p2.getMinutosReservados());
+            assertEquals(30, carlos.getMinutosDisponibles());
+
+            panaderia.cancelarPedido("P01");
+
+            assertEquals(75, carlos.getMinutosDisponibles());
+            assertEquals(EstadoPedido.CANCELADO, p1.getEstado());
+            assertEquals(EstadoPedido.ASIGNADO, p2.getEstado());
+        }
+
+        @Test
+        void cancelarPedidoPendienteConservaMinutos() {
+            Panaderia panaderia = new Panaderia("El Trigal");
+            PanaderoArtesanal ana = new PanaderoArtesanal("Ana", "111", "E1", 100);
+            panaderia.registrarEmpleado(ana);
+            Pedido pedido = panaderia.registrarPedido("P01", "Cafe Central", TipoPan.TRADICIONAL, 25);
+
+            panaderia.cancelarPedido("P01");
+
+            assertEquals(EstadoPedido.CANCELADO, pedido.getEstado());
+            assertEquals(1, panaderia.getPedidos().size());
+            assertTrue(panaderia.buscarPedido("P01").isPresent());
+            assertEquals(100, ana.getMinutosDisponibles());
+        }
+
+        @Test
+        void cancelarPedidoYaCanceladoLanzaExcepcionYDevuelveMinutosUnaVez() {
+            Panaderia panaderia = new Panaderia("El Trigal");
+            PanaderoIndustrial carlos = new PanaderoIndustrial("Carlos", "111", "E1", 100);
+            panaderia.registrarEmpleado(carlos);
+            Pedido pedido = panaderia.registrarPedido("P01", "Cafe Central", TipoPan.TRADICIONAL, 25);
+            panaderia.asignarPedido("P01");
+            panaderia.cancelarPedido("P01");
+
+            assertThrows(IllegalStateException.class, () -> panaderia.cancelarPedido("P01"));
+
+            assertEquals(EstadoPedido.CANCELADO, pedido.getEstado());
+            assertEquals(100, carlos.getMinutosDisponibles());
+        }
+    }
 }
