@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="raiz" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.poo.parcial_3.viewController.PedidoViewController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="encabezado">
+            <VBox spacing="2.0">
+                <Label styleClass="titulo" text="Gestión de pedidos"/>
+                <Label styleClass="subtitulo" text="Panadería El Trigal"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button onAction="#onVolver" styleClass="boton-secundario" text="Volver al inicio"/>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox spacing="20.0">
+            <padding>
+                <Insets bottom="20.0" left="24.0" right="24.0" top="20.0"/>
+            </padding>
+
+            <VBox maxWidth="330.0" minWidth="330.0" spacing="10.0" styleClass="tarjeta">
+                <Label styleClass="titulo-tarjeta" text="Registrar pedido"/>
+
+                <Label styleClass="etiqueta" text="Código del pedido"/>
+                <TextField fx:id="txtCodigo" promptText="Ej: P01"/>
+
+                <Label styleClass="etiqueta" text="Nombre del cliente"/>
+                <TextField fx:id="txtCliente" promptText="Ej: Café Central"/>
+
+                <Label styleClass="etiqueta" text="Tipo de pan"/>
+                <ComboBox fx:id="cmbTipoPan" maxWidth="Infinity"/>
+
+                <Label styleClass="etiqueta" text="Cantidad de unidades"/>
+                <TextField fx:id="txtCantidad" promptText="Ej: 25"/>
+
+                <Button maxWidth="Infinity" onAction="#onRegistrarPedido" styleClass="boton-primario"
+                        text="Registrar pedido"/>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <Label styleClass="titulo-tarjeta" text="Resumen"/>
+                <HBox spacing="8.0">
+                    <VBox alignment="CENTER" styleClass="contador, contador-pendiente" HBox.hgrow="ALWAYS">
+                        <Label fx:id="lblPendientes" styleClass="contador-numero" text="0"/>
+                        <Label styleClass="contador-texto" text="Pendientes"/>
+                    </VBox>
+                    <VBox alignment="CENTER" styleClass="contador, contador-asignado" HBox.hgrow="ALWAYS">
+                        <Label fx:id="lblAsignados" styleClass="contador-numero" text="0"/>
+                        <Label styleClass="contador-texto" text="Asignados"/>
+                    </VBox>
+                    <VBox alignment="CENTER" styleClass="contador, contador-cancelado" HBox.hgrow="ALWAYS">
+                        <Label fx:id="lblCancelados" styleClass="contador-numero" text="0"/>
+                        <Label styleClass="contador-texto" text="Cancelados"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <VBox spacing="12.0" HBox.hgrow="ALWAYS">
+                <VBox spacing="10.0" styleClass="tarjeta" VBox.vgrow="ALWAYS">
+                    <Label styleClass="titulo-tarjeta" text="Historial de pedidos"/>
+                    <TableView fx:id="tblListPedido" VBox.vgrow="ALWAYS">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                        <columns>
+                            <TableColumn fx:id="tbcCodigo" text="Código"/>
+                            <TableColumn fx:id="tbcCliente" text="Cliente"/>
+                            <TableColumn fx:id="tbcTipoPan" text="Tipo de pan"/>
+                            <TableColumn fx:id="tbcCantidad" text="Unidades"/>
+                            <TableColumn fx:id="tbcEstado" text="Estado"/>
+                            <TableColumn fx:id="tbcAsignado" text="Asignado a"/>
+                            <TableColumn fx:id="tbcReservados" text="Reservados"/>
+                        </columns>
+                    </TableView>
+                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                        <Label styleClass="ayuda" text="Selecciona un pedido de la tabla para asignarlo o cancelarlo"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button onAction="#onAsignarPedido" styleClass="boton-primario" text="Asignar a producción"/>
+                        <Button onAction="#onCancelarPedido" styleClass="boton-peligro" text="Cancelar pedido"/>
+                    </HBox>
+                </VBox>
+
+                <VBox minHeight="170.0" prefHeight="170.0" spacing="8.0" styleClass="tarjeta">
+                    <Label styleClass="titulo-tarjeta" text="Cuánto tardaría cada panadero con el pedido seleccionado"/>
+                    <ListView fx:id="lstEstimaciones" VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </VBox>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" styleClass="barra-estado">
+            <Label fx:id="lblEstado" text="Listo."/>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="raiz" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.poo.parcial_3.viewController.PrimaryViewController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="encabezado">
+            <VBox spacing="2.0">
+                <Label styleClass="titulo" text="Panadería El Trigal"/>
+                <Label styleClass="subtitulo" text="Registro, asignación y cancelación de pedidos de producción"/>
+            </VBox>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="30.0">
+            <Label styleClass="bienvenida" text="¿Qué quieres gestionar hoy?"/>
+            <HBox alignment="CENTER" spacing="34.0">
+                <VBox maxWidth="340.0" minWidth="340.0" prefWidth="340.0" spacing="14.0" styleClass="tarjeta">
+                    <Label styleClass="titulo-tarjeta" text="Empleados"/>
+                    <Label styleClass="texto-tarjeta" text="Registra panaderos artesanales, panaderos industriales y cajeros con los minutos que tienen disponibles en el turno." wrapText="true"/>
+                    <Button maxWidth="Infinity" onAction="#onOpenCrudEmpleado" styleClass="boton-primario"
+                            text="Gestión de empleados"/>
+                </VBox>
+                <VBox maxWidth="340.0" minWidth="340.0" prefWidth="340.0" spacing="14.0" styleClass="tarjeta">
+                    <Label styleClass="titulo-tarjeta" text="Pedidos"/>
+                    <Label styleClass="texto-tarjeta" text="Registra pedidos, asígnalos al panadero que los haga en menos tiempo y cancélalos recuperando el tiempo reservado." wrapText="true"/>
+                    <Button maxWidth="Infinity" onAction="#onOpenCrudPedido" styleClass="boton-primario"
+                            text="Gestión de pedidos"/>
+                </VBox>
+            </HBox>
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="20.0"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

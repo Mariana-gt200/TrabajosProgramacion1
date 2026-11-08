@@ -122,8 +122,7 @@ public class PedidoViewController {
         colorearEstados();
     }
 
-    // OPCIONAL (solo decoración): pinta el texto de la columna Estado según el estado del pedido.
-    // Si no la quieren, borren este método y la línea que lo llama.
+    // pinta el texto de la columna Estado según el estado del pedido.
     private void colorearEstados() {
         tbcEstado.setCellFactory(columna -> new TableCell<Pedido, String>() {
             @Override
@@ -151,7 +150,7 @@ public class PedidoViewController {
         });
     }
 
-    // ---------------------------------------------------------------- acciones
+    // Acciones
 
     private void registrarPedido() {
         try {
