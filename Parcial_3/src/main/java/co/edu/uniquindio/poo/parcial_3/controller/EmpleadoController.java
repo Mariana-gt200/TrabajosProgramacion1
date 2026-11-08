@@ -38,5 +38,4 @@ public class EmpleadoController {
     public List<Empleado> obtenerListaEmpleados() {
         return new ArrayList<>(panaderia.getEmpleados());
     }
-    empleadoController = new EmpleadoController(App.panaderia);
 }

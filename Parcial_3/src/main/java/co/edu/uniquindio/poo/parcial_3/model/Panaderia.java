@@ -41,9 +41,25 @@ public class Panaderia implements IGestionPedidos {
 
     //Empleados -------------------------------------------------------------------------------
     //Registrar empleados
+    private boolean vacio(String texto) {
+        return texto == null || texto.isEmpty();
+    }
+
     public void registrarEmpleado(Empleado empleado) {
         if (empleado == null) {
             throw new IllegalArgumentException("El empleado no puede ser nulo.");
+        }
+        if (vacio(empleado.getNombre()) || vacio(empleado.getDocumento()) || vacio(empleado.getCodigo())) {
+            throw new IllegalArgumentException("Nombre, documento y código del empleado son obligatorios.");
+        }
+        if (empleado.getMinutosDisponibles() < 0) {
+            throw new IllegalArgumentException("Los minutos disponibles no pueden ser negativos.");
+        }
+        if (empleado instanceof Cajero) {
+            Cajero cajero = (Cajero) empleado;
+            if (vacio(cajero.getNumeroCaja())) {
+                throw new IllegalArgumentException("El número de caja es obligatorio para el cajero.");
+            }
         }
         if (buscarEmpleado(empleado.getCodigo()).isPresent()) {
             throw new IllegalArgumentException("Ya existe un empleado con el código " + empleado.getCodigo());

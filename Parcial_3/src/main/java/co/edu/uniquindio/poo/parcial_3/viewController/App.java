@@ -1,5 +1,12 @@
 package co.edu.uniquindio.poo.parcial_3.viewController;
 
+import co.edu.uniquindio.poo.parcial_3.model.Cajero;
+import co.edu.uniquindio.poo.parcial_3.model.Panaderia;
+import co.edu.uniquindio.poo.parcial_3.model.PanaderoArtesanal;
+import co.edu.uniquindio.poo.parcial_3.model.PanaderoIndustrial;
+import co.edu.uniquindio.poo.parcial_3.viewController.EmpleadoViewController;
+import co.edu.uniquindio.poo.parcial_3.viewController.PedidoViewController;
+import co.edu.uniquindio.poo.parcial_3.viewController.PrimaryViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,19 +16,20 @@ import java.io.IOException;
 
 public class App extends Application {
 
+    private Stage primaryStage;
+    public static Panaderia panaderia = new Panaderia("Panadería El Trigal");
+
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("/co/edu/uniquindio/poo/parcial_3/view/panaderia-view.fxml"));
-        Scene scene = new Scene(loader.load(), 1180, 740);
-        scene.getStylesheets().add(
-                App.class.getResource("/co/edu/uniquindio/poo/parcial_3/view/estilos.css").toExternalForm());
-        stage.setTitle("Panadería El Trigal");
-        stage.setMinWidth(1000);
-        stage.setMinHeight(660);
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws IOException {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Panadería El Trigal");
+        this.primaryStage.setMinWidth(1000);
+        this.primaryStage.setMinHeight(660);
+        inicializarData();
+        openViewPrincipal();
     }
+
+
 
     public static void main(String[] args) {
         launch();
