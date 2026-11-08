@@ -1,0 +1,184 @@
+.raiz {
+    -fx-background-color: #FBF5EA;
+    -fx-font-family: "Segoe UI", "Helvetica", "Arial";
+    -fx-font-size: 13px;
+}
+
+/* Encabezado */
+.encabezado {
+    -fx-background-color: linear-gradient(to right, #6F4325, #B4733C);
+    -fx-padding: 18 28 18 28;
+}
+.titulo {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+.subtitulo {
+    -fx-text-fill: #F6DDB8;
+    -fx-font-size: 13px;
+}
+.bienvenida {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5A3A22;
+}
+
+/* Tarjetas */
+.tarjeta {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(90, 60, 30, 0.16), 14, 0.1, 0, 3);
+}
+.titulo-tarjeta {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5A3A22;
+}
+.texto-tarjeta {
+    -fx-text-fill: #7A6552;
+    -fx-font-size: 13px;
+}
+.etiqueta {
+    -fx-text-fill: #7A6552;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.ayuda {
+    -fx-text-fill: #9A8671;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+/* Campos */
+.text-field {
+    -fx-background-color: #FFFDF9;
+    -fx-background-radius: 8;
+    -fx-border-color: #E3D3BF;
+    -fx-border-radius: 8;
+    -fx-padding: 7 10 7 10;
+}
+.text-field:focused {
+    -fx-border-color: #C98A4B;
+}
+.combo-box {
+    -fx-background-color: #FFFDF9;
+    -fx-background-radius: 8;
+    -fx-border-color: #E3D3BF;
+    -fx-border-radius: 8;
+}
+
+/* Botones */
+.boton-primario {
+    -fx-background-color: #B4733C;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9;
+    -fx-padding: 9 18 9 18;
+    -fx-cursor: hand;
+}
+.boton-primario:hover {
+    -fx-background-color: #9A5F2E;
+}
+.boton-peligro {
+    -fx-background-color: #C0392B;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9;
+    -fx-padding: 9 18 9 18;
+    -fx-cursor: hand;
+}
+.boton-peligro:hover {
+    -fx-background-color: #A02F23;
+}
+.boton-secundario {
+    -fx-background-color: rgba(255, 255, 255, 0.18);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 9;
+    -fx-border-color: rgba(255, 255, 255, 0.6);
+    -fx-border-radius: 9;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+.boton-secundario:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.32);
+}
+
+/* Tablas */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #EADCC8;
+    -fx-border-radius: 8;
+}
+.table-view .column-header-background {
+    -fx-background-color: #F1E4CF;
+}
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: #F1E4CF;
+    -fx-border-color: transparent transparent #E0CBAE transparent;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #5A3A22;
+    -fx-font-weight: bold;
+}
+.table-row-cell:selected {
+    -fx-background-color: #F6D9A8;
+}
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #3B2412;
+}
+
+/* Estados del pedido */
+.estado-pendiente {
+    -fx-text-fill: #A66A00;
+    -fx-font-weight: bold;
+}
+.estado-asignado {
+    -fx-text-fill: #2E7D32;
+    -fx-font-weight: bold;
+}
+.estado-cancelado {
+    -fx-text-fill: #B3261E;
+    -fx-font-weight: bold;
+}
+
+/* Contadores */
+.contador {
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+}
+.contador-pendiente {
+    -fx-background-color: #FFF1D6;
+}
+.contador-asignado {
+    -fx-background-color: #E3F3E4;
+}
+.contador-cancelado {
+    -fx-background-color: #FBE3E1;
+}
+.contador-numero {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A2C14;
+}
+.contador-texto {
+    -fx-font-size: 11px;
+    -fx-text-fill: #7A6552;
+}
+
+/* Barra de estado */
+.barra-estado {
+    -fx-background-color: #F1E4CF;
+    -fx-padding: 9 24 9 24;
+}
+.mensaje-ok {
+    -fx-text-fill: #2E7D32;
+    -fx-font-weight: bold;
+}
+.mensaje-error {
+    -fx-text-fill: #B3261E;
+    -fx-font-weight: bold;
+}

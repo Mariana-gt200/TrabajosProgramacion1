@@ -1,6 +1,6 @@
 package co.edu.uniquindio.poo.parcial_3.viewController;
 
-import co.edu.uniquindio.poo.parcial_3.App;
+import co.edu.uniquindio.poo.parcial_3.viewController.App;
 import co.edu.uniquindio.poo.parcial_3.controller.EmpleadoController;
 import co.edu.uniquindio.poo.parcial_3.model.Empleado;
 import javafx.beans.property.SimpleIntegerProperty;
