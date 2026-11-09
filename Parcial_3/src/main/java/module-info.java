@@ -3,6 +3,7 @@ module co.edu.uniquindio.poo.parcial_3 {
     requires javafx.fxml;
 
     opens co.edu.uniquindio.poo.parcial_3.viewController to javafx.fxml;
+    opens co.edu.uniquindio.poo.parcial_3.model to javafx.base;
 
     exports co.edu.uniquindio.poo.parcial_3.model;
     exports co.edu.uniquindio.poo.parcial_3.controller;

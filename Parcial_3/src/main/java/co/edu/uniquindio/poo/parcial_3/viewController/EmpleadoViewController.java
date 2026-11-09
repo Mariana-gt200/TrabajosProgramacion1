@@ -1,6 +1,5 @@
 package co.edu.uniquindio.poo.parcial_3.viewController;
 
-import co.edu.uniquindio.poo.parcial_3.viewController.App;
 import co.edu.uniquindio.poo.parcial_3.controller.EmpleadoController;
 import co.edu.uniquindio.poo.parcial_3.model.Empleado;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -26,40 +25,28 @@ public class EmpleadoViewController {
     private EmpleadoController empleadoController;
     private ObservableList<Empleado> listEmpleados = FXCollections.observableArrayList();
 
-    @FXML
-    private ComboBox<String> cmbTipoEmpleado;
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private TextField txtDocumento;
-    @FXML
-    private TextField txtCodigo;
-    @FXML
-    private TextField txtMinutos;
-    @FXML
-    private TextField txtCaja;
-    @FXML
-    private VBox boxCaja;
-    @FXML
-    private TableView<Empleado> tblListEmpleado;
-    @FXML
-    private TableColumn<Empleado, String> tbcCodigo;
-    @FXML
-    private TableColumn<Empleado, String> tbcNombre;
-    @FXML
-    private TableColumn<Empleado, String> tbcDocumento;
-    @FXML
-    private TableColumn<Empleado, String> tbcTipo;
-    @FXML
-    private TableColumn<Empleado, Integer> tbcMinutos;
-    @FXML
-    private Label lblEstado;
+    @FXML private ComboBox<String> cmbTipoEmpleado;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtDocumento;
+    @FXML private TextField txtCodigo;
+    @FXML private TextField txtMinutos;
+    @FXML private TextField txtCaja;
+    @FXML private VBox boxCaja;
+    @FXML private TableView<Empleado> tblListEmpleado;
+    @FXML private TableColumn<Empleado, String> tbcCodigo;
+    @FXML private TableColumn<Empleado, String> tbcNombre;
+    @FXML private TableColumn<Empleado, String> tbcDocumento;
+    @FXML private TableColumn<Empleado, String> tbcTipo;
+    @FXML private TableColumn<Empleado, Integer> tbcMinutos;
+    @FXML private Label lblEstado;
 
     @FXML
     void onTipoEmpleadoCambiado() {
         boolean esCajero = CAJERO.equals(cmbTipoEmpleado.getValue());
-        boxCaja.setVisible(esCajero);
-        boxCaja.setManaged(esCajero);
+        if (boxCaja != null) {
+            boxCaja.setVisible(esCajero);
+            boxCaja.setManaged(esCajero);
+        }
     }
 
     @FXML
@@ -69,7 +56,9 @@ public class EmpleadoViewController {
 
     @FXML
     void onVolver() {
-        app.openViewPrincipal();
+        if (app != null) {
+            app.openViewPrincipal();
+        }
     }
 
     @FXML
@@ -81,11 +70,9 @@ public class EmpleadoViewController {
     private void initView() {
         cmbTipoEmpleado.setItems(FXCollections.observableArrayList(ARTESANAL, INDUSTRIAL, CAJERO));
         cmbTipoEmpleado.getSelectionModel().selectFirst();
+        onTipoEmpleadoCambiado();
 
-        // Traer los datos del empleado a la tabla
         initDataBinding();
-
-        // Obtiene la lista y la agrega a la tabla
         obtenerEmpleados();
         tblListEmpleado.setItems(listEmpleados);
     }
@@ -95,12 +82,12 @@ public class EmpleadoViewController {
         tbcNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
         tbcDocumento.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDocumento()));
         tbcTipo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTipo()));
-        // Usamos asObject() para que la columna maneje Integer correctamente
         tbcMinutos.setCellValueFactory(
                 cellData -> new SimpleIntegerProperty(cellData.getValue().getMinutosDisponibles()).asObject());
     }
 
     private void obtenerEmpleados() {
+        listEmpleados.clear();
         listEmpleados.addAll(empleadoController.obtenerListaEmpleados());
     }
 
@@ -142,26 +129,27 @@ public class EmpleadoViewController {
         txtDocumento.clear();
         txtCodigo.clear();
         txtMinutos.clear();
-        txtCaja.clear();
+        if (txtCaja != null) txtCaja.clear();
     }
 
     private void mostrarExito(String mensaje) {
-        lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
-        lblEstado.getStyleClass().add("mensaje-ok");
-        lblEstado.setText(mensaje);
+        if (lblEstado != null) {
+            lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
+            lblEstado.getStyleClass().add("mensaje-ok");
+            lblEstado.setText(mensaje);
+        }
     }
 
     private void mostrarError(RuntimeException e) {
-        String mensaje = e.getMessage();
-        if (mensaje == null) {
-            mensaje = "Ocurrió un error inesperado.";
+        String mensaje = e.getMessage() != null ? e.getMessage() : "Ocurrió un error inesperado.";
+        if (lblEstado != null) {
+            lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
+            lblEstado.getStyleClass().add("mensaje-error");
+            lblEstado.setText(mensaje);
         }
-        lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
-        lblEstado.getStyleClass().add("mensaje-error");
-        lblEstado.setText(mensaje);
 
         Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("No se pudo completar la operación");
+        alerta.setTitle("Error de Operación");
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();

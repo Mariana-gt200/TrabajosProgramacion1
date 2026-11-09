@@ -1,6 +1,5 @@
 package co.edu.uniquindio.poo.parcial_3.viewController;
 
-import co.edu.uniquindio.poo.parcial_3.App;
 import co.edu.uniquindio.poo.parcial_3.controller.PedidoController;
 import co.edu.uniquindio.poo.parcial_3.model.EstadoPedido;
 import co.edu.uniquindio.poo.parcial_3.model.Pedido;
@@ -23,45 +22,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoViewController {
+
     private App app;
     private PedidoController pedidoController;
     private ObservableList<Pedido> listPedidos = FXCollections.observableArrayList();
     private Pedido selectedPedido;
 
-    @FXML
-    private TextField txtCodigo;
-    @FXML
-    private TextField txtCliente;
-    @FXML
-    private ComboBox<TipoPan> cmbTipoPan;
-    @FXML
-    private TextField txtCantidad;
-    @FXML
-    private Label lblPendientes;
-    @FXML
-    private Label lblAsignados;
-    @FXML
-    private Label lblCancelados;
-    @FXML
-    private TableView<Pedido> tblListPedido;
-    @FXML
-    private TableColumn<Pedido, String> tbcCodigo;
-    @FXML
-    private TableColumn<Pedido, String> tbcCliente;
-    @FXML
-    private TableColumn<Pedido, String> tbcTipoPan;
-    @FXML
-    private TableColumn<Pedido, Integer> tbcCantidad;
-    @FXML
-    private TableColumn<Pedido, String> tbcEstado;
-    @FXML
-    private TableColumn<Pedido, String> tbcAsignado;
-    @FXML
-    private TableColumn<Pedido, Integer> tbcReservados;
-    @FXML
-    private ListView<String> lstEstimaciones;
-    @FXML
-    private Label lblEstado;
+    @FXML private TextField txtCodigo;
+    @FXML private TextField txtCliente;
+    @FXML private ComboBox<TipoPan> cmbTipoPan;
+    @FXML private TextField txtCantidad;
+    @FXML private Label lblPendientes;
+    @FXML private Label lblAsignados;
+    @FXML private Label lblCancelados;
+    @FXML private TableView<Pedido> tblListPedido;
+    @FXML private TableColumn<Pedido, String> tbcCodigo;
+    @FXML private TableColumn<Pedido, String> tbcCliente;
+    @FXML private TableColumn<Pedido, String> tbcTipoPan;
+    @FXML private TableColumn<Pedido, Integer> tbcCantidad;
+    @FXML private TableColumn<Pedido, String> tbcEstado;
+    @FXML private TableColumn<Pedido, String> tbcAsignado;
+    @FXML private TableColumn<Pedido, Integer> tbcReservados;
+    @FXML private ListView<String> lstEstimaciones;
+    @FXML private Label lblEstado;
 
     @FXML
     void onRegistrarPedido() {
@@ -80,7 +63,9 @@ public class PedidoViewController {
 
     @FXML
     void onVolver() {
-        app.openViewPrincipal();
+        if (app != null) {
+            app.openViewPrincipal();
+        }
     }
 
     @FXML
@@ -93,16 +78,11 @@ public class PedidoViewController {
         cmbTipoPan.setItems(FXCollections.observableArrayList(TipoPan.TRADICIONAL, TipoPan.INTEGRAL));
         cmbTipoPan.getSelectionModel().selectFirst();
 
-        // Traer los datos del pedido a la tabla
         initDataBinding();
-
-        // Obtiene la lista y la agrega a la tabla
         obtenerPedidos();
         tblListPedido.setItems(listPedidos);
 
-        // Seleccionar elemento de la tabla
         listenerSelection();
-
         actualizarResumen();
         mostrarEstimaciones(null);
     }
@@ -122,7 +102,6 @@ public class PedidoViewController {
         colorearEstados();
     }
 
-    // pinta el texto de la columna Estado según el estado del pedido.
     private void colorearEstados() {
         tbcEstado.setCellFactory(columna -> new TableCell<Pedido, String>() {
             @Override
@@ -140,6 +119,7 @@ public class PedidoViewController {
     }
 
     private void obtenerPedidos() {
+        listPedidos.clear();
         listPedidos.addAll(pedidoController.obtenerListaPedidos());
     }
 
@@ -149,8 +129,6 @@ public class PedidoViewController {
             mostrarEstimaciones(selectedPedido);
         });
     }
-
-    // Acciones
 
     private void registrarPedido() {
         try {
@@ -193,15 +171,12 @@ public class PedidoViewController {
         try {
             pedidoController.cancelarPedido(selectedPedido.getCodigo());
             refrescar();
-            mostrarExito("Pedido " + selectedPedido.getCodigo() + " cancelado. Se conserva en el historial.");
+            mostrarExito("Pedido " + selectedPedido.getCodigo() + " cancelado.");
         } catch (RuntimeException e) {
             mostrarError(e);
         }
     }
 
-    // ---------------------------------------------------------------- auxiliares de la vista
-
-    // Los pedidos cambian por dentro, así que se repinta la tabla, el resumen y las estimaciones
     private void refrescar() {
         tblListPedido.refresh();
         actualizarResumen();
@@ -221,9 +196,9 @@ public class PedidoViewController {
                 cancelados++;
             }
         }
-        lblPendientes.setText(String.valueOf(pendientes));
-        lblAsignados.setText(String.valueOf(asignados));
-        lblCancelados.setText(String.valueOf(cancelados));
+        if (lblPendientes != null) lblPendientes.setText(String.valueOf(pendientes));
+        if (lblAsignados != null) lblAsignados.setText(String.valueOf(asignados));
+        if (lblCancelados != null) lblCancelados.setText(String.valueOf(cancelados));
     }
 
     private void mostrarEstimaciones(Pedido pedido) {
@@ -254,22 +229,23 @@ public class PedidoViewController {
     }
 
     private void mostrarExito(String mensaje) {
-        lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
-        lblEstado.getStyleClass().add("mensaje-ok");
-        lblEstado.setText(mensaje);
+        if (lblEstado != null) {
+            lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
+            lblEstado.getStyleClass().add("mensaje-ok");
+            lblEstado.setText(mensaje);
+        }
     }
 
     private void mostrarError(RuntimeException e) {
-        String mensaje = e.getMessage();
-        if (mensaje == null) {
-            mensaje = "Ocurrió un error inesperado.";
+        String mensaje = e.getMessage() != null ? e.getMessage() : "Ocurrió un error inesperado.";
+        if (lblEstado != null) {
+            lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
+            lblEstado.getStyleClass().add("mensaje-error");
+            lblEstado.setText(mensaje);
         }
-        lblEstado.getStyleClass().removeAll("mensaje-ok", "mensaje-error");
-        lblEstado.getStyleClass().add("mensaje-error");
-        lblEstado.setText(mensaje);
 
         Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("No se pudo completar la operación");
+        alerta.setTitle("Error de Operación");
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();

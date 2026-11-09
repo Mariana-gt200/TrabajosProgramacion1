@@ -1,5 +1,4 @@
-package co.edu.uniquindio.poo.parcial_3.model;
-
+import co.edu.uniquindio.poo.parcial_3.model.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -162,4 +161,3 @@ public class PanaderiaTest {
             assertEquals(100, carlos.getMinutosDisponibles());
         }
     }
-}

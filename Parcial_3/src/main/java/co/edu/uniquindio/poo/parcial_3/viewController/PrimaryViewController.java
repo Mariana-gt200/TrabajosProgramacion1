@@ -1,19 +1,23 @@
 package co.edu.uniquindio.poo.parcial_3.viewController;
 
-import co.edu.uniquindio.poo.parcial_3.App;
 import javafx.fxml.FXML;
 
 public class PrimaryViewController {
+
     private App app;
 
     @FXML
     void onOpenCrudEmpleado() {
-        app.openCrudEmpleado();
+        if (app != null) {
+            app.openCrudEmpleado();
+        }
     }
 
     @FXML
     void onOpenCrudPedido() {
-        app.openCrudPedido();
+        if (app != null) {
+            app.openCrudPedido();
+        }
     }
 
     public void setApp(App app) {
@@ -22,6 +26,5 @@ public class PrimaryViewController {
 
     @FXML
     void initialize() {
-
     }
 }
