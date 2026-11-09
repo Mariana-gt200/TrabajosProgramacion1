@@ -12,6 +12,20 @@ public class Cliente {
     private boolean descuentoComision = false;
     private LocalDate sinCargosRetirosHasta = null;
 
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "Cliente{" +
+                "identificacion='" + identificacion + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", rango=" + rango +
+                ", canalPreferido=" + canalPreferido +
+                ", puntosCanjeados=" + puntosCanjeados +
+                ", descuentoComision=" + descuentoComision +
+                ", sinCargosRetirosHasta=" + sinCargosRetirosHasta +
+                '}';
+    }
 
     public Cliente (String identificacion, String nombre, String email, String telefono, RangoCliente rango){
         this.identificacion = identificacion;

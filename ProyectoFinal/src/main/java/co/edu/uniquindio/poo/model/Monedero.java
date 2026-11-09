@@ -15,6 +15,16 @@ public class Monedero {
         this.identificacionCliente = identificacionCliente;
     }
 
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "Monedero{" +
+                "idMonedero='" + idMonedero + '\'' +
+                ", tipo=" + tipo +
+                ", saldo=" + saldo +
+                ", identificacionCliente='" + identificacionCliente + '\'' +
+                '}';
+    }
+
     // Getters y Setters
     public String getIdMonedero() {
         return idMonedero;
