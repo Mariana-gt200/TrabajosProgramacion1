@@ -1,7 +1,7 @@
 package co.edu.uniquindio.poo.model;
 import java.time.LocalDate;
 
-public class Cliente {
+public class Cliente implements Notificable {
     private String identificacion;
     private String nombre;
     private String email;
