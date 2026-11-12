@@ -194,4 +194,16 @@ public class Panaderia implements IGestionPedidos {
         return estimaciones;
     }
 
+    //Obtener la lista de panaderos industriales que tengan disponibilidad de mas de 100 horas
+    public List<PanaderoIndustrial> disponibilidadPanaderosIndustrial(){
+        List<PanaderoIndustrial> panaderosIndustriales= new ArrayList<>();
+        for(Empleado empleado : empleados){
+            if(empleado instanceof PanaderoIndustrial){
+                if(empleado.getMinutosDisponibles()> 100* 60){
+                    panaderosIndustriales.add()
+                }
+            }
+        }
+    }
+
 }

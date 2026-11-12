@@ -8,7 +8,6 @@ public class PrincipalViewController {
     @FXML
     private TabPane tabPane;
 
-    // Controladores de las vistas incluidas con fx:include (fx:id + "Controller")
     @FXML
     private ClienteViewController vistaClienteController;
     @FXML
@@ -17,10 +16,15 @@ public class PrincipalViewController {
     private OperacionViewController vistaOperacionController;
     @FXML
     private HistorialViewController vistaHistorialController;
+    @FXML
+    private PuntosViewController vistaPuntosController;
+    @FXML
+    private ProgramadasViewController vistaProgramadasController;
+    @FXML
+    private ReportesViewController vistaReportesController;
 
     @FXML
     void initialize() {
-        // Al cambiar de pestaña se refrescan los datos de esa vista
         tabPane.getSelectionModel().selectedIndexProperty().addListener((obs, anterior, nuevo) -> {
             switch (nuevo.intValue()) {
                 case 0:
@@ -34,6 +38,15 @@ public class PrincipalViewController {
                     break;
                 case 3:
                     vistaHistorialController.refrescar();
+                    break;
+                case 4:
+                    vistaPuntosController.refrescar();
+                    break;
+                case 5:
+                    vistaProgramadasController.refrescar();
+                    break;
+                case 6:
+                    vistaReportesController.refrescar();
                     break;
             }
         });

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 
-<TabPane fx:id="tabPane" prefHeight="620.0" prefWidth="950.0" tabClosingPolicy="UNAVAILABLE"
+<TabPane fx:id="tabPane" prefHeight="660.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE"
          xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
          fx:controller="co.edu.uniquindio.poo.viewController.PrincipalViewController">
     <tabs>
@@ -25,6 +25,21 @@
         <Tab text="Historial">
             <content>
                 <fx:include fx:id="vistaHistorial" source="HistorialView.fxml"/>
+            </content>
+        </Tab>
+        <Tab text="Puntos y Beneficios">
+            <content>
+                <fx:include fx:id="vistaPuntos" source="PuntosView.fxml"/>
+            </content>
+        </Tab>
+        <Tab text="Programadas">
+            <content>
+                <fx:include fx:id="vistaProgramadas" source="ProgramadasView.fxml"/>
+            </content>
+        </Tab>
+        <Tab text="Reportes y Análisis">
+            <content>
+                <fx:include fx:id="vistaReportes" source="ReportesView.fxml"/>
             </content>
         </Tab>
     </tabs>

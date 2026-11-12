@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="co.edu.uniquindio.poo.viewController.ReportesViewController">
+    <padding>
+        <Insets bottom="16.0" left="18.0" right="18.0" top="16.0"/>
+    </padding>
+    <children>
+        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Reporte de Gastos y Análisis de Transacciones Atípicas"/>
+
+        <HBox alignment="CENTER_LEFT" spacing="14.0">
+            <children>
+                <Label text="Cliente:"/>
+                <ComboBox fx:id="cmbCliente" onAction="#onClienteSeleccionado" prefWidth="310.0"/>
+                <Label fx:id="lblFechaReporte" text="Fecha: -"/>
+                <Label fx:id="lblTotalGasto" style="-fx-font-weight: bold;" text="Total gastado: -"/>
+            </children>
+        </HBox>
+
+        <TableView fx:id="tblDesglose" prefHeight="135.0">
+            <columns>
+                <TableColumn fx:id="tbcCategoria" prefWidth="440.0" text="Categoría de Transacción"/>
+                <TableColumn fx:id="tbcTotalCategoria" prefWidth="450.0" text="Total Acumulado"/>
+            </columns>
+        </TableView>
+
+        <Separator/>
+
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <children>
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Análisis Estadístico (Promedio + 2 × Desviación Estándar)"/>
+                <Button onAction="#onAnalizarSeleccionada" text="Analizar transacción seleccionada"/>
+            </children>
+        </HBox>
+
+        <TableView fx:id="tblTransaccionesCliente" prefHeight="155.0">
+            <columns>
+                <TableColumn fx:id="tbcTrxId" prefWidth="150.0" text="ID"/>
+                <TableColumn fx:id="tbcTrxTipo" prefWidth="150.0" text="Tipo"/>
+                <TableColumn fx:id="tbcTrxMonto" prefWidth="160.0" text="Monto"/>
+                <TableColumn fx:id="tbcTrxFecha" prefWidth="160.0" text="Fecha"/>
+                <TableColumn fx:id="tbcTrxEstado" prefWidth="270.0" text="Estado"/>
+            </columns>
+        </TableView>
+
+        <TextArea fx:id="txtResultadoAnalisis" editable="false" prefHeight="110.0" promptText="Seleccione una transacción de la tabla para ver el cálculo de promedio, desviación estándar y umbral atípico..." wrapText="true"/>
+    </children>
+</VBox>
