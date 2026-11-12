@@ -99,9 +99,12 @@ public class MonederoVirtual {
                 })
                 .orElse("No se puede actualizar, no existe un cliente con esa identificación.");
     }
-
-    //Eliminar cliente
+    
+    //Eliminar cliente (solo si ya no tiene monederos)
     public String eliminarCliente(String idCliente) {
+        if (!obtenerMonederos(idCliente).isEmpty()) {
+            return "No se puede eliminar, el cliente todavía tiene monederos registrados.";
+        }
         return buscarCliente(idCliente)
                 .map(c -> {
                     listaClientes.remove(c);
@@ -177,10 +180,13 @@ public class MonederoVirtual {
                 .orElse("No se puede actualizar, no existe un monedero con esa identificación.");
     }
 
-    //Eliminar monedero
+    //Eliminar monedero (solo si no tiene saldo)
     public String eliminarMonedero(String idCliente, String idMonedero) {
         return buscarMonedero(idCliente, idMonedero)
                 .map(m -> {
+                    if (m.getSaldo() > 0) {
+                        return "No se puede eliminar, el monedero todavía tiene saldo.";
+                    }
                     listaMonederos.remove(m);
                     return "El monedero fue eliminado exitosamente";
                 })
