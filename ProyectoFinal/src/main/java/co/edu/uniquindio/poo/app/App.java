@@ -22,7 +22,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         inicializarData();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/co/edu/uniquindio/poo/PrincipalView.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/co/edu/uniquindio/ProyectoFinal/PrincipalView.fxml"));
         Scene scene = new Scene(loader.load(), 950, 620);
         stage.setTitle("Monedero Virtual");
         stage.setScene(scene);

@@ -1,5 +1,4 @@
-package co.edu.uniquindio.poo.model;
-
+import co.edu.uniquindio.poo.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
