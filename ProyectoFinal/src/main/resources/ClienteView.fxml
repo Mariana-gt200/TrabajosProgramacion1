@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="14.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="co.edu.uniquindio.poo.viewController.ClienteViewController">
+    <padding>
+        <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+    </padding>
+    <children>
+        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Gestión de Clientes"/>
+
+        <GridPane hgap="12.0" vgap="10.0">
+            <columnConstraints>
+                <ColumnConstraints minWidth="120.0" prefWidth="130.0"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="180.0"/>
+                <ColumnConstraints minWidth="120.0" prefWidth="130.0"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="180.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="30.0"/>
+                <RowConstraints minHeight="30.0"/>
+                <RowConstraints minHeight="30.0"/>
+            </rowConstraints>
+            <children>
+                <Label text="Identificación:"/>
+                <TextField fx:id="txtIdentificacion" promptText="Ej: 1001" GridPane.columnIndex="1"/>
+
+                <Label text="Nombre completo:" GridPane.columnIndex="2"/>
+                <TextField fx:id="txtNombre" promptText="Ej: Ana Gómez" GridPane.columnIndex="3"/>
+
+                <Label text="Correo electrónico:" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtEmail" promptText="correo@ejemplo.com" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Teléfono:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtTelefono" promptText="Ej: 3001112233" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+
+                <Label text="Canal notificación:" GridPane.rowIndex="2"/>
+                <ComboBox fx:id="cmbCanal" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            </children>
+        </GridPane>
+
+        <HBox spacing="10.0">
+            <children>
+                <Button onAction="#onAgregar" text="Agregar"/>
+                <Button onAction="#onActualizar" text="Actualizar"/>
+                <Button onAction="#onEliminar" text="Eliminar"/>
+                <Button onAction="#onLimpiar" text="Limpiar"/>
+            </children>
+        </HBox>
+
+        <TableView fx:id="tblClientes" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="tbcIdentificacion" prefWidth="120.0" text="Identificación"/>
+                <TableColumn fx:id="tbcNombre" prefWidth="200.0" text="Nombre"/>
+                <TableColumn fx:id="tbcEmail" prefWidth="200.0" text="Email"/>
+                <TableColumn fx:id="tbcTelefono" prefWidth="130.0" text="Teléfono"/>
+                <TableColumn fx:id="tbcRango" prefWidth="110.0" text="Rango"/>
+                <TableColumn fx:id="tbcCanal" prefWidth="130.0" text="Canal"/>
+            </columns>
+        </TableView>
+    </children>
+</VBox>
