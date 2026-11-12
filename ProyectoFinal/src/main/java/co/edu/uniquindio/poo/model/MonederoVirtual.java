@@ -99,7 +99,7 @@ public class MonederoVirtual {
                 })
                 .orElse("No se puede actualizar, no existe un cliente con esa identificación.");
     }
-    
+
     //Eliminar cliente (solo si ya no tiene monederos)
     public String eliminarCliente(String idCliente) {
         if (!obtenerMonederos(idCliente).isEmpty()) {
